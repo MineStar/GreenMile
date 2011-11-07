@@ -50,7 +50,11 @@ public class BorderThread implements Runnable {
             x1 = loc.getBlockX();
             z1 = loc.getBlockZ();
             if (maxSize <= ((x1 * x1) + (z1 * z1))) {
-                player.teleport(lastPosition.get(player.getName()));
+                loc = lastPosition.get(player.getName());
+                if (loc == null)
+                    loc = player.getWorld().getSpawnLocation();
+
+                player.teleport(loc);
                 player.sendMessage(ChatColor.RED
                         + "Du hast die maximale Grenze der Map erreicht!");
             }

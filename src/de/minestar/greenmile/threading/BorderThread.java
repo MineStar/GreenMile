@@ -18,48 +18,69 @@
 package de.minestar.greenmile.threading;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Server;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 public class BorderThread implements Runnable {
 
-    private final int maxSize;
     private final Server server;
 
     private HashMap<String, Location> lastPosition = new HashMap<String, Location>();
 
-    public BorderThread(int maxSize, Server server) {
-        this.maxSize = maxSize * maxSize;
+    private final HashMap<String, Integer> worldSizes;
+
+    public BorderThread(HashMap<String, Integer> worldSizes, Server server) {
+        this.worldSizes = worldSizes;
         this.server = server;
     }
 
     @Override
     public void run() {
 
-        Player[] onlinePlayer = server.getOnlinePlayers();
         Location loc = null;
         int x1 = 0;
         int z1 = 0;
-        for (Player player : onlinePlayer) {
-            if (player.isDead() && !player.isOnline())
-                continue;
-            loc = player.getLocation();
-            x1 = loc.getBlockX();
-            z1 = loc.getBlockZ();
-            if (maxSize <= ((x1 * x1) + (z1 * z1))) {
-                loc = lastPosition.get(player.getName());
-                if (loc == null)
-                    loc = player.getWorld().getSpawnLocation();
+        int z2 = 0;
+        int x2 = 0;
+        int maxSize = 0;
+        List<World> worlds = server.getWorlds();
+        List<Player> players = null;
 
-                player.teleport(loc);
-                player.sendMessage(ChatColor.RED
-                        + "Du hast die maximale Grenze der Map erreicht!");
+        for (World world : worlds) {
+            if (!worldSizes.containsKey(world.getName().toLowerCase()))
+                continue;
+            players = world.getPlayers();
+            loc = world.getSpawnLocation();
+            x2 = loc.getBlockX();
+            z2 = loc.getBlockZ();
+            maxSize = worldSizes.get(world.getName().toLowerCase());
+            maxSize *= maxSize;
+
+            for (Player player : players) {
+                if (player.isDead() || !player.isOnline())
+                    continue;
+
+                loc = player.getLocation();
+                x1 = loc.getBlockX();
+                z1 = loc.getBlockZ();
+                if (maxSize <= ((x1 - x2) * (x1 - x2))
+                        + ((z1 - z2) * (z1 - z2))) {
+                    loc = lastPosition.get(player.getName());
+                    if (loc == null)
+                        loc = player.getWorld().getSpawnLocation();
+
+                    player.teleport(loc);
+                    player.sendMessage(ChatColor.RED
+                            + "Du hast die maximale Grenze der Map erreicht!");
+                }
+                else
+                    lastPosition.put(player.getName(), loc);
             }
-            else
-                lastPosition.put(player.getName(), loc);
         }
     }
 

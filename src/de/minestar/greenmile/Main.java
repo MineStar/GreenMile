@@ -18,6 +18,9 @@
 package de.minestar.greenmile;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 
 import org.bukkit.Server;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -40,15 +43,45 @@ public class Main extends JavaPlugin {
     public void onEnable() {
 
         checkConfig();
-        int maxSize = getConfig().getInt("maxSize");
-        printToConsole("Maximum map size is " + maxSize);
 
         Server server = getServer();
-        Runnable borderThread = new BorderThread(maxSize, server);
+
+        HashMap<String, Integer> map = loadWorldSettings();
+        if (map == null)
+            return;
+
+        Runnable borderThread = new BorderThread(map, server);
 
         server.getScheduler().scheduleSyncRepeatingTask(this, borderThread,
                 20 * 15, 20 * 5);
         printToConsole("Enabled!");
+
+    }
+
+    @SuppressWarnings("unchecked")
+    private HashMap<String, Integer> loadWorldSettings() {
+
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+
+        List<String> worlds = getConfig().getList("worlds");
+        String[] split = null;
+        String worldname = null;
+        Integer maxSize = null;
+        for (String world : worlds) {
+            split = world.split("=");
+            worldname = split[0].toLowerCase();
+            maxSize = Integer.parseInt(split[1]);
+            printToConsole("Loaded world '" + worldname + "' with maxSize = "
+                    + maxSize);
+            map.put(worldname, maxSize);
+        }
+
+        if (map.isEmpty()) {
+            printToConsole("No map found, plugin is disabled!");
+            this.setEnabled(false);
+            return null;
+        }
+        return map;
     }
 
     private void checkConfig() {
@@ -61,9 +94,13 @@ public class Main extends JavaPlugin {
                 "/config.yml"));
 
         if (!configFile.exists()) {
-            getConfig().addDefault("maxSize", 500);
-            getConfig().options().copyDefaults(true);
-            saveConfig();
+            try {
+                configFile.createNewFile();
+            }
+            catch (IOException e) {
+
+                e.printStackTrace();
+            }
         }
     }
 

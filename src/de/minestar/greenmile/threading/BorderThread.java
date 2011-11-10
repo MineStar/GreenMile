@@ -17,6 +17,7 @@
  */
 package de.minestar.greenmile.threading;
 
+import java.awt.Rectangle;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,8 +31,10 @@ public class BorderThread implements Runnable {
 
     private final Server server;
 
+    // stores the last position of an player to reset him
     private HashMap<String, Location> lastPosition = new HashMap<String, Location>();
 
+    // store the allowed sizes of an map
     private final HashMap<String, Integer> worldSizes;
 
     public BorderThread(HashMap<String, Integer> worldSizes, Server server) {
@@ -43,34 +46,43 @@ public class BorderThread implements Runnable {
     public void run() {
 
         Location loc = null;
-        int x1 = 0;
-        int z1 = 0;
-        int z2 = 0;
-        int x2 = 0;
+        int x = 0;
+        int z = 0;
         int maxSize = 0;
         List<World> worlds = server.getWorlds();
         List<Player> players = null;
+        Rectangle rec = null;
 
         for (World world : worlds) {
+
+            // world hasn't a border
             if (!worldSizes.containsKey(world.getName().toLowerCase()))
                 continue;
+
             players = world.getPlayers();
             loc = world.getSpawnLocation();
-            x2 = loc.getBlockX();
-            z2 = loc.getBlockZ();
+
             maxSize = worldSizes.get(world.getName().toLowerCase());
-            maxSize *= maxSize;
+
+            // the allowed area
+            rec = new Rectangle(loc.getBlockX(), loc.getBlockZ(), maxSize,
+                    maxSize);
 
             for (Player player : players) {
+                // maybe the player is dead or isn't online?
                 if (player.isDead() || !player.isOnline())
                     continue;
 
                 loc = player.getLocation();
-                x1 = loc.getBlockX();
-                z1 = loc.getBlockZ();
-                if (maxSize <= ((x1 - x2) * (x1 - x2))
-                        + ((z1 - z2) * (z1 - z2))) {
+                x = loc.getBlockX();
+                z = loc.getBlockZ();
+
+                // if player has left the are
+                if (!rec.contains(x, z)) {
+
                     loc = lastPosition.get(player.getName());
+                    // if no position is found, the player will took to spawn
+                    // position
                     if (loc == null)
                         loc = player.getWorld().getSpawnLocation();
 
@@ -83,5 +95,4 @@ public class BorderThread implements Runnable {
             }
         }
     }
-
 }

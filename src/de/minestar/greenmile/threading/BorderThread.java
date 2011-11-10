@@ -65,8 +65,8 @@ public class BorderThread implements Runnable {
             maxSize = worldSizes.get(world.getName().toLowerCase());
 
             // the allowed area
-            rec = new Rectangle(loc.getBlockX(), loc.getBlockZ(), maxSize,
-                    maxSize);
+            rec = new Rectangle(loc.getBlockX() - maxSize, loc.getBlockZ()
+                    - maxSize, maxSize * 2, maxSize * 2);
 
             for (Player player : players) {
                 // maybe the player is dead or isn't online?

@@ -17,7 +17,6 @@
  */
 package de.minestar.greenmile.threading;
 
-import java.awt.Rectangle;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,12 +45,19 @@ public class BorderThread implements Runnable {
     public void run() {
 
         Location loc = null;
-        int x = 0;
-        int z = 0;
+
+        // coordinates of player
+        int xP = 0;
+        int zP = 0;
+
+        // coordinates of world
+        int xW = 0;
+        int zW = 0;
+
         int maxSize = 0;
+
         List<World> worlds = server.getWorlds();
         List<Player> players = null;
-        Rectangle rec = null;
 
         for (World world : worlds) {
 
@@ -62,11 +68,10 @@ public class BorderThread implements Runnable {
             players = world.getPlayers();
             loc = world.getSpawnLocation();
 
-            maxSize = worldSizes.get(world.getName().toLowerCase());
+            xW = loc.getBlockX();
+            zW = loc.getBlockZ();
 
-            // the allowed area
-            rec = new Rectangle(loc.getBlockX() - maxSize, loc.getBlockZ()
-                    - maxSize, maxSize * 2, maxSize * 2);
+            maxSize = worldSizes.get(world.getName().toLowerCase());
 
             for (Player player : players) {
                 // maybe the player is dead or isn't online?
@@ -74,15 +79,13 @@ public class BorderThread implements Runnable {
                     continue;
 
                 loc = player.getLocation();
-                x = loc.getBlockX();
-                z = loc.getBlockZ();
+                xP = loc.getBlockX();
+                zP = loc.getBlockZ();
 
                 // if player has left the are
-                if (!rec.contains(x, z)) {
+                if (!isInside(xP, zP, xW, zW, maxSize)) {
 
                     loc = lastPosition.get(player.getName());
-                    // if no position is found, the player will took to spawn
-                    // position
                     if (loc == null)
                         loc = player.getWorld().getSpawnLocation();
 
@@ -94,5 +97,10 @@ public class BorderThread implements Runnable {
                     lastPosition.put(player.getName(), loc);
             }
         }
+    }
+
+    private boolean isInside(int x, int z, int x1, int z1, int width) {
+        return (x < x1 + width) && (x > x1 - width) && (z < z1 + width)
+                && (z > z1 - width);
     }
 }

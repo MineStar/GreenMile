@@ -90,17 +90,14 @@ public class BorderThread implements Runnable {
                         loc = player.getWorld().getSpawnLocation();
 
                     player.teleport(loc);
-                    player.sendMessage(ChatColor.RED
-                            + "Du hast die maximale Grenze der Map erreicht!");
-                }
-                else
+                    player.sendMessage(ChatColor.RED + "Du hast die maximale Grenze der Map erreicht!");
+                } else
                     lastPosition.put(player.getName(), loc);
             }
         }
     }
 
     private boolean isInside(int x, int z, int x1, int z1, int width) {
-        return (x < x1 + width) && (x > x1 - width) && (z < z1 + width)
-                && (z > z1 - width);
+        return (x < x1 + width) && (x > x1 - width) && (z < z1 + width) && (z > z1 - width);
     }
 }

@@ -100,7 +100,6 @@ public class Main extends JavaPlugin {
             try {
                 configFile.createNewFile();
             } catch (IOException e) {
-
                 e.printStackTrace();
             }
         }
@@ -152,5 +151,4 @@ public class Main extends JavaPlugin {
         }
         return true;
     }
-
 }

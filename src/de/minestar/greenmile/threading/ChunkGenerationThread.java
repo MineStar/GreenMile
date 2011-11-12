@@ -130,6 +130,14 @@ public class ChunkGenerationThread implements Runnable {
             Bukkit.getServer().getScheduler().cancelTask(this.TaskID);
             return;
         }
+
+        // CHUNK EXISTS == GO ON TO NEXT CHUNK
+        if (world.loadChunk(lastRenderedChunk.x, lastRenderedChunk.y, false) == true) {
+            lastRenderedChunk.y--;
+            renderChunk();
+            return;
+        }
+
         lastStatus = "Rendering chunk: " + lastRenderedChunk.x + " / " + lastRenderedChunk.y;
         world.loadChunk(lastRenderedChunk.x, lastRenderedChunk.y, true);
         Main.printToConsole(lastStatus);

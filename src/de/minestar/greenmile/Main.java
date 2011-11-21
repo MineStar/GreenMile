@@ -28,6 +28,7 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import de.minestar.greenmile.threading.BorderThread;
 import de.minestar.greenmile.threading.ChunkGenerationThread;
@@ -65,25 +66,41 @@ public class Main extends JavaPlugin {
 
     @SuppressWarnings("unchecked")
     private HashMap<String, Integer> loadWorldSettings() {
-
         HashMap<String, Integer> map = new HashMap<String, Integer>();
+        try {
+            YamlConfiguration config = new YamlConfiguration();
+            if(!(new File("plugins/GreenMile/config.yml")).exists()) {
+                printToConsole("config.yml not found, plugin is disabled!");
+                this.setEnabled(false);
+                return null;
+            }
+            
+            config.load("plugins/GreenMile/config.yml");            
+            List<String> worlds = config.getList("worlds");
+            if(worlds == null) {
+                printToConsole("config.yml is corrupt (no worlds found), plugin is disabled!");
+                this.setEnabled(false);
+                return null;
+            }
+            
+            String[] split = null;
+            String worldname = null;
+            Integer maxSize = null;
+            for (String world : worlds) {
+                split = world.split("=");
+                worldname = split[0].toLowerCase();
+                maxSize = Integer.parseInt(split[1]);
+                printToConsole("Loaded world '" + worldname + "' with maxSize = " + maxSize);
+                map.put(worldname, maxSize);
+            }
 
-        List<String> worlds = getConfig().getList("worlds");
-        String[] split = null;
-        String worldname = null;
-        Integer maxSize = null;
-        for (String world : worlds) {
-            split = world.split("=");
-            worldname = split[0].toLowerCase();
-            maxSize = Integer.parseInt(split[1]);
-            printToConsole("Loaded world '" + worldname + "' with maxSize = " + maxSize);
-            map.put(worldname, maxSize);
-        }
-
-        if (map.isEmpty()) {
-            printToConsole("No map found, plugin is disabled!");
-            this.setEnabled(false);
-            return null;
+            if (map.isEmpty()) {
+                printToConsole("No map found, plugin is disabled!");
+                this.setEnabled(false);
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return map;
     }
@@ -107,45 +124,45 @@ public class Main extends JavaPlugin {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(!sender.isOp())
+        if (!sender.isOp())
             return true;
-        
+
         if (label.equalsIgnoreCase("gm")) {
             if (args.length == 1 && args[0].equalsIgnoreCase("stop")) {
-                if(chunkThread == null) {
+                if (chunkThread == null) {
                     sender.sendMessage(ChatColor.RED + "[GreenMile] No thread found!");
                     return true;
-                }                
+                }
                 Bukkit.getServer().getScheduler().cancelTask(chunkThread.getTaskID());
                 chunkThread.saveConfig();
                 chunkThread = null;
-                sender.sendMessage(ChatColor.GREEN + "[GreenMile] Rendering stopped!");                
+                sender.sendMessage(ChatColor.GREEN + "[GreenMile] Rendering stopped!");
             }
-            
+
             if (args.length == 1 && args[0].equalsIgnoreCase("status")) {
-                if(chunkThread == null) {
+                if (chunkThread == null) {
                     sender.sendMessage(ChatColor.RED + "[GreenMile] No thread found!");
                     return true;
-                }                
-                sender.sendMessage(ChatColor.GRAY + "[GreenMile] Status: " + chunkThread.getStatus());                
+                }
+                sender.sendMessage(ChatColor.GRAY + "[GreenMile] Status: " + chunkThread.getStatus());
             }
-                        
+
             if (args.length == 2 && args[0].equalsIgnoreCase("start")) {
                 World world = Bukkit.getServer().getWorld(args[1]);
                 if (world == null || map.get(args[1].toLowerCase()) == null) {
                     sender.sendMessage(ChatColor.RED + "[GreenMile] World '" + args[1] + "' was not found!");
                     return true;
                 }
-                
-                if(chunkThread != null) {
+
+                if (chunkThread != null) {
                     sender.sendMessage(ChatColor.RED + "[GreenMile] Already running a thread!");
                     sender.sendMessage(ChatColor.GRAY + "Type '/gm stop' to stop the thread.");
                     return true;
                 }
-                
+
                 chunkThread = new ChunkGenerationThread(map.get(args[1].toLowerCase()), world.getName());
                 chunkThread.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, chunkThread, 0, 5));
-                sender.sendMessage(ChatColor.GREEN + "[GreenMile] Rendering of world '" + args[1] + "' started!");                
+                sender.sendMessage(ChatColor.GREEN + "[GreenMile] Rendering of world '" + args[1] + "' started!");
                 sender.sendMessage(ChatColor.GRAY + "Type '/gm stop' to stop the thread.");
             }
         }

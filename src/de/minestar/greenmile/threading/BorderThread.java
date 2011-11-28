@@ -84,7 +84,6 @@ public class BorderThread implements Runnable {
 
                 // if player has left the are
                 if (!isInside(xP, zP, xW, zW, maxSize)) {
-
                     loc = lastPosition.get(player.getName());
                     if (loc == null)
                         loc = player.getWorld().getSpawnLocation();
@@ -97,7 +96,7 @@ public class BorderThread implements Runnable {
         }
     }
 
-    private boolean isInside(int x, int z, int x1, int z1, int width) {
+    public static boolean isInside(int x, int z, int x1, int z1, int width) {
         return (x < x1 + width) && (x > x1 - width) && (z < z1 + width) && (z > z1 - width);
     }
 }

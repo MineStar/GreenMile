@@ -32,7 +32,7 @@ public class ChunkGenerationThread implements Runnable {
     private World world = null;
     private int worldSizeInBlocks = 0;
     private int worldSizeInChunks = 0;
-    private int BorderSizeInChunks = 10;
+    private int BorderSizeInChunks = 20;
     private Point spawnChunk = null;
     private Point maxVars = null, minVars = null;
     private Point lastRenderedChunk = null;
@@ -127,6 +127,13 @@ public class ChunkGenerationThread implements Runnable {
             lastStatus = "RENDERING OF WORLD '" + world.getName() + "' FINISHED!";
             Main.printToConsole(lastStatus);
             Main.printToConsole("############################################");
+
+            // DELETE FILE
+            File file = new File("plugins/GreenMile/worlds/" + this.world.getName() + ".yml");
+            if (file.exists())
+                file.delete();
+
+            // CANCEL TASK
             Bukkit.getServer().getScheduler().cancelTask(this.TaskID);
             return;
         }

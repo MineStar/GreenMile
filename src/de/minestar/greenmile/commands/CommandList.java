@@ -81,8 +81,7 @@ public class CommandList {
 
                 // PRINT SYNTAX
                 for (Command command : cmdList)
-                    player.sendMessage(ChatColor.GRAY + command.getSyntax()
-                            + " " + command.getArguments());
+                    player.sendMessage(ChatColor.GRAY + command.getSyntax() + " " + command.getArguments());
             }
         }
     }

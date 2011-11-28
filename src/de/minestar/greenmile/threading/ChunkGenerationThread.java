@@ -156,4 +156,10 @@ public class ChunkGenerationThread implements Runnable {
             System.gc();
         }
     }
+
+    public void deleteSave() {
+        File file = new File("plugins/GreenMile/worlds/" + this.world.getName() + ".yml");
+        if (file.exists())
+            file.delete();
+    }
 }

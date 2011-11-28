@@ -104,12 +104,11 @@ public abstract class Command {
     /**
      * @param player
      *            The command caller
-     * @return True when the player has enough rights to use the command Or the permissionnode is empty, so everybody can use it
+     * @return True when the player has enough rights to use the command Or the
+     *         permissionnode is empty, so everybody can use it
      */
     protected boolean hasRights(Player player) {
-        return permissionNode.length() == 0
-                || UtilPermissions.playerCanUseCommand(player,
-                        getPermissionNode());
+        return permissionNode.length() == 0 || UtilPermissions.playerCanUseCommand(player, getPermissionNode());
     }
 
     /**
@@ -135,8 +134,7 @@ public abstract class Command {
      * @return Syntax + Arguments + Description
      */
     public String getHelpMessage() {
-        return ChatColor.BLUE + getSyntax() + " " + getArguments() + " "
-                + getDescription();
+        return ChatColor.BLUE + getSyntax() + " " + getArguments() + " " + getDescription();
     }
 
     /**
@@ -146,7 +144,7 @@ public abstract class Command {
         return syntax;
     }
 
-    /**
+/**
      * @return The arguments in one string. Every argument is labeld in '<' and '>'
      */
     public String getArguments() {
@@ -167,7 +165,7 @@ public abstract class Command {
         return argumentCount;
     }
 
-    /**
+/**
      * @return The number of '<' in the argument String
      */
     private int countArguments() {

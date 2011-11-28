@@ -39,8 +39,7 @@ public class StopCommand extends Command {
             player.sendMessage(ChatColor.RED + "[GreenMile] No thread found!");
             return;
         }
-        Bukkit.getServer().getScheduler()
-                .cancelTask(Main.chunkThread.getTaskID());
+        Bukkit.getServer().getScheduler().cancelTask(Main.chunkThread.getTaskID());
         Main.chunkThread.saveConfig();
         Main.chunkThread = null;
         player.sendMessage(ChatColor.GREEN + "[GreenMile] Rendering stopped!");

@@ -37,8 +37,7 @@ public class StatusCommand extends Command {
             player.sendMessage(ChatColor.RED + "[GreenMile] No thread found!");
             return;
         }
-        player.sendMessage(ChatColor.GRAY + "[GreenMile] Status: "
-                + Main.chunkThread.getStatus());
+        player.sendMessage(ChatColor.GRAY + "[GreenMile] Status: " + Main.chunkThread.getStatus());
 
     }
 

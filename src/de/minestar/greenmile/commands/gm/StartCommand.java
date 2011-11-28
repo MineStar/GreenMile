@@ -35,8 +35,7 @@ public class StartCommand extends Command {
     private HashMap<String, Integer> map;
     private JavaPlugin plugin;
 
-    public StartCommand(String syntax, String arguments, String node,
-            HashMap<String, Integer> map, JavaPlugin plugin) {
+    public StartCommand(String syntax, String arguments, String node, HashMap<String, Integer> map, JavaPlugin plugin) {
         super(syntax, arguments, node);
         this.map = map;
         this.plugin = plugin;
@@ -44,29 +43,22 @@ public class StartCommand extends Command {
 
     @Override
     public void execute(String[] args, Player player) {
-        World world = Bukkit.getServer().getWorld(args[1]);
-        if (world == null || map.get(args[1].toLowerCase()) == null) {
-            player.sendMessage(ChatColor.RED + "[GreenMile] World '" + args[1]
-                    + "' was not found!");
+        String worldName = args[0].toLowerCase();
+        World world = Bukkit.getServer().getWorld(worldName);
+        if (world == null || map.get(worldName) == null) {
+            player.sendMessage(ChatColor.RED + "[GreenMile] World '" + worldName + "' was not found!");
             return;
         }
 
         if (Main.chunkThread != null) {
-            player.sendMessage(ChatColor.RED
-                    + "[GreenMile] Already running a thread!");
-            player.sendMessage(ChatColor.GRAY
-                    + "Type '/gm stop' to stop the thread.");
+            player.sendMessage(ChatColor.RED + "[GreenMile] Already running a thread!");
+            player.sendMessage(ChatColor.GRAY + "Type '/gm stop' to stop the thread.");
             return;
         }
 
-        Main.chunkThread = new ChunkGenerationThread(map.get(args[1]
-                .toLowerCase()), world.getName());
-        Main.chunkThread.setTaskID(Bukkit.getServer().getScheduler()
-                .scheduleSyncRepeatingTask(plugin, Main.chunkThread, 0l, 5l));
-        player.sendMessage(ChatColor.GREEN + "[GreenMile] Rendering of world '"
-                + args[1] + "' started!");
-        player.sendMessage(ChatColor.GRAY
-                + "Type '/gm stop' to stop the thread.");
+        Main.chunkThread = new ChunkGenerationThread(map.get(worldName), world.getName());
+        Main.chunkThread.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, Main.chunkThread, 0l, 5l));
+        player.sendMessage(ChatColor.GREEN + "[GreenMile] Rendering of world '" + worldName + "' started!");
+        player.sendMessage(ChatColor.GRAY + "Type '/gm stop' to stop the thread.");
     }
-
 }

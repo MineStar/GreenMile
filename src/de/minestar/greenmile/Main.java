@@ -30,6 +30,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import de.minestar.greenmile.commands.Command;
 import de.minestar.greenmile.commands.CommandList;
+import de.minestar.greenmile.commands.gm.ChangeSizeCommand;
 import de.minestar.greenmile.commands.gm.GreenMileCommand;
 import de.minestar.greenmile.commands.gm.StartCommand;
 import de.minestar.greenmile.commands.gm.StatusCommand;
@@ -64,7 +65,8 @@ public class Main extends JavaPlugin {
                 new GreenMileCommand("/gm", "", "gm.status", new Command[]{
                         new StartCommand("start", "<WorldName>", "gm.start", map, this),
                         new StopCommand("stop", "", "gm.stop"),
-                        new StatusCommand("status", "", "gm.status")
+                        new StatusCommand("status", "", "gm.status"),
+                        new ChangeSizeCommand("change","<WorldName> <Size>","gm.change", map, this)
                 })
         });
         // @formatter:on

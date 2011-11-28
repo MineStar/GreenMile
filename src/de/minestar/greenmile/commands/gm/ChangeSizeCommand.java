@@ -18,11 +18,13 @@
 
 package de.minestar.greenmile.commands.gm;
 
+import java.io.File;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -71,12 +73,26 @@ public class ChangeSizeCommand extends ExtendedCommand {
         }
 
         map.put(worldName, newSize);
+        updateConfig(worldName, newSize);
         player.sendMessage(ChatColor.GREEN + "Groesse erfolgreich geaendert!");
         if (args.length == 3 && args[2].equalsIgnoreCase("f")) {
 
             Main.chunkThread = new ChunkGenerationThread(map.get(args[1].toLowerCase()), worldName);
             Main.chunkThread.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, Main.chunkThread, 0l, 5l));
             player.sendMessage(ChatColor.GREEN + "GenerationThread erfolgreich gestartet!");
+        }
+    }
+
+    private void updateConfig(String worldName, Integer newSize) {
+        try {
+            YamlConfiguration config = new YamlConfiguration();
+            File f = new File("plugins/GreenMile/config.yml");
+
+            config.load(f);
+            config.set("world." + worldName, newSize);
+            config.save(f);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

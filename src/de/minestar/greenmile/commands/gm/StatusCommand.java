@@ -16,34 +16,29 @@
  * along with GreenMile.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.minestar.greenmile.commands;
+package de.minestar.greenmile.commands.gm;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import de.minestar.greenmile.Main;
 import de.minestar.greenmile.commands.Command;
 
-public class StopCommand extends Command {
+public class StatusCommand extends Command {
 
-    public StopCommand(String syntax, String arguments, String node) {
+    public StatusCommand(String syntax, String arguments, String node) {
         super(syntax, arguments, node);
-        this.description = "Stopt den Renderthread";
+        // TODO Auto-generated constructor stub
     }
 
     @Override
     public void execute(String[] args, Player player) {
-
         if (Main.chunkThread == null) {
             player.sendMessage(ChatColor.RED + "[GreenMile] No thread found!");
             return;
         }
-        Bukkit.getServer().getScheduler()
-                .cancelTask(Main.chunkThread.getTaskID());
-        Main.chunkThread.saveConfig();
-        Main.chunkThread = null;
-        player.sendMessage(ChatColor.GREEN + "[GreenMile] Rendering stopped!");
+        player.sendMessage(ChatColor.GRAY + "[GreenMile] Status: "
+                + Main.chunkThread.getStatus());
 
     }
 

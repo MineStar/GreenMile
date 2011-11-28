@@ -16,30 +16,23 @@
  * along with GreenMile.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.minestar.greenmile.commands;
+package de.minestar.greenmile.commands.gm;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import de.minestar.greenmile.Main;
 import de.minestar.greenmile.commands.Command;
+import de.minestar.greenmile.commands.SuperCommand;
 
-public class StatusCommand extends Command {
+public class GreenMileCommand extends SuperCommand {
 
-    public StatusCommand(String syntax, String arguments, String node) {
-        super(syntax, arguments, node);
-        // TODO Auto-generated constructor stub
+    public GreenMileCommand(String syntax, String arguments, String node,
+            Command[] subCommands) {
+        super(syntax, arguments, node, subCommands);
     }
 
     @Override
     public void execute(String[] args, Player player) {
-        if (Main.chunkThread == null) {
-            player.sendMessage(ChatColor.RED + "[GreenMile] No thread found!");
-            return;
-        }
-        player.sendMessage(ChatColor.GRAY + "[GreenMile] Status: "
-                + Main.chunkThread.getStatus());
-
+        // Do nothing
     }
 
 }

@@ -16,7 +16,7 @@
  * along with GreenMile.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.minestar.greenmile.commands;
+package de.minestar.greenmile.commands.gm;
 
 import java.util.HashMap;
 

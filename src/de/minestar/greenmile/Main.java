@@ -21,15 +21,19 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Event;
+import org.bukkit.plugin.java.JavaPlugin;
 
-import de.minestar.greenmile.commands.*;
-
+import de.minestar.greenmile.commands.Command;
 import de.minestar.greenmile.commands.CommandList;
+import de.minestar.greenmile.commands.gm.GreenMileCommand;
+import de.minestar.greenmile.commands.gm.StartCommand;
+import de.minestar.greenmile.commands.gm.StatusCommand;
+import de.minestar.greenmile.commands.gm.StopCommand;
 import de.minestar.greenmile.threading.BorderThread;
 import de.minestar.greenmile.threading.ChunkGenerationThread;
 
@@ -56,7 +60,13 @@ public class Main extends JavaPlugin {
 
     private void initCommandList() {
         // @formatter:off
-        cmdList = new CommandList(new Command[]{new GreenMileCommand("/gm", "", "gm.status", new Command[]{new StartCommand("start", "<WorldName>", "gm.start", map, this), new StopCommand("stop", "", "gm.stop"), new StatusCommand("status", "", "gm.status")})});
+        cmdList = new CommandList(new Command[]{
+                new GreenMileCommand("/gm", "", "gm.status", new Command[]{
+                        new StartCommand("start", "<WorldName>", "gm.start", map, this),
+                        new StopCommand("stop", "", "gm.stop"),
+                        new StatusCommand("status", "", "gm.status")
+                })
+        });
         // @formatter:on
     }
 
@@ -140,7 +150,7 @@ public class Main extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         cmdList.handleCommand(sender, label, args);
-        return true; 
+        return true;
     }
 
     public static HashMap<String, Integer> getWorldSettings() {

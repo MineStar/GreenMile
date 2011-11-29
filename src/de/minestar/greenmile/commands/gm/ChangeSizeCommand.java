@@ -89,7 +89,7 @@ public class ChangeSizeCommand extends ExtendedCommand {
             File f = new File("plugins/GreenMile/config.yml");
 
             config.load(f);
-            config.set("world." + worldName, newSize);
+            config.set("worlds." + worldName, newSize);
             config.save(f);
         } catch (Exception e) {
             e.printStackTrace();

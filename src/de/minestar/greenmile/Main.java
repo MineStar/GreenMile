@@ -20,7 +20,8 @@ package de.minestar.greenmile;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
@@ -91,34 +92,28 @@ public class Main extends JavaPlugin {
         printToConsole("Enabled!");
     }
 
-    @SuppressWarnings("unchecked")
     private HashMap<String, Integer> loadWorldSettings() {
         HashMap<String, Integer> map = new HashMap<String, Integer>();
         try {
             YamlConfiguration config = new YamlConfiguration();
-            if (!(new File("plugins/GreenMile/config.yml")).exists()) {
+            File f = new File("plugins/GreenMile/config.yml");
+            if (!f.exists()) {
                 printToConsole("config.yml not found, plugin is disabled!");
                 this.setEnabled(false);
                 return null;
             }
 
-            config.load("plugins/GreenMile/config.yml");
-            List<String> worlds = config.getList("worlds");
-            if (worlds == null) {
+            config.load(f);
+
+            if (config.get("worlds") == null) {
                 printToConsole("config.yml is corrupt (no worlds found), plugin is disabled!");
                 this.setEnabled(false);
                 return null;
             }
-
-            String[] split = null;
-            String worldname = null;
-            Integer maxSize = null;
-            for (String world : worlds) {
-                split = world.split("=");
-                worldname = split[0].toLowerCase();
-                maxSize = Integer.parseInt(split[1]);
-                printToConsole("Loaded world '" + worldname + "' with maxSize = " + maxSize);
-                map.put(worldname, maxSize);
+            Map<String, Object> worlds = config.getConfigurationSection("worlds").getValues(false);
+            for (Entry<String, Object> entry : worlds.entrySet()) {
+                printToConsole("Loaded world '" + entry.getKey() + "' with maxSize = " + entry.getValue());
+                map.put(entry.getKey(), Integer.parseInt(entry.getValue().toString()));
             }
 
             if (map.isEmpty()) {
@@ -131,7 +126,6 @@ public class Main extends JavaPlugin {
         }
         return map;
     }
-
     private void checkConfig() {
 
         File pluginDir = getDataFolder();

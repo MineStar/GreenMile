@@ -36,6 +36,7 @@ import de.minestar.greenmile.commands.gm.GreenMileCommand;
 import de.minestar.greenmile.commands.gm.StartCommand;
 import de.minestar.greenmile.commands.gm.StatusCommand;
 import de.minestar.greenmile.commands.gm.StopCommand;
+import de.minestar.greenmile.listener.GMPListener;
 import de.minestar.greenmile.threading.BorderThread;
 import de.minestar.greenmile.threading.ChunkGenerationThread;
 
@@ -43,7 +44,7 @@ public class Main extends JavaPlugin {
 
     public static ChunkGenerationThread chunkThread = null;
     private GMPListener pListener = null;
-    private static HashMap<String, Integer> map;
+    private HashMap<String, Integer> map;
 
     private CommandList cmdList;
 
@@ -86,7 +87,7 @@ public class Main extends JavaPlugin {
         Runnable borderThread = new BorderThread(map, server);
         server.getScheduler().scheduleSyncRepeatingTask(this, borderThread, 20 * 15, 20 * 5);
 
-        pListener = new GMPListener();
+        pListener = new GMPListener(map);
         server.getPluginManager().registerEvent(Event.Type.PLAYER_TELEPORT, pListener, Event.Priority.Highest, this);
 
         printToConsole("Enabled!");
@@ -147,9 +148,5 @@ public class Main extends JavaPlugin {
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         cmdList.handleCommand(sender, label, args);
         return true;
-    }
-
-    public static HashMap<String, Integer> getWorldSettings() {
-        return map;
     }
 }

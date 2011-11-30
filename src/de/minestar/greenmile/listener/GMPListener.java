@@ -16,7 +16,9 @@
  * along with GreenMile.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.minestar.greenmile;
+package de.minestar.greenmile.listener;
+
+import java.util.HashMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -27,13 +29,19 @@ import de.minestar.greenmile.threading.BorderThread;
 
 public class GMPListener extends PlayerListener {
 
+    private HashMap<String, Integer> map;
+
+    public GMPListener(HashMap<String, Integer> map) {
+        this.map = map;
+    }
+
     @Override
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         Location worldSpawn = event.getTo().getWorld().getSpawnLocation();
         int maxSize = 1500;
-        if (Main.getWorldSettings().containsKey(event.getTo().getWorld().getName())) {
-            maxSize = Main.getWorldSettings().get(event.getTo().getWorld().getName());
-        }
+        if (map.containsKey(event.getTo().getWorld().getName()))
+            maxSize = map.get(event.getTo().getWorld().getName());
+
         if (!BorderThread.isInside(event.getTo().getBlockX(), event.getTo().getBlockZ(), worldSpawn.getBlockX(), worldSpawn.getBlockZ(), maxSize)) {
             if (!event.getFrom().getWorld().getName().equalsIgnoreCase(event.getTo().getWorld().getName())) {
                 event.getTo().setX(worldSpawn.getX());

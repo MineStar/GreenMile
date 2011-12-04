@@ -33,6 +33,7 @@ import de.minestar.greenmile.commands.Command;
 import de.minestar.greenmile.commands.CommandList;
 import de.minestar.greenmile.commands.gm.ChangeSizeCommand;
 import de.minestar.greenmile.commands.gm.GreenMileCommand;
+import de.minestar.greenmile.commands.gm.ListCommand;
 import de.minestar.greenmile.commands.gm.StartCommand;
 import de.minestar.greenmile.commands.gm.StatusCommand;
 import de.minestar.greenmile.commands.gm.StopCommand;
@@ -68,7 +69,8 @@ public class Main extends JavaPlugin {
                         new StartCommand("start", "<WorldName>", "gm.start", map, this),
                         new StopCommand("stop", "", "gm.stop"),
                         new StatusCommand("status", "", "gm.status"),
-                        new ChangeSizeCommand("change","<WorldName> <Size>","gm.change", map, this)
+                        new ChangeSizeCommand("change","<WorldName> <Size>","gm.change", map, this),
+                        new ListCommand("list", "", "gm.list", map)
                 })
         });
         // @formatter:on

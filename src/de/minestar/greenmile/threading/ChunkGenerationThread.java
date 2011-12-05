@@ -25,6 +25,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
+
 import de.minestar.greenmile.Main;
 
 public class ChunkGenerationThread implements Runnable {
@@ -38,7 +39,6 @@ public class ChunkGenerationThread implements Runnable {
     private Point lastRenderedChunk = null;
     private String lastStatus = "";
     private int TaskID = -1;
-    private int chunkCount = 0;
 
     public ChunkGenerationThread(int worldSize, String worldName) {
         this.world = Bukkit.getServer().getWorld(worldName);
@@ -113,12 +113,12 @@ public class ChunkGenerationThread implements Runnable {
         if (this.world == null) {
             return;
         }
-        renderChunk();
+        while (!renderChunk());
     }
 
-    public void renderChunk() {
+    public boolean renderChunk() {
         if (lastRenderedChunk.y < minVars.y) {
-            lastRenderedChunk.x--;
+            --lastRenderedChunk.x;
             lastRenderedChunk.y = maxVars.y;
         }
 
@@ -135,26 +135,22 @@ public class ChunkGenerationThread implements Runnable {
 
             // CANCEL TASK
             Bukkit.getServer().getScheduler().cancelTask(this.TaskID);
-            return;
+            return true;
         }
 
         // CHUNK EXISTS == GO ON TO NEXT CHUNK
-        if (world.loadChunk(lastRenderedChunk.x, lastRenderedChunk.y, false) == true) {
+        if (world.loadChunk(lastRenderedChunk.x, lastRenderedChunk.y, false)) {
             lastRenderedChunk.y--;
-            renderChunk();
-            return;
+            return false;
         }
 
         lastStatus = "Rendering chunk: " + lastRenderedChunk.x + " / " + lastRenderedChunk.y;
-        world.loadChunk(lastRenderedChunk.x, lastRenderedChunk.y, true);
+        world.loadChunk(lastRenderedChunk.x, lastRenderedChunk.y);
+        world.unloadChunk(lastRenderedChunk.x, lastRenderedChunk.y);
         Main.printToConsole(lastStatus);
-        lastRenderedChunk.y--;
+        --lastRenderedChunk.y;
 
-        chunkCount++;
-        if (chunkCount == 100) {
-            chunkCount = 0;
-            System.gc();
-        }
+        return true;
     }
 
     public void deleteSave() {

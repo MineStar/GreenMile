@@ -22,7 +22,6 @@ import java.awt.Point;
 import java.io.File;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -131,8 +130,11 @@ public class ChunkGenerationThread implements Runnable {
 
             // DELETE FILE
             File file = new File("plugins/GreenMile/worlds/" + this.world.getName() + ".yml");
-            if (file.exists())
-                file.delete();
+            if (file.exists()) {
+                if (!file.delete())
+                    file.deleteOnExit();
+                Main.printToConsole("Reset render position");
+            }
 
             // CANCEL TASK
             Bukkit.getServer().getScheduler().cancelTask(this.TaskID);
@@ -140,7 +142,7 @@ public class ChunkGenerationThread implements Runnable {
         }
 
         // CHUNK = NULL -> CHUNK EXISTS -> GO TO NEXT CHUNK
-        if (world.getChunkAt(lastRenderedChunk.x, lastRenderedChunk.y) == null) {
+        if (world.getChunkAt(lastRenderedChunk.x, lastRenderedChunk.y) != null) {
             --lastRenderedChunk.y;
             return false;
         }

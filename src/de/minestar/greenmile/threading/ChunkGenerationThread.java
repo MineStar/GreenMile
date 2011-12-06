@@ -64,6 +64,7 @@ public class ChunkGenerationThread implements Runnable {
         this.spawnChunk = new Point((int) (spawnLoc.getBlockX() / 16), (int) (spawnLoc.getBlockZ() / 16));
         this.maxVars = new Point(this.spawnChunk.x + this.worldSizeInChunks, this.spawnChunk.y + this.worldSizeInChunks);
         this.minVars = new Point(this.spawnChunk.x - this.worldSizeInChunks, this.spawnChunk.y - this.worldSizeInChunks);
+        Main.printToConsole(status + " of " + maxChunks);
         this.lastRenderedChunk = new Point(maxVars.x, maxVars.y);
         this.loadConfig();
     }
@@ -77,11 +78,11 @@ public class ChunkGenerationThread implements Runnable {
     }
 
     public String getStatus() {
-        System.out.println(status + " " + maxChunks);
         return ((status * 100) / maxChunks) + "%";
     }
 
     private void loadConfig() {
+
         YamlConfiguration config = null;
         File dir = new File("plugins/GreenMile/worlds/");
         dir.mkdirs();
@@ -126,12 +127,13 @@ public class ChunkGenerationThread implements Runnable {
     }
 
     public boolean renderChunk() {
-        if (lastRenderedChunk.y < minVars.y) {
+        ++status;
+        if (lastRenderedChunk.y <= minVars.y) {
             --lastRenderedChunk.x;
             lastRenderedChunk.y = maxVars.y;
         }
 
-        if (lastRenderedChunk.x < minVars.x) {
+        if (lastRenderedChunk.x <= minVars.x) {
             Main.printToConsole("############################################");
             Main.printToConsole("RENDERING OF WORLD '" + world.getName() + "' FINISHED!");
             Main.printToConsole("############################################");
@@ -153,7 +155,6 @@ public class ChunkGenerationThread implements Runnable {
         // Remember kids : A loaded chunk is a generated chunk!
         if (world.isChunkLoaded(lastRenderedChunk.x, lastRenderedChunk.y)) {
             --lastRenderedChunk.y;
-            ++status;
             return false;
         }
         world.loadChunk(lastRenderedChunk.x, lastRenderedChunk.y);
@@ -164,7 +165,6 @@ public class ChunkGenerationThread implements Runnable {
             unloadChunks();
         Main.printToConsole(getStatus());
         --lastRenderedChunk.y;
-        ++status;
         return true;
     }
 

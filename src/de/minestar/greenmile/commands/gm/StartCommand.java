@@ -57,7 +57,7 @@ public class StartCommand extends Command {
         }
 
         Main.chunkThread = new ChunkGenerationThread(map.get(worldName), world.getName());
-        Main.chunkThread.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, Main.chunkThread, 0l, 5l));
+        Main.chunkThread.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, Main.chunkThread, 0L, 5L));
         player.sendMessage(ChatColor.GREEN + "[GreenMile] Rendering of world '" + worldName + "' started!");
         player.sendMessage(ChatColor.GRAY + "Type '/gm stop' to stop the thread.");
     }

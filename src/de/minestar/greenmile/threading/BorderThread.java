@@ -82,7 +82,7 @@ public class BorderThread implements Runnable {
                 xP = loc.getBlockX();
                 zP = loc.getBlockZ();
 
-                // if player has left the are
+                // if player has left the map border
                 if (!isInside(xP, zP, xW, zW, maxSize)) {
                     loc = lastPosition.get(player.getName());
                     if (loc == null)

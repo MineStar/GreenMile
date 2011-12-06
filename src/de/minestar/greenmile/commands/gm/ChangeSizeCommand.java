@@ -78,7 +78,7 @@ public class ChangeSizeCommand extends ExtendedCommand {
         if (args.length == 3 && args[2].equalsIgnoreCase("f")) {
 
             Main.chunkThread = new ChunkGenerationThread(newSize, worldName);
-            Main.chunkThread.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, Main.chunkThread, 0l, 5l));
+            Main.chunkThread.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, Main.chunkThread, 0L, 5L));
             player.sendMessage(ChatColor.GREEN + "GenerationThread erfolgreich gestartet!");
         }
     }

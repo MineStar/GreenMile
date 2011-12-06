@@ -20,8 +20,11 @@ package de.minestar.greenmile.threading;
 
 import java.awt.Point;
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -37,13 +40,18 @@ public class ChunkGenerationThread implements Runnable {
     private Point spawnChunk = null;
     private Point maxVars = null, minVars = null;
     private Point lastRenderedChunk = null;
-    private String lastStatus = "";
     private int TaskID = -1;
+
+    private long status = 0L;
+    private final long maxChunks;
+
+    private List<Chunk> bufferChunks = new LinkedList<Chunk>();
 
     public ChunkGenerationThread(int worldSize, String worldName) {
         this.world = Bukkit.getServer().getWorld(worldName);
         this.worldSizeInBlocks = worldSize;
-        this.worldSizeInChunks = (int) (worldSizeInBlocks / 16) + BorderSizeInChunks;
+        this.worldSizeInChunks = (int) ((double) worldSizeInBlocks / 16.0) + BorderSizeInChunks;
+        this.maxChunks = worldSizeInChunks * worldSizeInChunks * 4;
 
         if (world == null) {
             Main.printToConsole("############################################");
@@ -69,7 +77,8 @@ public class ChunkGenerationThread implements Runnable {
     }
 
     public String getStatus() {
-        return this.lastStatus;
+        System.out.println(status + " " + maxChunks);
+        return ((status * 100) / maxChunks) + "%";
     }
 
     private void loadConfig() {
@@ -124,8 +133,7 @@ public class ChunkGenerationThread implements Runnable {
 
         if (lastRenderedChunk.x < minVars.x) {
             Main.printToConsole("############################################");
-            lastStatus = "RENDERING OF WORLD '" + world.getName() + "' FINISHED!";
-            Main.printToConsole(lastStatus);
+            Main.printToConsole("RENDERING OF WORLD '" + world.getName() + "' FINISHED!");
             Main.printToConsole("############################################");
 
             // DELETE FILE
@@ -138,21 +146,34 @@ public class ChunkGenerationThread implements Runnable {
 
             // CANCEL TASK
             Bukkit.getServer().getScheduler().cancelTask(this.TaskID);
+            world.save();
             return true;
         }
 
-        // CHUNK = NULL -> CHUNK EXISTS -> GO TO NEXT CHUNK
-        if (world.getChunkAt(lastRenderedChunk.x, lastRenderedChunk.y) != null) {
+        // Remember kids : A loaded chunk is a generated chunk!
+        if (world.isChunkLoaded(lastRenderedChunk.x, lastRenderedChunk.y)) {
             --lastRenderedChunk.y;
+            ++status;
             return false;
         }
-
-        lastStatus = "Rendering chunk: " + lastRenderedChunk.x + " / " + lastRenderedChunk.y;
         world.loadChunk(lastRenderedChunk.x, lastRenderedChunk.y);
-        world.unloadChunk(lastRenderedChunk.x, lastRenderedChunk.y);
-        Main.printToConsole(lastStatus);
-        --lastRenderedChunk.y;
+        bufferChunks.add(world.getChunkAt(lastRenderedChunk.x, lastRenderedChunk.y));
 
+        // Remember kids : Only free memory is good memory!
+        if (bufferChunks.size() > 50)
+            unloadChunks();
+        Main.printToConsole(getStatus());
+        --lastRenderedChunk.y;
+        ++status;
         return true;
+    }
+
+    /**
+     * Unload all loaded chunks to free memory
+     */
+    private void unloadChunks() {
+        for (Chunk c : bufferChunks)
+            c.unload();
+        bufferChunks.clear();
     }
 }

@@ -130,7 +130,7 @@ public class ChunkGenerationThread implements Runnable {
             config.load(file);
             config.set("lastRenderedChunk.X", null);
             config.set("lastRenderedChunk.Y", null);
-            config.set("status", null);
+            config.set("status", 0);
             config.save(file);
         } catch (Exception e) {
             e.printStackTrace();

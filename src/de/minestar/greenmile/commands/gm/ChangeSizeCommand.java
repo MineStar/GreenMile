@@ -73,6 +73,7 @@ public class ChangeSizeCommand extends ExtendedCommand {
             player.sendMessage(ChatColor.RED + "Keine Welt mit Namen " + worldName + " gefunden!");
             return;
         }
+        worldName = world.getName();
 
         map.put(worldName, newSize);
         updateConfig(worldName, newSize);
@@ -101,17 +102,19 @@ public class ChangeSizeCommand extends ExtendedCommand {
     private void updateConfig(String worldName, Integer newSize) {
         try {
             YamlConfiguration config = new YamlConfiguration();
-            File f = new File("plugins/GreenMile/config.yml");
+            File f = new File("plugins/GreenMile/", "config.yml");
 
             config.load(f);
             config.set("worlds." + worldName, newSize);
             config.save(f);
 
-            f = new File("plugins/GreenMile/worlds", worldName + ".yml");
+            config = new YamlConfiguration();
+            f = new File("plugins/GreenMile/worlds/", worldName + ".yml");
+
             config.load(f);
+            config.set("status", 0);
             config.set("lastRenderedChunk.X", null);
             config.set("lastRenderedChunk.Y", null);
-            config.set("status,", null);
             config.save(f);
 
         } catch (Exception e) {

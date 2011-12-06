@@ -24,21 +24,23 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 
 import de.minestar.greenmile.Main;
-import de.minestar.greenmile.commands.Command;
+import de.minestar.greenmile.commands.ExtendedCommand;
 import de.minestar.greenmile.threading.ChunkGenerationThread;
 
-public class StartCommand extends Command {
+public class StartCommand extends ExtendedCommand {
 
     private HashMap<String, Integer> map;
-    private JavaPlugin plugin;
+    private final Plugin plugin;
+    private final int speed;
 
-    public StartCommand(String syntax, String arguments, String node, HashMap<String, Integer> map, JavaPlugin plugin) {
+    public StartCommand(String syntax, String arguments, String node, HashMap<String, Integer> map, Plugin plugin, int speed) {
         super(syntax, arguments, node);
         this.map = map;
         this.plugin = plugin;
+        this.speed = speed;
     }
 
     @Override
@@ -57,8 +59,19 @@ public class StartCommand extends Command {
         }
 
         Main.chunkThread = new ChunkGenerationThread(map.get(worldName), world.getName());
-        Main.chunkThread.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, Main.chunkThread, 0L, 5L));
-        player.sendMessage(ChatColor.GREEN + "[GreenMile] Rendering of world '" + worldName + "' started!");
+
+        // WHEN /gm start world SPEED was used read out the speed
+        int pSpeed = speed;
+        if (args.length == 2) {
+            try {
+                pSpeed = Integer.parseInt(args[1]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                player.sendMessage(ChatColor.RED + "Fehlerhafte Zahl, Standardgeschwindigkeit von " + pSpeed + " wird genutzt!");
+            }
+        }
+        Main.chunkThread.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, Main.chunkThread, 0L, pSpeed));
+        player.sendMessage(ChatColor.GREEN + "[GreenMile] Rendering of world '" + worldName + "' started with speed " + speed + "!");
         player.sendMessage(ChatColor.GRAY + "Type '/gm stop' to stop the thread.");
     }
 }

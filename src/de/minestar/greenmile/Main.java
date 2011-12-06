@@ -63,13 +63,16 @@ public class Main extends JavaPlugin {
     }
 
     private void initCommandList() {
+
+        int speed = getConfig().getInt("speed", 5);
+        printToConsole("Default speed of generation thread is " + speed);
         // @formatter:off
         cmdList = new CommandList(new Command[]{
                 new GreenMileCommand("/gm", "", "gm.status", new Command[]{
-                        new StartCommand("start", "<WorldName>", "gm.start", map, this),
+                        new StartCommand("start", "<WorldName>", "gm.start", map, this, speed),
                         new StopCommand("stop", "", "gm.stop"),
                         new StatusCommand("status", "", "gm.status"),
-                        new ChangeSizeCommand("change","<WorldName> <Size>","gm.change", map, this),
+                        new ChangeSizeCommand("change","<WorldName> <Size>","gm.change", map, this, speed),
                         new ListCommand("list", "", "gm.list", map)
                 })
         });
@@ -78,7 +81,7 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-            
+
         checkConfig();
         Server server = getServer();
         map = loadWorldSettings();
@@ -130,12 +133,15 @@ public class Main extends JavaPlugin {
         }
         return map;
     }
+
     private void checkConfig() {
 
         File pluginDir = getDataFolder();
         if (!pluginDir.exists())
             pluginDir.mkdirs();
 
+        pluginDir = new File(getDataFolder() + "/worlds/");
+        pluginDir.mkdirs();
         File configFile = new File(pluginDir.getAbsolutePath().concat("/config.yml"));
 
         if (!configFile.exists()) {

@@ -43,7 +43,7 @@ public class ChunkGenerationThread implements Runnable {
     private int TaskID = -1;
 
     private long status = 0L;
-    private final long maxChunks;
+    private long maxChunks;
 
     private List<Chunk> bufferChunks = new LinkedList<Chunk>();
 
@@ -64,9 +64,9 @@ public class ChunkGenerationThread implements Runnable {
         this.spawnChunk = new Point((int) (spawnLoc.getBlockX() / 16), (int) (spawnLoc.getBlockZ() / 16));
         this.maxVars = new Point(this.spawnChunk.x + this.worldSizeInChunks, this.spawnChunk.y + this.worldSizeInChunks);
         this.minVars = new Point(this.spawnChunk.x - this.worldSizeInChunks, this.spawnChunk.y - this.worldSizeInChunks);
-        Main.printToConsole(status + " of " + maxChunks);
-        this.lastRenderedChunk = new Point(maxVars.x, maxVars.y);
+
         this.loadConfig();
+        Main.printToConsole(status + " of " + maxChunks);
     }
 
     public void setTaskID(int ID) {
@@ -77,47 +77,65 @@ public class ChunkGenerationThread implements Runnable {
         return this.TaskID;
     }
 
+    public long getStatsAsInt() {
+        return status;
+    }
+
     public String getStatus() {
         return ((status * 100) / maxChunks) + "%";
     }
 
     private void loadConfig() {
-
-        YamlConfiguration config = null;
-        File dir = new File("plugins/GreenMile/worlds/");
-        dir.mkdirs();
-
-        File file = new File("plugins/GreenMile/worlds/" + this.world.getName() + ".yml");
-        if (!file.exists())
+        File file = new File("plugins/GreenMile/worlds/", world.getName() + ".yml");
+        if (!file.exists()) {
+            lastRenderedChunk = new Point(maxVars.x, maxVars.y);
             return;
+        }
 
         try {
-            config = new YamlConfiguration();
+            YamlConfiguration config = new YamlConfiguration();
             config.load(file);
             int lastX = config.getInt("lastRenderedChunk.X", this.maxVars.x);
             int lastZ = config.getInt("lastRenderedChunk.Y", this.maxVars.y);
             this.lastRenderedChunk = new Point(lastX, lastZ);
+            this.status = config.getInt("status", 0);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void saveConfig() {
-        YamlConfiguration config = null;
-        File file = new File("plugins/GreenMile/worlds/" + this.world.getName() + ".yml");
+        File file = new File("plugins/GreenMile/worlds/", world.getName() + ".yml");
         if (file.exists())
             file.delete();
 
         try {
-            config = new YamlConfiguration();
+            YamlConfiguration config = new YamlConfiguration();
             config.set("lastRenderedChunk.X", lastRenderedChunk.x);
             config.set("lastRenderedChunk.Y", lastRenderedChunk.y + 1);
+            config.set("status", status);
             config.save(file);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    private void resetRenderPosition() {
+        File file = new File("plugins/GreenMile/worlds/", world.getName() + ".yml");
+        if (!file.exists())
+            return;
+
+        try {
+            YamlConfiguration config = new YamlConfiguration();
+            config.load(file);
+            config.set("lastRenderedChunk.X", null);
+            config.set("lastRenderedChunk.Y", null);
+            config.set("status", null);
+            config.save(file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     public void run() {
         if (this.world == null) {
@@ -138,17 +156,14 @@ public class ChunkGenerationThread implements Runnable {
             Main.printToConsole("RENDERING OF WORLD '" + world.getName() + "' FINISHED!");
             Main.printToConsole("############################################");
 
-            // DELETE FILE
-            File file = new File("plugins/GreenMile/worlds/" + this.world.getName() + ".yml");
-            if (file.exists()) {
-                if (!file.delete())
-                    file.deleteOnExit();
-                Main.printToConsole("Reset render position");
-            }
+            // RESET THREAD
+            resetRenderPosition();
 
             // CANCEL TASK
             Bukkit.getServer().getScheduler().cancelTask(this.TaskID);
             world.save();
+            Main.chunkThread = null;
+
             return true;
         }
 
@@ -161,9 +176,10 @@ public class ChunkGenerationThread implements Runnable {
         bufferChunks.add(world.getChunkAt(lastRenderedChunk.x, lastRenderedChunk.y));
 
         // Remember kids : Only free memory is good memory!
-        if (bufferChunks.size() > 50)
+        if (bufferChunks.size() > 50) {
             unloadChunks();
-        Main.printToConsole(getStatus());
+            Main.printToConsole(getStatus());
+        }
         --lastRenderedChunk.y;
         return true;
     }

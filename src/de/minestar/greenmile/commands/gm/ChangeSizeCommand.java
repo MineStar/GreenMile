@@ -35,12 +35,14 @@ import de.minestar.greenmile.threading.ChunkGenerationThread;
 public class ChangeSizeCommand extends ExtendedCommand {
 
     private HashMap<String, Integer> map;
-    private Plugin plugin;
+    private final Plugin plugin;
+    private final int speed;
 
-    public ChangeSizeCommand(String syntax, String arguments, String node, HashMap<String, Integer> map, Plugin plugin) {
+    public ChangeSizeCommand(String syntax, String arguments, String node, HashMap<String, Integer> map, Plugin plugin, int speed) {
         super(syntax, arguments, node);
         this.map = map;
         this.plugin = plugin;
+        this.speed = speed;
         this.description = "Veraendert die maximal erlaubte Weltgroesse";
     }
 
@@ -75,11 +77,24 @@ public class ChangeSizeCommand extends ExtendedCommand {
         map.put(worldName, newSize);
         updateConfig(worldName, newSize);
         player.sendMessage(ChatColor.GREEN + "Groesse erfolgreich geaendert!");
-        if (args.length == 3 && args[2].equalsIgnoreCase("f")) {
+        if (args.length >= 3 && args[2].equalsIgnoreCase("f")) {
 
             Main.chunkThread = new ChunkGenerationThread(newSize, worldName);
-            Main.chunkThread.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, Main.chunkThread, 0L, 5L));
-            player.sendMessage(ChatColor.GREEN + "GenerationThread erfolgreich gestartet!");
+
+            // WHEN /gm start world SPEED was used read out the speed
+            int pSpeed = speed;
+            if (args.length == 4) {
+                try {
+                    pSpeed = Integer.parseInt(args[3]);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    player.sendMessage(ChatColor.RED + "Fehlerhafte Zahl, Standardgeschwindigkeit von " + pSpeed + " wird genutzt!");
+                }
+            }
+
+            Main.chunkThread.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, Main.chunkThread, 0L, pSpeed));
+            player.sendMessage(ChatColor.GREEN + "[GreenMile] Rendering of world '" + worldName + "' started with speed " + speed + "!");
+            player.sendMessage(ChatColor.GRAY + "Type '/gm stop' to stop the thread.");
         }
     }
 
@@ -91,6 +106,14 @@ public class ChangeSizeCommand extends ExtendedCommand {
             config.load(f);
             config.set("worlds." + worldName, newSize);
             config.save(f);
+
+            f = new File("plugins/GreenMile/worlds", worldName + ".yml");
+            config.load(f);
+            config.set("lastRenderedChunk.X", null);
+            config.set("lastRenderedChunk.Y", null);
+            config.set("status,", null);
+            config.save(f);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

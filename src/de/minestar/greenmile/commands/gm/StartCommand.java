@@ -71,7 +71,7 @@ public class StartCommand extends ExtendedCommand {
             }
         }
         Main.chunkThread.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, Main.chunkThread, 0L, pSpeed));
-        player.sendMessage(ChatColor.GREEN + "[GreenMile] Rendering of world '" + worldName + "' started with speed " + speed + "!");
+        player.sendMessage(ChatColor.GREEN + "[GreenMile] Rendering of world '" + worldName + "' started with speed " + pSpeed + "!");
         player.sendMessage(ChatColor.GRAY + "Type '/gm stop' to stop the thread.");
     }
 }

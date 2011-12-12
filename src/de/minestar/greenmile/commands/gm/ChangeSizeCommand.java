@@ -77,7 +77,7 @@ public class ChangeSizeCommand extends ExtendedCommand {
 
         map.put(worldName, newSize);
         updateConfig(worldName, newSize);
-        player.sendMessage(ChatColor.GREEN + "Groesse erfolgreich geaendert!");
+        player.sendMessage(ChatColor.GREEN + "[GreenMile] Groesse erfolgreich geaendert!");
         if (args.length >= 3 && args[2].equalsIgnoreCase("f")) {
 
             Main.chunkThread = new ChunkGenerationThread(newSize, worldName);
@@ -94,7 +94,7 @@ public class ChangeSizeCommand extends ExtendedCommand {
             }
 
             Main.chunkThread.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, Main.chunkThread, 0L, pSpeed));
-            player.sendMessage(ChatColor.GREEN + "[GreenMile] Rendering of world '" + worldName + "' started with speed " + speed + "!");
+            player.sendMessage(ChatColor.GREEN + "[GreenMile] Rendering of world '" + worldName + "' started with speed " + pSpeed + "!");
             player.sendMessage(ChatColor.GRAY + "Type '/gm stop' to stop the thread.");
         }
     }
@@ -110,7 +110,8 @@ public class ChangeSizeCommand extends ExtendedCommand {
 
             config = new YamlConfiguration();
             f = new File("plugins/GreenMile/worlds/", worldName + ".yml");
-
+            if (!f.exists())
+                return;
             config.load(f);
             config.set("status", 0);
             config.set("lastRenderedChunk.X", null);

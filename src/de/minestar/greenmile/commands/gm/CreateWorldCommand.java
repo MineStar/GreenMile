@@ -29,9 +29,9 @@ import com.bukkit.gemo.utils.ChatUtils;
 
 import de.minestar.greenmile.commands.ExtendedCommand;
 
-public class CreateCommand extends ExtendedCommand {
+public class CreateWorldCommand extends ExtendedCommand {
 
-    public CreateCommand(String syntax, String arguments, String node, HashMap<String, Integer> worldSettings) {
+    public CreateWorldCommand(String syntax, String arguments, String node, HashMap<String, Integer> worldSettings) {
         super(syntax, arguments, node);
     }
 
@@ -59,15 +59,9 @@ public class CreateCommand extends ExtendedCommand {
         // TODO: CHECK: DOES WORLD EXIST?
         // IF SO: RETURN WITH ERROR
 
-        // CREATE WORLD
-        WorldCreator generator = new WorldCreator(worldName);
-        generator.seed(seed);
-        generator.environment(env);
-        generator.createWorld();
+        // TODO: CALL WORLDMANAGER TO CREATE WORLD
 
         // TODO: SAVE WORLD TO YML
-
-        // TODO: START THREAD TO CHECK STATUS OF WORLDCREATION
     }
 
 }

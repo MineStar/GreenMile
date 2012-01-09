@@ -44,9 +44,10 @@ public class CreateWorldCommand extends ExtendedCommand {
 
         // CATCH ENVIRONMENT
         if (args.length >= 2) {
-            env = Environment.valueOf(args[1]);
-            // IS ENVIRONMENT CORRECT?
-            if (env == null) {
+            try {
+                env = Environment.valueOf(args[1]);
+                // IS ENVIRONMENT CORRECT?
+            } catch (Exception e) {
                 ChatUtils.printInfo(player, "[GreenMile]", ChatColor.GRAY, "Environment '" + args[1] + "' not found");
                 return;
             }

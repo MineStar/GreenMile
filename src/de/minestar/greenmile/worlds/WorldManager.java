@@ -47,9 +47,12 @@ public class WorldManager {
             return;
 
         // GET ENVIRONMENT FROM STRING
-        Environment env = Environment.valueOf(environment);
-        if (env == null)
+        Environment env = null;
+        try {
+            env = Environment.valueOf(environment);
+        } catch (Exception e) {
             return;
+        }
 
         // ADD WORLD TO LIST
         worldList.add(new GMWorld(worldName, env, seed));

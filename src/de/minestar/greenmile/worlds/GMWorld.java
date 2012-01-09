@@ -42,9 +42,11 @@ public class GMWorld {
     public GMWorld(String worldName, String environment, long seed) {
         this.worldName = worldName;
 
-        this.environment = Environment.valueOf(environment);
-        if (this.environment == null)
+        try {
+            this.environment = Environment.valueOf(environment);
+        } catch (Exception e) {
             this.environment = Environment.NORMAL;
+        }
 
         this.seed = seed;
         this.worldSettings = new GMWorldSettings(this);

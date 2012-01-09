@@ -38,45 +38,50 @@ public class GMWorldSettings {
         return spawnMonsters;
     }
 
-    public void setSpawnMonsters(boolean spawnMonsters) {
+    public void setSpawnMonsters(boolean spawnMonsters, boolean forceUpdate) {
         this.spawnMonsters = spawnMonsters;
-        this.updateBukkitWorld();
+        if (forceUpdate)
+            this.updateBukkitWorld();
     }
 
     public boolean isSpawnAnimals() {
         return spawnAnimals;
     }
 
-    public void setSpawnAnimals(boolean spawnAnimals) {
+    public void setSpawnAnimals(boolean spawnAnimals, boolean forceUpdate) {
         this.spawnAnimals = spawnAnimals;
-        this.updateBukkitWorld();
+        if (forceUpdate)
+            this.updateBukkitWorld();
     }
 
     public boolean isAutoSave() {
         return autoSave;
     }
 
-    public void setAutoSave(boolean autoSave) {
+    public void setAutoSave(boolean autoSave, boolean forceUpdate) {
         this.autoSave = autoSave;
-        this.updateBukkitWorld();
+        if (forceUpdate)
+            this.updateBukkitWorld();
     }
 
     public Difficulty getDifficulty() {
         return difficulty;
     }
 
-    public void setDifficulty(Difficulty difficulty) {
+    public void setDifficulty(Difficulty difficulty, boolean forceUpdate) {
         this.difficulty = difficulty;
-        this.updateBukkitWorld();
+        if (forceUpdate)
+            this.updateBukkitWorld();
     }
 
     public boolean isKeepSpawnLoaded() {
         return keepSpawnLoaded;
     }
 
-    public void setKeepSpawnLoaded(boolean keepSpawnLoaded) {
+    public void setKeepSpawnLoaded(boolean keepSpawnLoaded, boolean forceUpdate) {
         this.keepSpawnLoaded = keepSpawnLoaded;
-        this.updateBukkitWorld();
+        if (forceUpdate)
+            this.updateBukkitWorld();
     }
 
     /**
@@ -86,7 +91,7 @@ public class GMWorldSettings {
      *         <b>false</b> : if the world was not found
      */
     private boolean updateBukkitWorld() {
-        // CHECK FOR THE WORLD-EXISTANCE EVERYTIME WE ACCESS IT
+        // CHECK THE WORLD-EXISTANCE EVERY TIME WE ACCESS IT
         this.BukkitWorld = world.getBukkitWorld();
         if (BukkitWorld == null)
             return false;

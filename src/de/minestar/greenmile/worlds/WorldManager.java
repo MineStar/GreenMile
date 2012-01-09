@@ -91,7 +91,7 @@ public class WorldManager {
      */
     public boolean worldExists(String worldName) {
         for (GMWorld world : this.worldList) {
-            if (world.getWorldName().equalsIgnoreCase(worldName)) {
+            if (world.getWorldName().equals(worldName)) {
                 return true;
             }
         }

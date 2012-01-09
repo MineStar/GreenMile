@@ -103,6 +103,5 @@ public class WorldManager {
      */
     private void loadWorlds() {
         // TODO: LOAD WORLDS FROM YML WITH LOWERCASE
-
     }
 }

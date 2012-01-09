@@ -22,7 +22,6 @@ import java.util.HashMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.World.Environment;
-import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 
 import com.bukkit.gemo.utils.ChatUtils;
@@ -37,26 +36,33 @@ public class CreateWorldCommand extends ExtendedCommand {
 
     @Override
     public void execute(String[] args, Player player) {
-        String worldName = args[0];
         Long seed = 1337l;
         Environment env = Environment.NORMAL;
-        if (args.length > 1) {
+
+        // GET WORLDNAME
+        String worldName = args[0];
+
+        // CATCH ENVIRONMENT
+        if (args.length >= 2) {
             env = Environment.valueOf(args[1]);
-            ChatUtils.printInfo(player, "[GreenMile]", ChatColor.GRAY, "Environment not found. Using NORMAL.");
-        }
-
-        if (env == null)
-            env = Environment.NORMAL;
-
-        if (args.length > 2) {
-            try {
-                seed = Long.parseLong(args[3]);
-            } catch (Exception e) {
-                ChatUtils.printInfo(player, "[GreenMile]", ChatColor.GRAY, "Could not parse levelseed. Using 1337l as seed.");
+            // IS ENVIRONMENT CORRECT?
+            if (env == null) {
+                ChatUtils.printInfo(player, "[GreenMile]", ChatColor.GRAY, "Environment '" + args[1] + "' not found");
+                return;
             }
         }
 
-        // TODO: CHECK: DOES WORLD EXIST?
+        // CATCH LEVELSEED
+        if (args.length >= 3) {
+            try {
+                seed = Long.parseLong(args[3]);
+            } catch (Exception e) {
+                ChatUtils.printError(player, "[GreenMile]", "Could not parse levelseed '" + args[3] + "'.");
+                return;
+            }
+        }
+
+        // TODO: CALL WORLDMANAGER TO CHECK IF WORLD ALREADY EXISTS?
         // IF SO: RETURN WITH ERROR
 
         // TODO: CALL WORLDMANAGER TO CREATE WORLD

@@ -1,0 +1,131 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>de.minestar</groupId>
+	<artifactId>GreenMile</artifactId>
+	<version>1.0</version>
+	<name>GreenMile</name>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>bukkit-releases</id>
+			<url>http://repo.bukkit.org/content/repositories/releases</url>
+		</repository>
+		<repository>
+			<id>Minestar</id>
+			<url>http://test.minestar.de:8081/artifactory</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<!-- Bukkit -->
+		<dependency>
+			<groupId>org.bukkit</groupId>
+			<artifactId>bukkit</artifactId>
+			<version>1.0.1-R1</version>
+		</dependency>
+
+		<!-- MineStar -->
+		<dependency>
+			<groupId>de.minestar</groupId>
+			<artifactId>MineStarLibrary</artifactId>
+			<version>1</version>
+		</dependency>
+		<dependency>
+			<groupId>de.minestar</groupId>
+			<artifactId>FalseBookCore</artifactId>
+			<version>1</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<sourceDirectory>${basedir}/src</sourceDirectory>
+
+		<!-- Resources -->
+		<resources>
+			<resource>
+				<targetPath>.</targetPath>
+				<filtering>true</filtering>
+				<directory>${basedir}/src</directory>
+				<includes>
+					<include>plugin.yml</include>
+				</includes>
+			</resource>
+		</resources>
+
+		<!-- Plugins -->
+		<plugins>
+			<!-- Compile plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+			</plugin>
+
+			<!-- JAR creation plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
+			</plugin>
+
+			<!-- Assembly -->
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptor>${basedir}/src/main/assembly/default.xml</descriptor>
+				</configuration>
+			</plugin>
+
+			<!-- Release -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<configuration>
+					<preparationGoals>assembly:assembly</preparationGoals>
+					<goals>assembly:assembly</goals>
+				</configuration>
+			</plugin>
+
+			<!-- Exclude non-tests -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.7.2</version>
+				<configuration>
+					<excludes>
+						<exclude>**/TestOfflinePermissible.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<phase>install</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<artifactSet>
+								<includes>
+									<include>de.minestar:MineStarLibrary</include>
+								</includes>
+							</artifactSet>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<organization>
+		<name>MineStar</name>
+		<url>www.minestar.de</url>
+	</organization>
+</project>

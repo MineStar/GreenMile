@@ -136,6 +136,7 @@ public class ChunkGenerationThread implements Runnable {
             e.printStackTrace();
         }
     }
+
     @Override
     public void run() {
         if (this.world == null) {

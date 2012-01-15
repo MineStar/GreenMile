@@ -26,6 +26,7 @@
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
 			<version>1.0.1-R1</version>
+			<scope>compile</scope>
 		</dependency>
 
 		<!-- MineStar -->
@@ -126,6 +127,5 @@
 	</build>
 	<organization>
 		<name>MineStar</name>
-		<url>www.minestar.de</url>
 	</organization>
 </project>

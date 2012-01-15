@@ -29,8 +29,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import de.minestar.greenmile.commands.Command;
-import de.minestar.greenmile.commands.CommandList;
 import de.minestar.greenmile.commands.gm.ChangeSizeCommand;
 import de.minestar.greenmile.commands.gm.GreenMileCommand;
 import de.minestar.greenmile.commands.gm.ListCommand;
@@ -40,6 +38,8 @@ import de.minestar.greenmile.commands.gm.StopCommand;
 import de.minestar.greenmile.listener.GMPListener;
 import de.minestar.greenmile.threading.BorderThread;
 import de.minestar.greenmile.threading.ChunkGenerationThread;
+import de.minestar.minstarlibrary.commands.Command;
+import de.minestar.minstarlibrary.commands.CommandList;
 
 public class Main extends JavaPlugin {
 

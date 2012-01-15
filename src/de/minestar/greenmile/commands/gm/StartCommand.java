@@ -27,8 +27,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import de.minestar.greenmile.Main;
-import de.minestar.greenmile.commands.ExtendedCommand;
 import de.minestar.greenmile.threading.ChunkGenerationThread;
+import de.minestar.minstarlibrary.commands.ExtendedCommand;
 
 public class StartCommand extends ExtendedCommand {
 

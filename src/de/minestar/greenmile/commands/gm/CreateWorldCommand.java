@@ -26,7 +26,7 @@ import org.bukkit.entity.Player;
 
 import com.bukkit.gemo.utils.ChatUtils;
 
-import de.minestar.greenmile.commands.ExtendedCommand;
+import de.minestar.minstarlibrary.commands.ExtendedCommand;
 
 public class CreateWorldCommand extends ExtendedCommand {
 

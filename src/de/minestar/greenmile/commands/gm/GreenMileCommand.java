@@ -20,8 +20,8 @@ package de.minestar.greenmile.commands.gm;
 
 import org.bukkit.entity.Player;
 
-import de.minestar.greenmile.commands.Command;
-import de.minestar.greenmile.commands.SuperCommand;
+import de.minestar.minstarlibrary.commands.Command;
+import de.minestar.minstarlibrary.commands.SuperCommand;
 
 public class GreenMileCommand extends SuperCommand {
 

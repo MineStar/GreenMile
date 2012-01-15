@@ -24,7 +24,7 @@ import java.util.Map.Entry;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import de.minestar.greenmile.commands.Command;
+import de.minestar.minstarlibrary.commands.Command;
 
 public class ListCommand extends Command {
 

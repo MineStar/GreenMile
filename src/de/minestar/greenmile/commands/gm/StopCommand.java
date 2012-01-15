@@ -23,7 +23,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import de.minestar.greenmile.Main;
-import de.minestar.greenmile.commands.Command;
+import de.minestar.minstarlibrary.commands.Command;
 
 public class StopCommand extends Command {
 

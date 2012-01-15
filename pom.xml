@@ -33,7 +33,7 @@
 		<dependency>
 			<groupId>de.minestar</groupId>
 			<artifactId>MineStarLibrary</artifactId>
-			<version>1</version>
+			<version>2</version>
 		</dependency>
 		<dependency>
 			<groupId>de.minestar</groupId>

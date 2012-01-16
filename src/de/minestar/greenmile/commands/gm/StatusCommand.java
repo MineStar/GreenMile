@@ -23,22 +23,20 @@ import org.bukkit.entity.Player;
 
 import de.minestar.greenmile.Main;
 import de.minestar.minstarlibrary.commands.Command;
+import de.minestar.minstarlibrary.utils.ChatUtils;
 
 public class StatusCommand extends Command {
 
     public StatusCommand(String syntax, String arguments, String node) {
         super(syntax, arguments, node);
-        // TODO Auto-generated constructor stub
+        this.description = "Zeigt Status des Threads an";
     }
 
     @Override
     public void execute(String[] args, Player player) {
-        if (Main.chunkThread == null) {
-            player.sendMessage(ChatColor.RED + "[GreenMile] No thread found!");
-            return;
-        }
-        player.sendMessage(ChatColor.GRAY + "[GreenMile] Status: " + Main.chunkThread.getStatus());
-
+        if (Main.chunkThread == null)
+            ChatUtils.printError(player, Main.name, "Es existiert kein Thread!");
+        else
+            ChatUtils.printInfo(player, Main.name, ChatColor.GRAY, "Status: " + Main.chunkThread.getStatus());
     }
-
 }

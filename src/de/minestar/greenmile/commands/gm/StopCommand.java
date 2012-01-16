@@ -19,11 +19,11 @@
 package de.minestar.greenmile.commands.gm;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import de.minestar.greenmile.Main;
 import de.minestar.minstarlibrary.commands.Command;
+import de.minestar.minstarlibrary.utils.ChatUtils;
 
 public class StopCommand extends Command {
 
@@ -35,15 +35,15 @@ public class StopCommand extends Command {
     @Override
     public void execute(String[] args, Player player) {
 
-        if (Main.chunkThread == null) {
-            player.sendMessage(ChatColor.RED + "[GreenMile] No thread found!");
-            return;
-        }
-        Bukkit.getServer().getScheduler().cancelTask(Main.chunkThread.getTaskID());
-        Main.chunkThread.saveConfig();
-        Main.chunkThread = null;
-        player.sendMessage(ChatColor.GREEN + "[GreenMile] Rendering stopped!");
+        if (Main.chunkThread == null)
+            ChatUtils.printError(player, Main.name, "Es existiert kein Thread!");
 
+        else {
+            Bukkit.getServer().getScheduler().cancelTask(Main.chunkThread.getTaskID());
+            Main.chunkThread.saveConfig();
+            Main.chunkThread = null;
+            ChatUtils.printSuccess(player, Main.name, "Thread angehalten!");
+        }
     }
 
 }

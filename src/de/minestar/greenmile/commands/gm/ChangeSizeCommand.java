@@ -31,6 +31,7 @@ import org.bukkit.plugin.Plugin;
 import de.minestar.greenmile.Main;
 import de.minestar.greenmile.threading.ChunkGenerationThread;
 import de.minestar.minstarlibrary.commands.ExtendedCommand;
+import de.minestar.minstarlibrary.utils.ChatUtils;
 
 public class ChangeSizeCommand extends ExtendedCommand {
 
@@ -52,7 +53,7 @@ public class ChangeSizeCommand extends ExtendedCommand {
         String worldName = args[0].toLowerCase();
 
         if (Main.chunkThread != null) {
-            player.sendMessage(ChatColor.RED + "Generationthread lauft gerade. Erst /gm stop " + worldName + " eingeben!");
+            ChatUtils.printError(player, Main.name, "Generationthread lauft gerade. Erst '/gm stop' eingeben!");
             return;
         }
 
@@ -60,24 +61,24 @@ public class ChangeSizeCommand extends ExtendedCommand {
         try {
             newSize = Integer.parseInt(args[1]);
         } catch (Exception e) {
-            player.sendMessage(this.getHelpMessage());
+            ChatUtils.printError(player, Main.name, getHelpMessage());
         }
 
         if (newSize <= 0) {
-            player.sendMessage(ChatColor.RED + "Bitte nur positive Zahlen nehmen...");
+            ChatUtils.printError(player, Main.name, "Bitte nur positive Zahlen nehmen...");
             return;
         }
 
         World world = player.getServer().getWorld(worldName);
         if (world == null) {
-            player.sendMessage(ChatColor.RED + "Keine Welt mit Namen " + worldName + " gefunden!");
+            ChatUtils.printError(player, Main.name, "Keine Welt namens '" + worldName + "' gefunden!");
             return;
         }
         worldName = world.getName();
 
         map.put(worldName, newSize);
         updateConfig(worldName, newSize);
-        player.sendMessage(ChatColor.GREEN + "[GreenMile] Groesse erfolgreich geaendert!");
+        ChatUtils.printSuccess(player, Main.name, "Groesse erfolgreich geaendert!");
         if (args.length >= 3 && args[2].equalsIgnoreCase("f")) {
 
             Main.chunkThread = new ChunkGenerationThread(newSize, worldName);
@@ -87,18 +88,20 @@ public class ChangeSizeCommand extends ExtendedCommand {
             if (args.length == 4) {
                 try {
                     pSpeed = Integer.parseInt(args[3]);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    player.sendMessage(ChatColor.RED + "Fehlerhafte Zahl, Standardgeschwindigkeit von " + pSpeed + " wird genutzt!");
+                    if (pSpeed < 0) {
+                        ChatUtils.printError(player, Main.name, "Bitte nur positive Zahlen nehmen...");
+                        pSpeed = speed;
+                    }
+                } catch (NumberFormatException e) {
+                    ChatUtils.printError(player, Main.name, "Fehlerhafte Zahl, Standardgeschwindigkeit von " + pSpeed + " wird genutzt!");
                 }
             }
 
             Main.chunkThread.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, Main.chunkThread, 0L, pSpeed));
-            player.sendMessage(ChatColor.GREEN + "[GreenMile] Rendering of world '" + worldName + "' started with speed " + pSpeed + "!");
-            player.sendMessage(ChatColor.GRAY + "Type '/gm stop' to stop the thread.");
+            ChatUtils.printSuccess(player, Main.name, "Die Welt '" + worldName + "' wird nun mit einer Geschwindigkeit von " + pSpeed + " erzeugt!");
+            ChatUtils.printInfo(player, Main.name, ChatColor.GRAY, "'/gm stop' hält den Thread an!");
         }
     }
-
     private void updateConfig(String worldName, Integer newSize) {
         try {
             YamlConfiguration config = new YamlConfiguration();

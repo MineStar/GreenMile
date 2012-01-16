@@ -30,6 +30,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import de.minestar.greenmile.Main;
+import de.minestar.minstarlibrary.utils.ChatUtils;
 
 public class ChunkGenerationThread implements Runnable {
 
@@ -54,9 +55,9 @@ public class ChunkGenerationThread implements Runnable {
         this.maxChunks = worldSizeInChunks * worldSizeInChunks * 4;
 
         if (world == null) {
-            Main.printToConsole("############################################");
-            Main.printToConsole("ERROR: World '" + worldName + "' was not found!");
-            Main.printToConsole("############################################");
+            ChatUtils.printConsoleError("############################################", Main.name);
+            ChatUtils.printConsoleError("World '" + worldName + "' was not found!", Main.name);
+            ChatUtils.printConsoleError("############################################", Main.name);
             return;
         }
 
@@ -66,7 +67,7 @@ public class ChunkGenerationThread implements Runnable {
         this.minVars = new Point(this.spawnChunk.x - this.worldSizeInChunks, this.spawnChunk.y - this.worldSizeInChunks);
 
         this.loadConfig();
-        Main.printToConsole(status + " of " + maxChunks);
+        ChatUtils.printConsoleInfo(status + " of " + maxChunks, Main.name);
     }
 
     public void setTaskID(int ID) {
@@ -153,9 +154,9 @@ public class ChunkGenerationThread implements Runnable {
         }
 
         if (lastRenderedChunk.x <= minVars.x) {
-            Main.printToConsole("############################################");
-            Main.printToConsole("RENDERING OF WORLD '" + world.getName() + "' FINISHED!");
-            Main.printToConsole("############################################");
+            ChatUtils.printConsoleInfo("############################################", Main.name);
+            ChatUtils.printConsoleInfo("RENDERING OF WORLD '" + world.getName() + "' FINISHED!", Main.name);
+            ChatUtils.printConsoleInfo("############################################", Main.name);
 
             // RESET THREAD
             resetRenderPosition();
@@ -179,7 +180,7 @@ public class ChunkGenerationThread implements Runnable {
         // Remember kids : Only free memory is good memory!
         if (bufferChunks.size() > 50) {
             unloadChunks();
-            Main.printToConsole(getStatus());
+            ChatUtils.printConsoleInfo(getStatus(), Main.name);
         }
         --lastRenderedChunk.y;
         return true;

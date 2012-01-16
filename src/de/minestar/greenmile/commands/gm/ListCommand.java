@@ -24,7 +24,9 @@ import java.util.Map.Entry;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import de.minestar.greenmile.Main;
 import de.minestar.minstarlibrary.commands.Command;
+import de.minestar.minstarlibrary.utils.ChatUtils;
 
 public class ListCommand extends Command {
 
@@ -39,12 +41,12 @@ public class ListCommand extends Command {
     public void execute(String[] args, Player player) {
 
         if (worldSettings.isEmpty()) {
-            player.sendMessage(ChatColor.RED + "GreenMile ueberwacht keine Welt!");
+            ChatUtils.printError(player, Main.name, "GreenMile ueberwacht keine Welt!");
             return;
         }
-        player.sendMessage(ChatColor.GOLD + "GreenMile ueberwacht folgende Welten:");
+        ChatUtils.printInfo(player, Main.name, ChatColor.GOLD, "GreenMile ueberwacht folgende Welten:");
         for (Entry<String, Integer> entry : worldSettings.entrySet())
-            player.sendMessage(ChatColor.GREEN + "'" + entry.getKey() + "' : " + entry.getValue());
+            ChatUtils.printInfo(player, Main.name, ChatColor.GREEN, "'" + entry.getKey() + "' : " + entry.getValue());
 
     }
 

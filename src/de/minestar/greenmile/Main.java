@@ -18,14 +18,10 @@
 package de.minestar.greenmile;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -40,6 +36,7 @@ import de.minestar.greenmile.threading.BorderThread;
 import de.minestar.greenmile.threading.ChunkGenerationThread;
 import de.minestar.minstarlibrary.commands.Command;
 import de.minestar.minstarlibrary.commands.CommandList;
+import de.minestar.minstarlibrary.utils.ChatUtils;
 
 public class Main extends JavaPlugin {
 
@@ -49,8 +46,9 @@ public class Main extends JavaPlugin {
 
     private CommandList cmdList;
 
-    public static void printToConsole(String msg) {
-        System.out.println("[ GreenMile ] : " + msg);
+    public static String name;
+
+    public Main() {
     }
 
     @Override
@@ -59,13 +57,39 @@ public class Main extends JavaPlugin {
             chunkThread.saveConfig();
 
         cmdList = null;
-        printToConsole("Disabled!");
+        ChatUtils.printConsoleInfo("Disabled!", name);
+    }
+
+    @Override
+    public void onEnable() {
+
+        name = getDescription().getName();
+
+        // create specific plugin folder
+        File dataFolder = getDataFolder();
+        dataFolder.mkdirs();
+
+        Server server = getServer();
+//        map = loadWorldSettings();
+//        if (map == null)
+//            return;
+
+        initCommandList();
+
+        Runnable borderThread = new BorderThread(map, server);
+        server.getScheduler().scheduleSyncRepeatingTask(this, borderThread, 20 * 15, 20 * 5);
+
+        pListener = new GMPListener(map);
+        server.getPluginManager().registerEvent(Event.Type.PLAYER_TELEPORT, pListener, Event.Priority.Highest, this);
+
+        ChatUtils.printConsoleInfo("Version " + getDescription().getVersion() + " enabled!", name);
     }
 
     private void initCommandList() {
 
         int speed = getConfig().getInt("speed", 5);
-        printToConsole("Default speed of generation thread is " + speed);
+        ChatUtils.printConsoleInfo("Default speed of generation thread is " + speed, name);
+
         // @formatter:off
         cmdList = new CommandList(new Command[]{
                 new GreenMileCommand("/gm", "", "gm.status", new Command[]{
@@ -77,81 +101,43 @@ public class Main extends JavaPlugin {
                 })
         });
         // @formatter:on
+
     }
-
-    @Override
-    public void onEnable() {
-
-        checkConfig();
-        Server server = getServer();
-        map = loadWorldSettings();
-        if (map == null)
-            return;
-
-        initCommandList();
-
-        Runnable borderThread = new BorderThread(map, server);
-        server.getScheduler().scheduleSyncRepeatingTask(this, borderThread, 20 * 15, 20 * 5);
-
-        pListener = new GMPListener(map);
-        server.getPluginManager().registerEvent(Event.Type.PLAYER_TELEPORT, pListener, Event.Priority.Highest, this);
-
-        printToConsole("Enabled!");
-    }
-
-    private HashMap<String, Integer> loadWorldSettings() {
-        HashMap<String, Integer> map = new HashMap<String, Integer>();
-        try {
-            YamlConfiguration config = new YamlConfiguration();
-            File f = new File("plugins/GreenMile/config.yml");
-            if (!f.exists()) {
-                printToConsole("config.yml not found, plugin is disabled!");
-                this.setEnabled(false);
-                return null;
-            }
-
-            config.load(f);
-
-            if (config.get("worlds") == null) {
-                printToConsole("config.yml is corrupt (no worlds found), plugin is disabled!");
-                this.setEnabled(false);
-                return null;
-            }
-            Map<String, Object> worlds = config.getConfigurationSection("worlds").getValues(false);
-            for (Entry<String, Object> entry : worlds.entrySet()) {
-                printToConsole("Loaded world '" + entry.getKey() + "' with maxSize = " + entry.getValue());
-                map.put(entry.getKey(), Integer.parseInt(entry.getValue().toString()));
-            }
-
-            if (map.isEmpty()) {
-                printToConsole("No map found, plugin is disabled!");
-                this.setEnabled(false);
-                return null;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return map;
-    }
-
-    private void checkConfig() {
-
-        File pluginDir = getDataFolder();
-        if (!pluginDir.exists())
-            pluginDir.mkdirs();
-
-        pluginDir = new File(getDataFolder() + "/worlds/");
-        pluginDir.mkdirs();
-        File configFile = new File(pluginDir.getAbsolutePath().concat("/config.yml"));
-
-        if (!configFile.exists()) {
-            try {
-                configFile.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+    // TODO: Transfer to WorldHandler
+    // private HashMap<String, Integer> loadWorldSettings() {
+//        HashMap<String, Integer> map = new HashMap<String, Integer>();
+//        try {
+//            YamlConfiguration config = new YamlConfiguration();
+//            File f = new File("plugins/GreenMile/config.yml");
+//            if (!f.exists()) {
+//                printToConsole("config.yml not found, plugin is disabled!");
+//                this.setEnabled(false);
+//                return null;
+//            }
+//
+//            config.load(f);
+//
+//            if (config.get("worlds") == null) {
+//                printToConsole("config.yml is corrupt (no worlds found), plugin is disabled!");
+//                this.setEnabled(false);
+//                return null;
+//            }
+//            Map<String, Object> worlds = config.getConfigurationSection("worlds").getValues(false);
+//            for (Entry<String, Object> entry : worlds.entrySet()) {
+//                printToConsole("Loaded world '" + entry.getKey() + "' with maxSize = " + entry.getValue());
+//                map.put(entry.getKey(), Integer.parseInt(entry.getValue().toString()));
+//            }
+//
+//            if (map.isEmpty()) {
+//                printToConsole("No map found, plugin is disabled!");
+//                this.setEnabled(false);
+//                return null;
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return map;
+//    }
 
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {

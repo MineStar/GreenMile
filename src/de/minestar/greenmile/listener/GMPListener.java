@@ -22,10 +22,13 @@ import java.util.HashMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
+import de.minestar.greenmile.Main;
 import de.minestar.greenmile.threading.BorderThread;
+import de.minestar.minstarlibrary.utils.ChatUtils;
 
 public class GMPListener extends PlayerListener {
 
@@ -47,10 +50,10 @@ public class GMPListener extends PlayerListener {
                 event.getTo().setX(worldSpawn.getX());
                 event.getTo().setY(worldSpawn.getY());
                 event.getTo().setZ(worldSpawn.getZ());
-                event.getPlayer().sendMessage(ChatColor.RED + "Du hast die maximale Grenze der Map erreicht!");
-                event.getPlayer().sendMessage(ChatColor.GRAY + "Du wurdest zum Spawn zurück teleportiert!");
+                Player player = event.getPlayer();
+                ChatUtils.printError(player, Main.name, "Du hast die maximale Grenze der Map erreicht!");
+                ChatUtils.printInfo(player, Main.name, ChatColor.GRAY, "Du wurdest zum Spawn zurÃ¼ck teleportiert!");
             }
         }
     }
-
 }

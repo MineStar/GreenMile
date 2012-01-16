@@ -29,6 +29,7 @@ import org.bukkit.plugin.Plugin;
 import de.minestar.greenmile.Main;
 import de.minestar.greenmile.threading.ChunkGenerationThread;
 import de.minestar.minstarlibrary.commands.ExtendedCommand;
+import de.minestar.minstarlibrary.utils.ChatUtils;
 
 public class StartCommand extends ExtendedCommand {
 
@@ -48,13 +49,13 @@ public class StartCommand extends ExtendedCommand {
         String worldName = args[0].toLowerCase();
         World world = Bukkit.getServer().getWorld(worldName);
         if (world == null || map.get(worldName) == null) {
-            player.sendMessage(ChatColor.RED + "[GreenMile] World '" + worldName + "' was not found!");
+            ChatUtils.printError(player, Main.name, " Welt '" + worldName + "' nicht gefunden!");
             return;
         }
 
         if (Main.chunkThread != null) {
-            player.sendMessage(ChatColor.RED + "[GreenMile] Already running a thread!");
-            player.sendMessage(ChatColor.GRAY + "Type '/gm stop' to stop the thread.");
+            ChatUtils.printError(player, Main.name, "Es läuft bereits ein Erzeugungsthread!");
+            ChatUtils.printInfo(player, Main.name, ChatColor.GRAY, "Es läuft bereits ein Erzeugungsthread!");
             return;
         }
 
@@ -65,13 +66,16 @@ public class StartCommand extends ExtendedCommand {
         if (args.length == 2) {
             try {
                 pSpeed = Integer.parseInt(args[1]);
-            } catch (Exception e) {
-                e.printStackTrace();
-                player.sendMessage(ChatColor.RED + "Fehlerhafte Zahl, Standardgeschwindigkeit von " + pSpeed + " wird genutzt!");
+                if (pSpeed < 0) {
+                    ChatUtils.printError(player, Main.name, "Bitte nur positive Zahlen nehmen...");
+                    pSpeed = speed;
+                }
+            } catch (NumberFormatException e) {
+                ChatUtils.printError(player, Main.name, "Fehlerhafte Zahl, Standardgeschwindigkeit von " + pSpeed + " wird genutzt!");
             }
         }
         Main.chunkThread.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, Main.chunkThread, 0L, pSpeed));
-        player.sendMessage(ChatColor.GREEN + "[GreenMile] Rendering of world '" + worldName + "' started with speed " + pSpeed + "!");
-        player.sendMessage(ChatColor.GRAY + "Type '/gm stop' to stop the thread.");
+        ChatUtils.printSuccess(player, Main.name, "Die Welt '" + worldName + "' wird nun mit einer Geschwindigkeit von " + pSpeed + " erzeugt!");
+        ChatUtils.printInfo(player, Main.name, ChatColor.GRAY, "'/gm stop' hält den Thread an!");
     }
 }

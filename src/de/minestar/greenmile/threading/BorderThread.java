@@ -20,11 +20,13 @@ package de.minestar.greenmile.threading;
 import java.util.HashMap;
 import java.util.List;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+
+import de.minestar.greenmile.Main;
+import de.minestar.minstarlibrary.utils.ChatUtils;
 
 public class BorderThread implements Runnable {
 
@@ -89,7 +91,7 @@ public class BorderThread implements Runnable {
                         loc = player.getWorld().getSpawnLocation();
 
                     player.teleport(loc);
-                    player.sendMessage(ChatColor.RED + "Du hast die maximale Grenze der Map erreicht!");
+                    ChatUtils.printError(player, Main.name, "Du hast die maximale Grenze der Map erreicht!");
                 } else
                     lastPosition.put(player.getName(), loc);
             }

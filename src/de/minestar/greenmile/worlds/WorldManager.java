@@ -18,19 +18,27 @@
 
 package de.minestar.greenmile.worlds;
 
+import java.io.File;
 import java.util.ArrayList;
-import org.bukkit.WorldCreator;
+
 import org.bukkit.World.Environment;
+import org.bukkit.WorldCreator;
+
+import de.minestar.greenmile.Main;
+import de.minestar.minstarlibrary.utils.ChatUtils;
 
 public class WorldManager {
     private ArrayList<GMWorld> worldList;
 
+    private File dataFolder;
+
     /**
      * Constructor
      */
-    public WorldManager() {
+    public WorldManager(File dataFolder) {
         this.worldList = new ArrayList<GMWorld>();
         this.loadWorlds();
+        this.dataFolder = dataFolder;
     }
 
     /**
@@ -55,7 +63,7 @@ public class WorldManager {
         }
 
         // ADD WORLD TO LIST
-        worldList.add(new GMWorld(worldName, env, seed));
+        worldList.add(new GMWorld(worldName, env, seed, dataFolder));
     }
 
     /**
@@ -105,6 +113,15 @@ public class WorldManager {
      * Load worlds
      */
     private void loadWorlds() {
-        // TODO: LOAD WORLDS FROM YML WITH LOWERCASE
+        try {
+            File[] files = dataFolder.listFiles();
+            for (File f : files) {
+                String fileName = f.getName().toLowerCase();
+                if (fileName.endsWith(".yml") && !fileName.startsWith("config"))
+                    this.worldList.add(new GMWorld(fileName.substring(0, fileName.length() - 3), dataFolder));
+            }
+        } catch (Exception e) {
+            ChatUtils.printConsoleException(e, "Can't load worlds from " + dataFolder, Main.name);
+        }
     }
 }

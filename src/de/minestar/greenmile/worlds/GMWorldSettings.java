@@ -18,91 +18,87 @@
 
 package de.minestar.greenmile.worlds;
 
+import java.io.File;
+
 import org.bukkit.Difficulty;
-import org.bukkit.World;
+import org.bukkit.configuration.file.YamlConfiguration;
+
+import de.minestar.greenmile.Main;
+import de.minestar.minstarlibrary.utils.ChatUtils;
 
 public class GMWorldSettings {
-    private GMWorld world = null;
-    private World BukkitWorld;
+
     private boolean spawnMonsters = true;
     private boolean spawnAnimals = true;
     private boolean autoSave = true;
     private boolean keepSpawnLoaded = true;
-    private Difficulty difficulty = Difficulty.NORMAL;
+    private Difficulty difficulty;
 
-    public GMWorldSettings(GMWorld world) {
-        this.world = world;
+    public GMWorldSettings(String worldName, File dataFolder) {
+        loadSettings(worldName, dataFolder);
+    }
+
+    private void loadSettings(String worldName, File dataFolder) {
+        try {
+            // File existing because WorldManager loading world names from
+            // filenames in the datafolder!
+            YamlConfiguration config = new YamlConfiguration();
+            config.load(new File(dataFolder, worldName + ".yml"));
+            spawnMonsters = config.getBoolean("spawnMonsters");
+            spawnAnimals = config.getBoolean("spawnAnimals");
+            autoSave = config.getBoolean("autoSave");
+            keepSpawnLoaded = config.getBoolean("keepSpawnLoaded");
+            String diffi = config.getString("difficulty");
+
+            difficulty = Difficulty.valueOf(diffi);
+            if (difficulty == null) {
+                ChatUtils.printConsoleError("Difficulty '" + diffi + "' from world '" + worldName + "' doesn't find a value of Difficulty!", Main.name);
+                return;
+            }
+            ChatUtils.printConsoleInfo("World '" + worldName + "' loaded: SpawnMonster=" + spawnMonsters + ",SpawnAnimals=" + spawnAnimals + ",AutoSave=" + autoSave + ",KeepSpawnLoaded=" + keepSpawnLoaded + ",Difficulty=" + difficulty.toString(), Main.name);
+        } catch (Exception e) {
+            ChatUtils.printConsoleException(e, "Can't load settings for world " + worldName + "!", Main.name);
+        }
     }
 
     public boolean isSpawnMonsters() {
         return spawnMonsters;
     }
 
-    public void setSpawnMonsters(boolean spawnMonsters, boolean forceUpdate) {
+    public void setSpawnMonsters(boolean spawnMonsters) {
         this.spawnMonsters = spawnMonsters;
-        if (forceUpdate)
-            this.updateBukkitWorld();
     }
 
     public boolean isSpawnAnimals() {
         return spawnAnimals;
     }
 
-    public void setSpawnAnimals(boolean spawnAnimals, boolean forceUpdate) {
+    public void setSpawnAnimals(boolean spawnAnimals) {
         this.spawnAnimals = spawnAnimals;
-        if (forceUpdate)
-            this.updateBukkitWorld();
     }
 
     public boolean isAutoSave() {
         return autoSave;
     }
 
-    public void setAutoSave(boolean autoSave, boolean forceUpdate) {
+    public void setAutoSave(boolean autoSave) {
         this.autoSave = autoSave;
-        if (forceUpdate)
-            this.updateBukkitWorld();
     }
 
     public Difficulty getDifficulty() {
         return difficulty;
     }
 
-    public void setDifficulty(Difficulty difficulty, boolean forceUpdate) {
+    public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
-        if (forceUpdate)
-            this.updateBukkitWorld();
     }
 
     public boolean isKeepSpawnLoaded() {
         return keepSpawnLoaded;
     }
 
-    public void setKeepSpawnLoaded(boolean keepSpawnLoaded, boolean forceUpdate) {
+    public void setKeepSpawnLoaded(boolean keepSpawnLoaded) {
         this.keepSpawnLoaded = keepSpawnLoaded;
-        if (forceUpdate)
-            this.updateBukkitWorld();
     }
 
-    /**
-     * updateBukkitWorld() : refreshes the worldsettings of the BukkitWorld
-     * 
-     * @return <b>true</b> : if the world was found<br />
-     *         <b>false</b> : if the world was not found
-     */
-    private boolean updateBukkitWorld() {
-        // CHECK THE WORLD-EXISTANCE EVERY TIME WE ACCESS IT
-        this.BukkitWorld = world.getBukkitWorld();
-        if (BukkitWorld == null)
-            return false;
-
-        // UPDATE THE WORLD
-        BukkitWorld.setSpawnFlags(this.spawnMonsters, this.spawnAnimals);
-        BukkitWorld.setAutoSave(this.autoSave);
-        BukkitWorld.setDifficulty(this.difficulty);
-        BukkitWorld.setKeepSpawnInMemory(this.keepSpawnLoaded);
-
-        // RETURN
-        return true;
-    }
 }

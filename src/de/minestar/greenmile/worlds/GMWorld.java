@@ -18,16 +18,22 @@
 
 package de.minestar.greenmile.worlds;
 
+import java.io.File;
+
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.WorldCreator;
 
+import de.minestar.greenmile.Main;
+import de.minestar.minstarlibrary.utils.ChatUtils;
+
 public class GMWorld {
-    private String worldName = "";
+
+    private String worldName;
     private Environment environment;
-    private long seed = 1337l;
-    private GMWorldSettings worldSettings = null;
+    private long seed;
+    private GMWorldSettings settings;
 
     /**
      * Constructor
@@ -39,17 +45,18 @@ public class GMWorld {
      * @param seed
      *            : the levelseed as a long
      */
-    public GMWorld(String worldName, String environment, long seed) {
+    public GMWorld(String worldName, String environment, long seed, File dataFolder) {
         this.worldName = worldName;
-
         try {
             this.environment = Environment.valueOf(environment);
         } catch (Exception e) {
+            ChatUtils.printConsoleError("Can't find an Environment named '" + environment + " when creating new GMWorld! Using Environment.NORMAL", Main.name);
             this.environment = Environment.NORMAL;
         }
 
         this.seed = seed;
-        this.worldSettings = new GMWorldSettings(this);
+        this.settings = new GMWorldSettings(worldName, dataFolder);
+        // TODO Load world from bukkti and set values
     }
 
     /**
@@ -62,11 +69,25 @@ public class GMWorld {
      * @param seed
      *            : the levelseed as a long
      */
-    public GMWorld(String worldName, Environment environment, long seed) {
+    public GMWorld(String worldName, Environment environment, long seed, File dataFolder) {
         this.worldName = worldName;
         this.environment = environment;
         this.seed = seed;
-        this.worldSettings = new GMWorldSettings(this);
+        this.settings = new GMWorldSettings(worldName, dataFolder);
+        // TODO Load world from bukkti and set values
+    }
+
+    /**
+     * Create a GMWorld when loading the worlds.
+     * 
+     * @param worldName
+     * @param dataFolder
+     */
+    public GMWorld(String worldName, File dataFolder) {
+        this.worldName = worldName;
+        this.settings = new GMWorldSettings(worldName, dataFolder);
+        // TODO Load world from bukkit and set values
+        // TODO Load environment and seed
     }
 
     /**
@@ -75,7 +96,7 @@ public class GMWorld {
      * @return the worldsettings
      */
     public GMWorldSettings getWorldSettings() {
-        return this.worldSettings;
+        return settings;
     }
 
     /**
@@ -84,8 +105,8 @@ public class GMWorld {
      * @param worldSettings
      *            : the worldsettings to set
      */
-    public void setWorldSettings(GMWorldSettings worldSettings) {
-        this.worldSettings = worldSettings;
+    public void setWorldSettings(GMWorldSettings settings) {
+        this.settings = settings;
     }
 
     /**
@@ -187,5 +208,19 @@ public class GMWorld {
      */
     public void setSeed(long seed) {
         this.seed = seed;
+    }
+
+    public void updateWorld() {
+        World w = Bukkit.getServer().getWorld(worldName);
+        if (w == null) {
+            ChatUtils.printConsoleError("Can't access world '" + worldName + "'!", Main.name);
+            return;
+        }
+
+        // UPDATE THE WORLD
+        w.setSpawnFlags(settings.isSpawnMonsters(), settings.isSpawnAnimals());
+        w.setAutoSave(settings.isAutoSave());
+        w.setDifficulty(settings.getDifficulty());
+        w.setKeepSpawnInMemory(settings.isKeepSpawnLoaded());
     }
 }

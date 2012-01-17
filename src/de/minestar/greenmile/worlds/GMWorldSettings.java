@@ -21,52 +21,135 @@ package de.minestar.greenmile.worlds;
 import java.io.File;
 
 import org.bukkit.Difficulty;
+import org.bukkit.World.Environment;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import de.minestar.greenmile.Main;
 import de.minestar.minstarlibrary.utils.ChatUtils;
 
 public class GMWorldSettings {
+    private final boolean initialized;
+
+    private long levelSeed = 1337l;
+    private Environment environment = Environment.NORMAL;
 
     private boolean spawnMonsters = true;
     private boolean spawnAnimals = true;
     private boolean autoSave = true;
     private boolean keepSpawnLoaded = true;
+    private Difficulty difficulty = Difficulty.NORMAL;
+    private int maxSize = 1000;
 
-    // the maximum size of the map
-    private int maxSize;
-
-    private Difficulty difficulty;
-
-    public GMWorldSettings(String worldName, File dataFolder) {
-        loadSettings(worldName, dataFolder);
+    /**
+     * This constructor is used when the world is newly created
+     * 
+     * @param gmWorld
+     * @param levelSeed
+     * @param environment
+     */
+    public GMWorldSettings(String worldName, long levelSeed, Environment environment, File dataFolder) {
+        this.levelSeed = levelSeed;
+        this.environment = environment;
+        this.initialized = this.saveSettings(worldName, dataFolder);
     }
 
-    private void loadSettings(String worldName, File dataFolder) {
+    /**
+     * This constructor is used when the world is loaded
+     * 
+     * @param gmWorld
+     * @param dataFolder
+     */
+    public GMWorldSettings(String worldName, File dataFolder) {
+        this.initialized = this.loadSettings(worldName, dataFolder);
+    }
+
+    private boolean saveSettings(String worldName, File dataFolder) {
+        File file = new File(dataFolder, worldName + ".yml");
+        // DELETE FILE IF IT EXISTS
+        if (file.exists())
+            file.delete();
+
         try {
-            // File existing because WorldManager loading world names from
-            // filenames in the datafolder!
             YamlConfiguration config = new YamlConfiguration();
-            config.load(new File(dataFolder, worldName + ".yml"));
-            spawnMonsters = config.getBoolean("spawnMonsters");
-            spawnAnimals = config.getBoolean("spawnAnimals");
-            autoSave = config.getBoolean("autoSave");
-            keepSpawnLoaded = config.getBoolean("keepSpawnLoaded");
-            String diffi = config.getString("difficulty");
+            config.set("settings.levelSeed", this.levelSeed);
+            config.set("settings.environment", this.environment.toString());
+            config.set("settings.spawnMonsters", this.spawnMonsters);
+            config.set("settings.spawnAnimals", this.spawnAnimals);
+            config.set("settings.difficulty", this.difficulty.toString());
+            config.set("settings.autoSave", this.autoSave);
+            config.set("keepSpawnLoaded", this.keepSpawnLoaded);
+            config.set("settings.maxSize", this.maxSize);
+            config.save(file);
+        } catch (Exception e) {
+            ChatUtils.printConsoleException(e, "Can't save settings for world " + worldName + "!", Main.name);
+            return false;
+        }
+        return true;
+    }
 
-            difficulty = Difficulty.valueOf(diffi);
-            if (difficulty == null) {
-                ChatUtils.printConsoleError("Difficulty '" + diffi + "' from world '" + worldName + "' doesn't find a value of Difficulty!", Main.name);
-                return;
-            }
+    private boolean loadSettings(String worldName, File dataFolder) {
+        try {
+            File file = new File(dataFolder, worldName + ".yml");
+            // CREATE FILE IF IT NOT EXISTS
+            if (!file.exists())
+                if (!this.saveSettings(worldName, dataFolder))
+                    return false;
 
-            maxSize = config.getInt("size");
-
-            ChatUtils.printConsoleInfo("World '" + worldName + "' loaded: SpawnMonster=" + spawnMonsters + ",SpawnAnimals=" + spawnAnimals + ",AutoSave=" + autoSave + ",KeepSpawnLoaded=" + keepSpawnLoaded + ",Difficulty=" + difficulty.toString() + ",Size=" + maxSize, Main.name);
+            YamlConfiguration config = new YamlConfiguration();
+            config.load(file);
+            this.setLevelSeed(config.getLong("settings.levelSeed", this.levelSeed));
+            this.setEnvironment(Environment.valueOf(config.getString("settings.environment", this.environment.toString())));
+            this.setSpawnMonsters(config.getBoolean("settings.spawnMonsters", this.spawnMonsters));
+            this.setSpawnAnimals(config.getBoolean("settings.spawnAnimals", this.spawnAnimals));
+            this.setAutoSave(config.getBoolean("settings.autoSave", this.autoSave));
+            this.setKeepSpawnLoaded(config.getBoolean("settings.keepSpawnLoaded", this.keepSpawnLoaded));
+            this.setDifficulty(Difficulty.valueOf(config.getString("settings.difficulty", this.difficulty.toString())));
+            this.setMaxSize(config.getInt("settings.maxSize", this.maxSize));
+            ChatUtils.printConsoleInfo("World '" + worldName + "' loaded: levelSeed=" + levelSeed + ", Difficulty=" + difficulty.toString() + ", SpawnMonster=" + spawnMonsters + ", SpawnAnimals=" + spawnAnimals + ", AutoSave=" + autoSave + ", KeepSpawnLoaded=" + keepSpawnLoaded + ", Difficulty=" + difficulty.toString() + ", MaxSize=" + maxSize, Main.name);
+            return true;
         } catch (Exception e) {
             ChatUtils.printConsoleException(e, "Can't load settings for world " + worldName + "!", Main.name);
+            return false;
         }
     }
+
+    /**
+     * @return the initialized
+     */
+    public boolean isInitialized() {
+        return initialized;
+    }
+
+    /**
+     * @return the levelSeed
+     */
+    public long getLevelSeed() {
+        return levelSeed;
+    }
+
+    /**
+     * @return the environment
+     */
+    public Environment getEnvironment() {
+        return environment;
+    }
+
+    /**
+     * @param levelSeed
+     *            the levelSeed to set
+     */
+    public void setLevelSeed(long levelSeed) {
+        this.levelSeed = levelSeed;
+    }
+
+    /**
+     * @param environment
+     *            the environment to set
+     */
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
+    }
+
     public boolean isSpawnMonsters() {
         return spawnMonsters;
     }

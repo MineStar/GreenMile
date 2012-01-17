@@ -31,8 +31,6 @@ import de.minestar.minstarlibrary.utils.ChatUtils;
 public class GMWorld {
 
     private String worldName;
-    private Environment environment;
-    private long seed;
     private GMWorldSettings settings;
 
     /**
@@ -45,49 +43,16 @@ public class GMWorld {
      * @param seed
      *            : the levelseed as a long
      */
-    public GMWorld(String worldName, String environment, long seed, File dataFolder) {
+    public GMWorld(String worldName) {
         this.worldName = worldName;
-        try {
-            this.environment = Environment.valueOf(environment);
-        } catch (Exception e) {
-            ChatUtils.printConsoleError("Can't find an Environment named '" + environment + " when creating new GMWorld! Using Environment.NORMAL", Main.name);
-            this.environment = Environment.NORMAL;
-        }
-
-        this.seed = seed;
-        this.settings = new GMWorldSettings(worldName, dataFolder);
-        // TODO Load world from bukkti and set values
     }
 
-    /**
-     * Constructor
-     * 
-     * @param worldName
-     *            : the worldname as a string
-     * @param environment
-     *            : the environment as Bukkit.Environment
-     * @param seed
-     *            : the levelseed as a long
-     */
-    public GMWorld(String worldName, Environment environment, long seed, File dataFolder) {
-        this.worldName = worldName;
-        this.environment = environment;
-        this.seed = seed;
-        this.settings = new GMWorldSettings(worldName, dataFolder);
-        // TODO Load world from bukkti and set values
+    public void loadSettings(File dataFolder) {
+        this.settings = new GMWorldSettings(this.getWorldName(), dataFolder);
     }
 
-    /**
-     * Create a GMWorld when loading the worlds.
-     * 
-     * @param worldName
-     * @param dataFolder
-     */
-    public GMWorld(String worldName, File dataFolder) {
-        this.worldName = worldName;
-        this.settings = new GMWorldSettings(worldName, dataFolder);
-        // TODO Load world from bukkit and set values
-        // TODO Load environment and seed
+    public void createSettings(long levelSeed, Environment environment, File dataFolder) {
+        this.settings = new GMWorldSettings(this.getWorldName(), levelSeed, environment, dataFolder);
     }
 
     /**
@@ -119,37 +84,52 @@ public class GMWorld {
     }
 
     /**
-     * Attempts to <b>load or create</b> the world on the server
+     * Attempts to <b>create</b> the world on the server
      * 
-     * @return <b>true</b> : if the world was loaded/created<br />
-     *         <b>false</b> : if the world already exists
+     * @return <b>true</b> : if the world was created<br />
+     *         <b>false</b> : if the world already exists or there was an
+     *         internal error
      */
-    public boolean loadOrCreateBukkitWorld() {
-        World world = this.getBukkitWorld();
-        if (world != null)
+    public static boolean createBukkitWorld(String worldName, Environment environment, long levelSeed) {
+        // WORLD ALREADY EXISTS
+        if (Bukkit.getWorld(worldName) != null)
             return false;
 
-        WorldCreator generator = new WorldCreator(this.worldName);
-        generator.environment(this.environment);
-        generator.seed(this.seed);
+        // FINALLY LOAD THE WORLD
+        WorldCreator generator = new WorldCreator(worldName);
+        generator.environment(environment);
+        generator.seed(levelSeed);
         generator.createWorld();
         return true;
     }
 
     /**
-     * Attempts to load the world on the server, only if the world already
-     * exists.
+     * Attempts to <b>load</b> the world on the server, only if the world
+     * already exists.
      * 
      * @return <b>true</b> : if the world was loaded<br />
      *         <b>false</b> : if the world was not found
      */
     public boolean loadBukkitWorld() {
-        World world = this.getBukkitWorld();
-        if (world == null)
+        // WORLD DOES NOT EXIST
+        if (Bukkit.getWorld(this.worldName) == null)
             return false;
 
+        // LOAD SETTINGS, IF THEY WERE NULL
+        if (this.settings == null) {
+            this.loadSettings(Main.getInstance().getDataFolder());
+        }
+
+        // SETTINGS ARE INITIALIZED COMPLETELY
+        if (!this.settings.isInitialized())
+            return false;
+
+        // FINALLY LOAD THE WORLD
         WorldCreator generator = new WorldCreator(this.worldName);
+        generator.environment(this.settings.getEnvironment());
+        generator.seed(this.settings.getLevelSeed());
         generator.createWorld();
+
         return true;
     }
 
@@ -170,44 +150,6 @@ public class GMWorld {
      */
     public void setWorldName(String worldName) {
         this.worldName = worldName;
-    }
-
-    /**
-     * getEnvironment()
-     * 
-     * @return the environment
-     */
-    public Environment getEnvironment() {
-        return environment;
-    }
-
-    /**
-     * setEnvironment(Environment environment)
-     * 
-     * @param environment
-     *            : the environment to set
-     */
-    public void setEnvironment(Environment environment) {
-        this.environment = environment;
-    }
-
-    /**
-     * getSeed()
-     * 
-     * @return the levelseed
-     */
-    public long getSeed() {
-        return seed;
-    }
-
-    /**
-     * setSeed(long seed)
-     * 
-     * @param seed
-     *            : the levelseed to set
-     */
-    public void setSeed(long seed) {
-        this.seed = seed;
     }
 
     public void updateWorld() {

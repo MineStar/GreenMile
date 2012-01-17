@@ -40,6 +40,7 @@ import de.minestar.minstarlibrary.utils.ChatUtils;
 
 public class Main extends JavaPlugin {
 
+    private static Main instance;
     public static ChunkGenerationThread chunkThread = null;
     private GMPListener pListener = null;
     private HashMap<String, Integer> map;
@@ -49,6 +50,7 @@ public class Main extends JavaPlugin {
     public static String name;
 
     public Main() {
+        instance = this;
     }
 
     @Override
@@ -143,5 +145,12 @@ public class Main extends JavaPlugin {
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         cmdList.handleCommand(sender, label, args);
         return true;
+    }
+
+    /**
+     * @return the instance
+     */
+    public static Main getInstance() {
+        return instance;
     }
 }

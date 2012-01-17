@@ -42,34 +42,18 @@ public class WorldManager {
     }
 
     /**
+     * Add a world to the current worlds
      * 
      * @param worldName
-     *            : the worldname of the world
      * @param environment
-     *            : the worldenvironment as a string
      * @param seed
-     *            : the levelseed
      */
-    public void addWorld(String worldName, String environment, long seed) {
-
-        // GET ENVIRONMENT FROM STRING
-        Environment env = null;
-        try {
-            env = Environment.valueOf(environment);
-        } catch (Exception e) {
-            ChatUtils.printConsoleException(e, "Can't find an Environment named '" + environment + "'!", Main.name);
+    public void addWorld(GMWorld world) {
+        if (worldExists(world.getWorldName())) {
+            ChatUtils.printConsoleWarning("World '" + world.getWorldName() + "' already exists!", Main.name);
             return;
         }
-
-        this.addWorld(worldName, env, seed);
-    }
-    public void addWorld(String worldName, Environment environment, long seed) {
-        if (worldExists(worldName)) {
-            ChatUtils.printConsoleWarning("World '" + worldName + "' already exists!", Main.name);
-            return;
-        }
-
-        worldList.add(new GMWorld(worldName, environment, seed, dataFolder));
+        worldList.add(world);
     }
 
     /**
@@ -80,14 +64,25 @@ public class WorldManager {
      *            : the worldenvironment
      * @param seed
      *            : the levelseed
+     * @param dataFolder
+     *            : the datafolder of this plugin
+     * @return <b>true</b> : the creation was successful<br />
+     *         <b>false</b> : the world already exists or the initialization of
+     *         settings went wrong
      */
-    public void createWorld(String worldName, Environment environment, long seed) {
+    public boolean createWorld(String worldName, Environment environment, long seed, File dataFolder) {
         // WORLD EXISTS?
         if (worldExists(worldName))
-            return;
+            return false;
+
+        GMWorld newWorld = new GMWorld(worldName);
+        newWorld.createSettings(seed, environment, dataFolder);
+        // INTIALIZATION OF SETTINGS WAS SUCCESSFUL?
+        if (!newWorld.getWorldSettings().isInitialized())
+            return false;
 
         // ADD WORLD TO LIST
-        this.addWorld(worldName, environment, seed);
+        this.addWorld(newWorld);
 
         // CREATE WORLD
         WorldCreator generator = new WorldCreator(worldName);
@@ -96,6 +91,8 @@ public class WorldManager {
         generator.createWorld();
 
         // TODO: START THREAD TO START GENERATION
+
+        return true;
     }
 
     /**
@@ -123,8 +120,15 @@ public class WorldManager {
             File[] files = dataFolder.listFiles();
             for (File f : files) {
                 String fileName = f.getName().toLowerCase();
-                if (fileName.endsWith(".yml") && !fileName.startsWith("config"))
-                    this.worldList.add(new GMWorld(fileName.substring(0, fileName.length() - 4), dataFolder));
+                if (fileName.endsWith(".yml") && !fileName.startsWith("config")) {
+                    GMWorld world = new GMWorld(fileName.substring(0, fileName.length() - 4));
+                    world.loadSettings(dataFolder);
+                    if (world.getWorldSettings().isInitialized()) {
+                        this.addWorld(world);
+                        world.loadBukkitWorld();
+                        world.updateWorld();
+                    }
+                }
             }
         } catch (Exception e) {
             ChatUtils.printConsoleException(e, "Can't load worlds from " + dataFolder, Main.name);

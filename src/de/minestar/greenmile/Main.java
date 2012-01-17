@@ -29,6 +29,7 @@ import de.minestar.greenmile.commands.gm.ChangeSizeCommand;
 import de.minestar.greenmile.commands.gm.CreateWorldCommand;
 import de.minestar.greenmile.commands.gm.GMTeleportCommand;
 import de.minestar.greenmile.commands.gm.GreenMileCommand;
+import de.minestar.greenmile.commands.gm.ImportWorldCommand;
 import de.minestar.greenmile.commands.gm.ListCommand;
 import de.minestar.greenmile.commands.gm.StartCommand;
 import de.minestar.greenmile.commands.gm.StatusCommand;
@@ -105,6 +106,7 @@ public class Main extends JavaPlugin {
                 new GreenMileCommand("/gm", "", "gm.status", new Command[]{
                         new GMTeleportCommand("tp", "<WorldName>", "gm.teleport"),
                         new CreateWorldCommand("createworld", "<WorldName> [Environment [levelseed]]", "gm.createworld"),
+                        new ImportWorldCommand("importworld", "<WorldName>", "gm.importworld"),                        
                         new StartCommand("start", "<WorldName>", "gm.start", map, this, speed),
                         new StopCommand("stop", "", "gm.stop"),
                         new StatusCommand("status", "", "gm.status"),

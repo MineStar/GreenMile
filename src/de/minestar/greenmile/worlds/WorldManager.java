@@ -21,6 +21,8 @@ package de.minestar.greenmile.worlds;
 import java.io.File;
 import java.util.ArrayList;
 
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.World.Environment;
 
 import de.minestar.greenmile.Main;
@@ -80,6 +82,33 @@ public class WorldManager {
     }
 
     /**
+     * Import a world
+     * 
+     * @param worldName
+     * @return <b>true</b> : the import was successful<br />
+     *         <b>false</b> : the world does not exist or the initialization of
+     *         settings went wrong
+     */
+    public boolean importWorld(String worldName) {
+        // WORLD EXISTS?
+        if (worldExists(worldName))
+            return false;
+
+        // BUKKITWORLD DOES NOT EXIST?
+        World bukkitWorld = Bukkit.getWorld(worldName);
+        if (bukkitWorld == null)
+            return false;                  
+
+        // FINALLY IMPORT THE WORLD
+        GMWorld newWorld = new GMWorld(worldName);
+        newWorld.createSettings(bukkitWorld.getSeed(), bukkitWorld.getEnvironment(), this.dataFolder);
+        newWorld.loadBukkitWorld();
+        newWorld.updateWorld();
+        this.addWorld(newWorld);
+        return true;
+    }
+
+    /**
      * worldExists(String worldName)
      * 
      * @param worldName
@@ -97,9 +126,10 @@ public class WorldManager {
     }
 
     /**
+     * Get the GMWorld by the worldname
      * 
      * @param worldName
-     * @return
+     * @return The GMWorld, or null if no world was found
      */
     public GMWorld getGMWorld(String worldName) {
         for (GMWorld world : this.worldList) {

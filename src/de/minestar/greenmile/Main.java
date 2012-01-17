@@ -77,6 +77,7 @@ public class Main extends JavaPlugin {
         dataFolder.mkdirs();
 
         Server server = getServer();
+        map = new HashMap<String, Integer>();
 //        map = loadWorldSettings();
 //        if (map == null)
 //            return;

@@ -64,7 +64,7 @@ public class GMWorldSettings {
     }
 
     private boolean saveSettings(String worldName, File dataFolder) {
-        File file = new File(dataFolder, worldName + ".yml");
+        File file = new File(dataFolder, "config_" + worldName + ".yml");
         // DELETE FILE IF IT EXISTS
         if (file.exists())
             file.delete();
@@ -77,7 +77,7 @@ public class GMWorldSettings {
             config.set("settings.spawnAnimals", this.spawnAnimals);
             config.set("settings.difficulty", this.difficulty.toString());
             config.set("settings.autoSave", this.autoSave);
-            config.set("keepSpawnLoaded", this.keepSpawnLoaded);
+            config.set("settings.keepSpawnLoaded", this.keepSpawnLoaded);
             config.set("settings.maxSize", this.maxSize);
             config.save(file);
         } catch (Exception e) {
@@ -89,7 +89,7 @@ public class GMWorldSettings {
 
     private boolean loadSettings(String worldName, File dataFolder) {
         try {
-            File file = new File(dataFolder, worldName + ".yml");
+            File file = new File(dataFolder, "config_" + worldName + ".yml");
             // CREATE FILE IF IT NOT EXISTS
             if (!file.exists())
                 if (!this.saveSettings(worldName, dataFolder))

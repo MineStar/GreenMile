@@ -103,9 +103,11 @@ public class WorldManager {
         try {
             File[] files = dataFolder.listFiles();
             for (File f : files) {
-                String fileName = f.getName().toLowerCase();
-                if (fileName.endsWith(".yml") && !fileName.startsWith("config")) {
-                    GMWorld world = new GMWorld(fileName.substring(0, fileName.length() - 4));
+                String fileName = f.getName().trim();
+                if (fileName.endsWith(".yml") && fileName.startsWith("config_")) {
+                    String worldName = fileName.replace("config_", "");
+                    worldName = worldName.substring(0, worldName.length() - 4);
+                    GMWorld world = new GMWorld(worldName);
                     world.loadSettings(dataFolder);
                     if (world.getWorldSettings().isInitialized()) {
                         this.addWorld(world);

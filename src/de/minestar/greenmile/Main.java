@@ -101,7 +101,7 @@ public class Main extends JavaPlugin {
         // @formatter:off
         cmdList = new CommandList(new Command[]{
                 new GreenMileCommand("/gm", "", "gm.status", new Command[]{
-                        new CreateWorldCommand("createworld", "<WorldName>", "gm.createworld"),
+                        new CreateWorldCommand("createworld", "<WorldName> [Environment [levelseed]]", "gm.createworld"),
                         new StartCommand("start", "<WorldName>", "gm.start", map, this, speed),
                         new StopCommand("stop", "", "gm.stop"),
                         new StatusCommand("status", "", "gm.status"),

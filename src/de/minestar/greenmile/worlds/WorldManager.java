@@ -22,7 +22,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import org.bukkit.World.Environment;
-import org.bukkit.WorldCreator;
 
 import de.minestar.greenmile.Main;
 import de.minestar.minstarlibrary.utils.ChatUtils;
@@ -77,22 +76,7 @@ public class WorldManager {
 
         GMWorld newWorld = new GMWorld(worldName);
         newWorld.createSettings(seed, environment, dataFolder);
-        // INTIALIZATION OF SETTINGS WAS SUCCESSFUL?
-        if (!newWorld.getWorldSettings().isInitialized())
-            return false;
-
-        // ADD WORLD TO LIST
-        this.addWorld(newWorld);
-
-        // CREATE WORLD
-        WorldCreator generator = new WorldCreator(worldName);
-        generator.seed(seed);
-        generator.environment(environment);
-        generator.createWorld();
-
-        // TODO: START THREAD TO START GENERATION
-
-        return true;
+        return newWorld.createBukkitWorld();
     }
 
     /**

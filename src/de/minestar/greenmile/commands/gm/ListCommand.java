@@ -39,7 +39,6 @@ public class ListCommand extends Command {
 
     @Override
     public void execute(String[] args, Player player) {
-
         if (worldSettings.isEmpty()) {
             ChatUtils.printError(player, Main.name, "GreenMile ueberwacht keine Welt!");
             return;

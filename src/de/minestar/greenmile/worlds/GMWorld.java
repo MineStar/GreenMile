@@ -90,15 +90,24 @@ public class GMWorld {
      *         <b>false</b> : if the world already exists or there was an
      *         internal error
      */
-    public static boolean createBukkitWorld(String worldName, Environment environment, long levelSeed) {
+    public boolean createBukkitWorld() {
         // WORLD ALREADY EXISTS
         if (Bukkit.getWorld(worldName) != null)
             return false;
 
+        // LOAD SETTINGS, IF THEY WERE NULL
+        if (this.settings == null) {
+            this.loadSettings(Main.getInstance().getDataFolder());
+        }
+
+        // SETTINGS ARE INITIALIZED COMPLETELY
+        if (!this.settings.isInitialized())
+            return false;
+
         // FINALLY LOAD THE WORLD
         WorldCreator generator = new WorldCreator(worldName);
-        generator.environment(environment);
-        generator.seed(levelSeed);
+        generator.environment(this.settings.getEnvironment());
+        generator.seed(this.settings.getLevelSeed());
         generator.createWorld();
         return true;
     }

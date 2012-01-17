@@ -36,8 +36,8 @@ public class WorldManager {
      */
     public WorldManager(File dataFolder) {
         this.worldList = new ArrayList<GMWorld>();
-        this.loadWorlds();
         this.dataFolder = dataFolder;
+        this.loadWorlds();
     }
 
     /**
@@ -69,13 +69,13 @@ public class WorldManager {
      *         <b>false</b> : the world already exists or the initialization of
      *         settings went wrong
      */
-    public boolean createWorld(String worldName, Environment environment, long seed, File dataFolder) {
+    public boolean createWorld(String worldName, Environment environment, long seed) {
         // WORLD EXISTS?
         if (worldExists(worldName))
             return false;
 
         GMWorld newWorld = new GMWorld(worldName);
-        newWorld.createSettings(seed, environment, dataFolder);
+        newWorld.createSettings(seed, environment, this.dataFolder);
         return newWorld.createBukkitWorld();
     }
 

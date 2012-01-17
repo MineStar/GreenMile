@@ -18,26 +18,25 @@
 
 package de.minestar.greenmile.commands.gm;
 
-import java.util.HashMap;
-
 import org.bukkit.ChatColor;
 import org.bukkit.World.Environment;
 import org.bukkit.entity.Player;
 
 import com.bukkit.gemo.utils.ChatUtils;
 
+import de.minestar.greenmile.Main;
 import de.minestar.minstarlibrary.commands.ExtendedCommand;
 
 public class CreateWorldCommand extends ExtendedCommand {
 
-    public CreateWorldCommand(String syntax, String arguments, String node, HashMap<String, Integer> worldSettings) {
+    public CreateWorldCommand(String syntax, String arguments, String node) {
         super(syntax, arguments, node);
     }
 
     @Override
     public void execute(String[] args, Player player) {
         Long seed = 1337l;
-        Environment env = Environment.NORMAL;
+        Environment environment = Environment.NORMAL;
 
         // GET WORLDNAME
         String worldName = args[0];
@@ -45,7 +44,7 @@ public class CreateWorldCommand extends ExtendedCommand {
         // CATCH ENVIRONMENT
         if (args.length >= 2) {
             try {
-                env = Environment.valueOf(args[1]);
+                environment = Environment.valueOf(args[1]);
                 // IS ENVIRONMENT CORRECT?
             } catch (Exception e) {
                 ChatUtils.printInfo(player, "[GreenMile]", ChatColor.GRAY, "Environment '" + args[1] + "' not found");
@@ -65,10 +64,21 @@ public class CreateWorldCommand extends ExtendedCommand {
 
         // TODO: CALL WORLDMANAGER TO CHECK IF WORLD ALREADY EXISTS?
         // IF SO: RETURN WITH ERROR
+        if (Main.getInstance().getWorldManager().worldExists(worldName)) {
+            ChatUtils.printError(player, pluginName, "Error while creating world '" + worldName + "'!");
+            ChatUtils.printInfo(player, pluginName, ChatColor.GRAY, "A world with that name does already exist.");
+            return;
+        }
 
-        // TODO: CALL WORLDMANAGER TO CREATE WORLD
+        // CALL WORLDMANAGER TO CREATE WORLD
+        boolean result = Main.getInstance().getWorldManager().createWorld(worldName, environment, seed);
 
-        // TODO: SAVE WORLD TO YML
+        if (result) {
+            ChatUtils.printSuccess(player, pluginName, "World '" + worldName + "' created!");
+        } else {
+            ChatUtils.printError(player, pluginName, "Error while creating world '" + worldName + "'!");
+            ChatUtils.printInfo(player, pluginName, ChatColor.GRAY, "There was an internal error while creating the worldsettings.");
+        }
     }
 
 }

@@ -26,6 +26,7 @@ import org.bukkit.event.Event;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.minestar.greenmile.commands.gm.ChangeSizeCommand;
+import de.minestar.greenmile.commands.gm.CreateWorldCommand;
 import de.minestar.greenmile.commands.gm.GreenMileCommand;
 import de.minestar.greenmile.commands.gm.ListCommand;
 import de.minestar.greenmile.commands.gm.StartCommand;
@@ -34,6 +35,7 @@ import de.minestar.greenmile.commands.gm.StopCommand;
 import de.minestar.greenmile.listener.GMPListener;
 import de.minestar.greenmile.threading.BorderThread;
 import de.minestar.greenmile.threading.ChunkGenerationThread;
+import de.minestar.greenmile.worlds.WorldManager;
 import de.minestar.minstarlibrary.commands.Command;
 import de.minestar.minstarlibrary.commands.CommandList;
 import de.minestar.minstarlibrary.utils.ChatUtils;
@@ -48,6 +50,8 @@ public class Main extends JavaPlugin {
     private CommandList cmdList;
 
     public static String name;
+
+    private WorldManager worldManager;
 
     public Main() {
         instance = this;
@@ -84,6 +88,8 @@ public class Main extends JavaPlugin {
         pListener = new GMPListener(map);
         server.getPluginManager().registerEvent(Event.Type.PLAYER_TELEPORT, pListener, Event.Priority.Highest, this);
 
+        this.worldManager = new WorldManager(this.getDataFolder());
+
         ChatUtils.printConsoleInfo("Version " + getDescription().getVersion() + " enabled!", name);
     }
 
@@ -95,6 +101,7 @@ public class Main extends JavaPlugin {
         // @formatter:off
         cmdList = new CommandList(new Command[]{
                 new GreenMileCommand("/gm", "", "gm.status", new Command[]{
+                        new CreateWorldCommand("createworld", "<WorldName>", "gm.createworld"),
                         new StartCommand("start", "<WorldName>", "gm.start", map, this, speed),
                         new StopCommand("stop", "", "gm.stop"),
                         new StatusCommand("status", "", "gm.status"),
@@ -152,5 +159,12 @@ public class Main extends JavaPlugin {
      */
     public static Main getInstance() {
         return instance;
+    }
+
+    /**
+     * @return the worldManager
+     */
+    public WorldManager getWorldManager() {
+        return worldManager;
     }
 }

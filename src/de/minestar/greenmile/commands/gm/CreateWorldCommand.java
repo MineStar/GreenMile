@@ -18,6 +18,7 @@
 
 package de.minestar.greenmile.commands.gm;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World.Environment;
 import org.bukkit.entity.Player;
@@ -31,8 +32,8 @@ public class CreateWorldCommand extends ExtendedCommand {
 
     public CreateWorldCommand(String syntax, String arguments, String node) {
         super(syntax, arguments, node);
+        this.description = "Create a new world";
     }
-
     @Override
     public void execute(String[] args, Player player) {
         Long seed = 1337l;
@@ -62,9 +63,9 @@ public class CreateWorldCommand extends ExtendedCommand {
             }
         }
 
-        // TODO: CALL WORLDMANAGER TO CHECK IF WORLD ALREADY EXISTS?
+        // CALL WORLDMANAGER TO CHECK IF WORLD ALREADY EXISTS?
         // IF SO: RETURN WITH ERROR
-        if (Main.getInstance().getWorldManager().worldExists(worldName)) {
+        if (Main.getInstance().getWorldManager().worldExists(worldName) || Bukkit.getServer().getWorld(worldName) != null) {
             ChatUtils.printError(player, pluginName, "Error while creating world '" + worldName + "'!");
             ChatUtils.printInfo(player, pluginName, ChatColor.GRAY, "A world with that name does already exist.");
             return;

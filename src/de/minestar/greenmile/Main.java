@@ -27,6 +27,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import de.minestar.greenmile.commands.gm.ChangeSizeCommand;
 import de.minestar.greenmile.commands.gm.CreateWorldCommand;
+import de.minestar.greenmile.commands.gm.GMTeleportCommand;
 import de.minestar.greenmile.commands.gm.GreenMileCommand;
 import de.minestar.greenmile.commands.gm.ListCommand;
 import de.minestar.greenmile.commands.gm.StartCommand;
@@ -99,8 +100,9 @@ public class Main extends JavaPlugin {
         ChatUtils.printConsoleInfo("Default speed of generation thread is " + speed, name);
 
         // @formatter:off
-        cmdList = new CommandList(new Command[]{
+        cmdList = new CommandList(new Command[]{                
                 new GreenMileCommand("/gm", "", "gm.status", new Command[]{
+                        new GMTeleportCommand("tp", "<WorldName>", "gm.teleport"),
                         new CreateWorldCommand("createworld", "<WorldName> [Environment [levelseed]]", "gm.createworld"),
                         new StartCommand("start", "<WorldName>", "gm.start", map, this, speed),
                         new StopCommand("stop", "", "gm.stop"),

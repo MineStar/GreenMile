@@ -97,6 +97,20 @@ public class WorldManager {
     }
 
     /**
+     * 
+     * @param worldName
+     * @return
+     */
+    public GMWorld getGMWorld(String worldName) {
+        for (GMWorld world : this.worldList) {
+            if (world.getWorldName().equals(worldName)) {
+                return world;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Load worlds
      */
     private void loadWorlds() {

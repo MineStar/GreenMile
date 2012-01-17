@@ -32,6 +32,10 @@ public class GMWorldSettings {
     private boolean spawnAnimals = true;
     private boolean autoSave = true;
     private boolean keepSpawnLoaded = true;
+
+    // the maximum size of the map
+    private int maxSize;
+
     private Difficulty difficulty;
 
     public GMWorldSettings(String worldName, File dataFolder) {
@@ -55,12 +59,14 @@ public class GMWorldSettings {
                 ChatUtils.printConsoleError("Difficulty '" + diffi + "' from world '" + worldName + "' doesn't find a value of Difficulty!", Main.name);
                 return;
             }
-            ChatUtils.printConsoleInfo("World '" + worldName + "' loaded: SpawnMonster=" + spawnMonsters + ",SpawnAnimals=" + spawnAnimals + ",AutoSave=" + autoSave + ",KeepSpawnLoaded=" + keepSpawnLoaded + ",Difficulty=" + difficulty.toString(), Main.name);
+
+            maxSize = config.getInt("size");
+
+            ChatUtils.printConsoleInfo("World '" + worldName + "' loaded: SpawnMonster=" + spawnMonsters + ",SpawnAnimals=" + spawnAnimals + ",AutoSave=" + autoSave + ",KeepSpawnLoaded=" + keepSpawnLoaded + ",Difficulty=" + difficulty.toString() + ",Size=" + maxSize, Main.name);
         } catch (Exception e) {
             ChatUtils.printConsoleException(e, "Can't load settings for world " + worldName + "!", Main.name);
         }
     }
-
     public boolean isSpawnMonsters() {
         return spawnMonsters;
     }
@@ -99,6 +105,14 @@ public class GMWorldSettings {
 
     public void setKeepSpawnLoaded(boolean keepSpawnLoaded) {
         this.keepSpawnLoaded = keepSpawnLoaded;
+    }
+
+    public int getMaxSize() {
+        return maxSize;
+    }
+
+    public void setMaxSize(int maxSize) {
+        this.maxSize = maxSize;
     }
 
 }

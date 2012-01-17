@@ -51,19 +51,25 @@ public class WorldManager {
      *            : the levelseed
      */
     public void addWorld(String worldName, String environment, long seed) {
-        if (worldExists(worldName))
-            return;
 
         // GET ENVIRONMENT FROM STRING
         Environment env = null;
         try {
             env = Environment.valueOf(environment);
         } catch (Exception e) {
+            ChatUtils.printConsoleException(e, "Can't find an Environment named '" + environment + "'!", Main.name);
             return;
         }
 
-        // ADD WORLD TO LIST
-        worldList.add(new GMWorld(worldName, env, seed, dataFolder));
+        this.addWorld(worldName, env, seed);
+    }
+    public void addWorld(String worldName, Environment environment, long seed) {
+        if (worldExists(worldName)) {
+            ChatUtils.printConsoleWarning("World '" + worldName + "' already exists!", Main.name);
+            return;
+        }
+
+        worldList.add(new GMWorld(worldName, environment, seed, dataFolder));
     }
 
     /**
@@ -81,7 +87,7 @@ public class WorldManager {
             return;
 
         // ADD WORLD TO LIST
-        this.addWorld(worldName, environment.toString(), seed);
+        this.addWorld(worldName, environment, seed);
 
         // CREATE WORLD
         WorldCreator generator = new WorldCreator(worldName);
@@ -118,7 +124,7 @@ public class WorldManager {
             for (File f : files) {
                 String fileName = f.getName().toLowerCase();
                 if (fileName.endsWith(".yml") && !fileName.startsWith("config"))
-                    this.worldList.add(new GMWorld(fileName.substring(0, fileName.length() - 3), dataFolder));
+                    this.worldList.add(new GMWorld(fileName.substring(0, fileName.length() - 4), dataFolder));
             }
         } catch (Exception e) {
             ChatUtils.printConsoleException(e, "Can't load worlds from " + dataFolder, Main.name);

@@ -37,8 +37,8 @@ public class StartCommand extends ExtendedCommand {
     private final Plugin plugin;
     private final int speed;
 
-    public StartCommand(String syntax, String arguments, String node, HashMap<String, Integer> map, Plugin plugin, int speed) {
-        super(syntax, arguments, node);
+    public StartCommand(String pluginName, String syntax, String arguments, String node, HashMap<String, Integer> map, Plugin plugin, int speed) {
+        super(pluginName, syntax, arguments, node);
         this.map = map;
         this.plugin = plugin;
         this.speed = speed;

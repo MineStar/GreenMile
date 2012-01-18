@@ -166,4 +166,11 @@ public class WorldManager {
             ChatUtils.printConsoleException(e, "Can't load worlds from " + dataFolder, Main.name);
         }
     }
+
+    /**
+     * @return the dataFolder
+     */
+    public File getDataFolder() {
+        return dataFolder;
+    }
 }

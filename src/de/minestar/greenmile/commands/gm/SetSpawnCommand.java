@@ -18,43 +18,35 @@
 
 package de.minestar.greenmile.commands.gm;
 
-import org.bukkit.ChatColor;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import com.bukkit.gemo.utils.ChatUtils;
+
 import de.minestar.greenmile.Main;
+import de.minestar.greenmile.worlds.GMWorld;
 import de.minestar.greenmile.worlds.WorldManager;
-import de.minestar.minstarlibrary.commands.Command;
-import de.minestar.minstarlibrary.utils.ChatUtils;
+import de.minestar.minstarlibrary.commands.ExtendedCommand;
 
-public class GMTeleportCommand extends Command {
+public class SetSpawnCommand extends ExtendedCommand {
 
-    public GMTeleportCommand(String pluginName, String syntax, String arguments, String node) {
+    public SetSpawnCommand(String pluginName, String syntax, String arguments, String node) {
         super(pluginName, syntax, arguments, node);
-        this.description = "Teleport to a world";
+        this.description = "Set the spawn of the current world";
     }
-
     @Override
     public void execute(String[] args, Player player) {
-        String worldName = args[0];
-
+        String worldName = player.getWorld().getName();
         WorldManager manager = Main.getInstance().getWorldManager();
-
-        // THE WORLD DOES NOT EXIST => RETURN
         if (!manager.worldExists(worldName)) {
-            ChatUtils.printError(player, pluginName, "World '" + worldName + "' does not exist!");
+            ChatUtils.printError(player, pluginName, "You need to import this world!");
             return;
         }
-
-        // GET BUKKITWORLD
-        World bukkitWorld = manager.getGMWorld(worldName).getBukkitWorld();
-        if (bukkitWorld == null) {
-            ChatUtils.printError(player, pluginName, "Bukkitworld '" + worldName + "' does not exist!");
-            return;
-        }
-
-        // TP TO WORLD
-        player.teleport(bukkitWorld.getSpawnLocation());
-        ChatUtils.printInfo(player, pluginName, ChatColor.AQUA, "Welcome to '" + worldName + "'!");
+        GMWorld thisWorld = manager.getGMWorld(worldName);
+        thisWorld.getWorldSettings().setWorldSpawn(player.getLocation());
+        thisWorld.updateWorld();
+        if (thisWorld.getWorldSettings().saveSettings(worldName, manager.getDataFolder()))
+            ChatUtils.printSuccess(player, pluginName, "Spawn set.");
+        else
+            ChatUtils.printError(player, pluginName, "Error while saving settings.");
     }
 }

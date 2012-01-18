@@ -29,8 +29,8 @@ import de.minestar.minstarlibrary.commands.ExtendedCommand;
 
 public class ImportWorldCommand extends ExtendedCommand {
 
-    public ImportWorldCommand(String syntax, String arguments, String node) {
-        super(syntax, arguments, node);
+    public ImportWorldCommand(String pluginName, String syntax, String arguments, String node) {
+        super(pluginName, syntax, arguments, node);
         this.description = "Create a new world";
     }
     @Override

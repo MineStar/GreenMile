@@ -31,6 +31,7 @@ import de.minestar.greenmile.commands.gm.GMTeleportCommand;
 import de.minestar.greenmile.commands.gm.GreenMileCommand;
 import de.minestar.greenmile.commands.gm.ImportWorldCommand;
 import de.minestar.greenmile.commands.gm.ListCommand;
+import de.minestar.greenmile.commands.gm.SetSpawnCommand;
 import de.minestar.greenmile.commands.gm.StartCommand;
 import de.minestar.greenmile.commands.gm.StatusCommand;
 import de.minestar.greenmile.commands.gm.StopCommand;
@@ -103,15 +104,16 @@ public class Main extends JavaPlugin {
 
         // @formatter:off
         cmdList = new CommandList(new Command[]{                
-                new GreenMileCommand("/gm", "", "gm.status", new Command[]{
-                        new GMTeleportCommand("tp", "<WorldName>", "gm.teleport"),
-                        new CreateWorldCommand("createworld", "<WorldName> [Environment [levelseed]]", "gm.createworld"),
-                        new ImportWorldCommand("importworld", "<WorldName>", "gm.importworld"),                        
-                        new StartCommand("start", "<WorldName>", "gm.start", map, this, speed),
-                        new StopCommand("stop", "", "gm.stop"),
-                        new StatusCommand("status", "", "gm.status"),
-                        new ChangeSizeCommand("change","<WorldName> <Size>","gm.change", map, this, speed),
-                        new ListCommand("list", "", "gm.list", map)
+                new GreenMileCommand("[GreenMile]", "/gm", "", "gm.status", new Command[]{
+                        new GMTeleportCommand("[GreenMile]", "tp", "<WorldName>", "gm.teleport"),
+                        new CreateWorldCommand("[GreenMile]", "createworld", "<WorldName> [Environment [levelseed]]", "gm.createworld"),
+                        new ImportWorldCommand("[GreenMile]", "importworld", "<WorldName>", "gm.importworld"),        
+                        new SetSpawnCommand("[GreenMile]", "setspawn", "", "gm.setspawn"),    
+                        new StartCommand("[GreenMile]", "start", "<WorldName>", "gm.start", map, this, speed),
+                        new StopCommand("[GreenMile]", "stop", "", "gm.stop"),
+                        new StatusCommand("[GreenMile]", "status", "", "gm.status"),
+                        new ChangeSizeCommand("[GreenMile]", "change","<WorldName> <Size>","gm.change", map, this, speed),
+                        new ListCommand("[GreenMile]", "list", "", "gm.list", map)
                 })
         });
         // @formatter:on

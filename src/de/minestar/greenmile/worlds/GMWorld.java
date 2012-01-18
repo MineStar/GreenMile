@@ -153,16 +153,17 @@ public class GMWorld {
     }
 
     public void updateWorld() {
-        World w = Bukkit.getServer().getWorld(worldName);
-        if (w == null) {
+        World bukkitWorld = Bukkit.getServer().getWorld(worldName);
+        if (bukkitWorld == null) {
             ChatUtils.printConsoleError("Can't access world '" + worldName + "'!", Main.name);
             return;
         }
 
         // UPDATE THE WORLD
-        w.setSpawnFlags(settings.isSpawnMonsters(), settings.isSpawnAnimals());
-        w.setAutoSave(settings.isAutoSave());
-        w.setDifficulty(settings.getDifficulty());
-        w.setKeepSpawnInMemory(settings.isKeepSpawnLoaded());
+        bukkitWorld.setSpawnFlags(settings.isSpawnMonsters(), settings.isSpawnAnimals());
+        bukkitWorld.setAutoSave(settings.isAutoSave());
+        bukkitWorld.setDifficulty(settings.getDifficulty());
+        bukkitWorld.setKeepSpawnInMemory(settings.isKeepSpawnLoaded());
+        bukkitWorld.setSpawnLocation(this.settings.getWorldSpawn().getBlockX(), this.settings.getWorldSpawn().getBlockY(), this.settings.getWorldSpawn().getBlockZ());
     }
 }

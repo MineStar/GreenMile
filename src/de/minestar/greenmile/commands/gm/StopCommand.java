@@ -27,8 +27,8 @@ import de.minestar.minstarlibrary.utils.ChatUtils;
 
 public class StopCommand extends Command {
 
-    public StopCommand(String syntax, String arguments, String node) {
-        super(syntax, arguments, node);
+    public StopCommand(String pluginName, String syntax, String arguments, String node) {
+        super(pluginName, syntax, arguments, node);
         this.description = "Stopt den Renderthread";
     }
 

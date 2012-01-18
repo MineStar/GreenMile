@@ -25,7 +25,7 @@ import de.minestar.minstarlibrary.commands.SuperCommand;
 
 public class GreenMileCommand extends SuperCommand {
 
-    public GreenMileCommand(String syntax, String arguments, String node, Command[] subCommands) {
+    public GreenMileCommand(String pluginName, String syntax, String arguments, String node, Command[] subCommands) {
         super(syntax, arguments, node, subCommands);
     }
 

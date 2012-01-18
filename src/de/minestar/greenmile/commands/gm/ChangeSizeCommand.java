@@ -39,8 +39,8 @@ public class ChangeSizeCommand extends ExtendedCommand {
     private final Plugin plugin;
     private final int speed;
 
-    public ChangeSizeCommand(String syntax, String arguments, String node, HashMap<String, Integer> map, Plugin plugin, int speed) {
-        super(syntax, arguments, node);
+    public ChangeSizeCommand(String pluginName, String syntax, String arguments, String node, HashMap<String, Integer> map, Plugin plugin, int speed) {
+        super(pluginName, syntax, arguments, node);
         this.map = map;
         this.plugin = plugin;
         this.speed = speed;

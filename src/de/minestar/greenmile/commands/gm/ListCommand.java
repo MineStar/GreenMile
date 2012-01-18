@@ -32,8 +32,8 @@ public class ListCommand extends Command {
 
     private HashMap<String, Integer> worldSettings;
 
-    public ListCommand(String syntax, String arguments, String node, HashMap<String, Integer> worldSettings) {
-        super(syntax, arguments, node);
+    public ListCommand(String pluginName, String syntax, String arguments, String node, HashMap<String, Integer> worldSettings) {
+        super(pluginName, syntax, arguments, node);
         this.worldSettings = worldSettings;
     }
 

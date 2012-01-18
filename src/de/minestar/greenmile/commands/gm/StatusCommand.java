@@ -27,8 +27,8 @@ import de.minestar.minstarlibrary.utils.ChatUtils;
 
 public class StatusCommand extends Command {
 
-    public StatusCommand(String syntax, String arguments, String node) {
-        super(syntax, arguments, node);
+    public StatusCommand(String pluginName, String syntax, String arguments, String node) {
+        super(pluginName, syntax, arguments, node);
         this.description = "Zeigt Status des Threads an";
     }
 

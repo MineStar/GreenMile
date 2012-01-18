@@ -67,7 +67,7 @@ public class GMWorldSettings {
         this.initialized = this.loadSettings(worldName, dataFolder);
     }
 
-    private boolean saveSettings(String worldName, File dataFolder) {
+    public boolean saveSettings(String worldName, File dataFolder) {
         File file = new File(dataFolder, "config_" + worldName + ".yml");
         // DELETE FILE IF IT EXISTS
         if (file.exists())

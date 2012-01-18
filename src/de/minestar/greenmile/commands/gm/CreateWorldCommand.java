@@ -30,10 +30,11 @@ import de.minestar.minstarlibrary.commands.ExtendedCommand;
 
 public class CreateWorldCommand extends ExtendedCommand {
 
-    public CreateWorldCommand(String syntax, String arguments, String node) {
-        super(syntax, arguments, node);
+    public CreateWorldCommand(String pluginName, String syntax, String arguments, String node) {
+        super(pluginName, syntax, arguments, node);
         this.description = "Create a new world";
     }
+
     @Override
     public void execute(String[] args, Player player) {
         Long seed = 1337l;

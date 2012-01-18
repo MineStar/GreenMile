@@ -27,6 +27,7 @@ import org.bukkit.World.Environment;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import de.minestar.greenmile.Main;
+import de.minestar.greenmile.helper.EnumHelper;
 import de.minestar.minstarlibrary.utils.ChatUtils;
 
 public class GMWorldSettings {
@@ -106,13 +107,22 @@ public class GMWorldSettings {
 
             YamlConfiguration config = new YamlConfiguration();
             config.load(file);
+            Environment environment = EnumHelper.getEnvironment(config.getString("settings.environment", this.environment.toString()));
+            Difficulty difficulty = EnumHelper.getDifficulty(config.getString("settings.difficulty", this.difficulty.toString()));
+            if (environment == null) {
+                throw new Exception("Environment not found!");
+            }
+            if (difficulty == null) {
+                throw new Exception("Difficulty not found!");
+            }
+
             this.setLevelSeed(config.getLong("settings.levelSeed", this.levelSeed));
-            this.setEnvironment(Environment.valueOf(config.getString("settings.environment", this.environment.toString())));
+            this.setEnvironment(environment);
             this.setSpawnMonsters(config.getBoolean("settings.spawnMonsters", this.spawnMonsters));
             this.setSpawnAnimals(config.getBoolean("settings.spawnAnimals", this.spawnAnimals));
             this.setAutoSave(config.getBoolean("settings.autoSave", this.autoSave));
             this.setKeepSpawnLoaded(config.getBoolean("settings.keepSpawnLoaded", this.keepSpawnLoaded));
-            this.setDifficulty(Difficulty.valueOf(config.getString("settings.difficulty", this.difficulty.toString())));
+            this.setDifficulty(difficulty);
             this.setMaxSize(config.getInt("settings.maxSize", this.maxSize));
             this.setWorldSpawn(new Location(Bukkit.getWorld(worldName), config.getDouble("settings.spawn.x", 0d), config.getDouble("settings.spawn.y", 128), config.getDouble("settings.spawn.z", 0d), (float) config.getDouble("settings.spawn.yaw", 0d), (float) config.getDouble("settings.spawn.pitch", 0d)));
             ChatUtils.printConsoleInfo("World '" + worldName + "' loaded: levelSeed=" + levelSeed + ", Difficulty=" + difficulty.toString() + ", SpawnMonster=" + spawnMonsters + ", SpawnAnimals=" + spawnAnimals + ", AutoSave=" + autoSave + ", KeepSpawnLoaded=" + keepSpawnLoaded + ", Difficulty=" + difficulty.toString() + ", MaxSize=" + maxSize, Main.name);
@@ -122,7 +132,6 @@ public class GMWorldSettings {
             return false;
         }
     }
-
     /**
      * @return the initialized
      */

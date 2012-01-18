@@ -26,6 +26,7 @@ import org.bukkit.entity.Player;
 import com.bukkit.gemo.utils.ChatUtils;
 
 import de.minestar.greenmile.Main;
+import de.minestar.greenmile.helper.EnumHelper;
 import de.minestar.minstarlibrary.commands.ExtendedCommand;
 
 public class CreateWorldCommand extends ExtendedCommand {
@@ -45,10 +46,8 @@ public class CreateWorldCommand extends ExtendedCommand {
 
         // CATCH ENVIRONMENT
         if (args.length >= 2) {
-            try {
-                environment = Environment.valueOf(args[1]);
-                // IS ENVIRONMENT CORRECT?
-            } catch (Exception e) {
+            environment = EnumHelper.getEnvironment(args[1]);
+            if (environment == null) {
                 ChatUtils.printInfo(player, "[GreenMile]", ChatColor.GRAY, "Environment '" + args[1] + "' not found");
                 return;
             }

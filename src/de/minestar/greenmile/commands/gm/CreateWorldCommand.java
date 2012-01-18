@@ -59,8 +59,7 @@ public class CreateWorldCommand extends ExtendedCommand {
             try {
                 seed = Long.parseLong(args[2]);
             } catch (Exception e) {
-                ChatUtils.printError(player, "[GreenMile]", "Could not parse levelseed '" + args[2] + "'.");
-                return;
+                seed = (long) args[2].hashCode();
             }
         }
 

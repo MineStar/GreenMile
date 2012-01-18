@@ -77,8 +77,10 @@ public class WorldManager {
             return false;
 
         GMWorld newWorld = new GMWorld(worldName);
+        boolean result = GMWorld.createBukkitWorld(worldName, environment, seed);
         newWorld.createSettings(seed, environment, this.dataFolder);
-        return newWorld.createBukkitWorld();
+        this.addWorld(newWorld);
+        return result;
     }
 
     /**
@@ -97,7 +99,7 @@ public class WorldManager {
         // BUKKITWORLD DOES NOT EXIST?
         World bukkitWorld = Bukkit.getWorld(worldName);
         if (bukkitWorld == null)
-            return false;                  
+            return false;
 
         // FINALLY IMPORT THE WORLD
         GMWorld newWorld = new GMWorld(worldName);

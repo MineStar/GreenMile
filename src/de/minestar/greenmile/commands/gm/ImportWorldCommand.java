@@ -44,7 +44,7 @@ public class ImportWorldCommand extends ExtendedCommand {
             ChatUtils.printError(player, pluginName, "This world does already exist!");
             return;
         }
-        
+
         // CALL WORLDMANAGER TO CHECK IF BUKKITWORLD NOT EXISTS?
         // IF SO: RETURN WITH ERROR
         if (Bukkit.getWorld(worldName) == null) {

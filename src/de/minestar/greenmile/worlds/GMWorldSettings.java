@@ -20,7 +20,9 @@ package de.minestar.greenmile.worlds;
 
 import java.io.File;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
+import org.bukkit.Location;
 import org.bukkit.World.Environment;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -33,6 +35,7 @@ public class GMWorldSettings {
     private long levelSeed = 1337l;
     private Environment environment = Environment.NORMAL;
 
+    private Location worldSpawn = null;
     private boolean spawnMonsters = true;
     private boolean spawnAnimals = true;
     private boolean autoSave = true;
@@ -48,6 +51,7 @@ public class GMWorldSettings {
      * @param environment
      */
     public GMWorldSettings(String worldName, long levelSeed, Environment environment, File dataFolder) {
+        this.worldSpawn = Bukkit.getWorld(worldName).getSpawnLocation();
         this.levelSeed = levelSeed;
         this.environment = environment;
         this.initialized = this.saveSettings(worldName, dataFolder);
@@ -79,6 +83,11 @@ public class GMWorldSettings {
             config.set("settings.autoSave", this.autoSave);
             config.set("settings.keepSpawnLoaded", this.keepSpawnLoaded);
             config.set("settings.maxSize", this.maxSize);
+            config.set("settings.spawn.x", this.worldSpawn.getX());
+            config.set("settings.spawn.y", this.worldSpawn.getY());
+            config.set("settings.spawn.z", this.worldSpawn.getZ());
+            config.set("settings.spawn.pitch", this.worldSpawn.getPitch());
+            config.set("settings.spawn.yaw", this.worldSpawn.getYaw());
             config.save(file);
         } catch (Exception e) {
             ChatUtils.printConsoleException(e, "Can't save settings for world " + worldName + "!", Main.name);
@@ -105,6 +114,7 @@ public class GMWorldSettings {
             this.setKeepSpawnLoaded(config.getBoolean("settings.keepSpawnLoaded", this.keepSpawnLoaded));
             this.setDifficulty(Difficulty.valueOf(config.getString("settings.difficulty", this.difficulty.toString())));
             this.setMaxSize(config.getInt("settings.maxSize", this.maxSize));
+            this.setWorldSpawn(new Location(Bukkit.getWorld(worldName), config.getDouble("settings.spawn.x", 0d), config.getDouble("settings.spawn.y", 128), config.getDouble("settings.spawn.z", 0d), (float) config.getDouble("settings.spawn.yaw", 0d), (float) config.getDouble("settings.spawn.pitch", 0d)));
             ChatUtils.printConsoleInfo("World '" + worldName + "' loaded: levelSeed=" + levelSeed + ", Difficulty=" + difficulty.toString() + ", SpawnMonster=" + spawnMonsters + ", SpawnAnimals=" + spawnAnimals + ", AutoSave=" + autoSave + ", KeepSpawnLoaded=" + keepSpawnLoaded + ", Difficulty=" + difficulty.toString() + ", MaxSize=" + maxSize, Main.name);
             return true;
         } catch (Exception e) {
@@ -196,6 +206,21 @@ public class GMWorldSettings {
 
     public void setMaxSize(int maxSize) {
         this.maxSize = maxSize;
+    }
+
+    /**
+     * @return the worldSpawn
+     */
+    public Location getWorldSpawn() {
+        return worldSpawn;
+    }
+
+    /**
+     * @param worldSpawn
+     *            the worldSpawn to set
+     */
+    public void setWorldSpawn(Location worldSpawn) {
+        this.worldSpawn = worldSpawn;
     }
 
 }

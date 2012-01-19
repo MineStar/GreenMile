@@ -22,6 +22,7 @@ import de.minestar.greenmile.listener.GMPListener;
 import de.minestar.greenmile.threading.BorderThread;
 import de.minestar.greenmile.threading.ChunkGenerationThread;
 import de.minestar.greenmile.worlds.WorldManager;
+import de.minestar.minstarlibrary.commands.Command;
 import de.minestar.minstarlibrary.commands.CommandList;
 import de.minestar.minstarlibrary.utils.ChatUtils;
 
@@ -33,10 +34,17 @@ public class Main extends JavaPlugin {
     public static String name;
     private WorldManager worldManager;
 
+    /**
+     * Constructor
+     */
     public Main() {
-        instance = this;
+        if (instance == null)
+            instance = this;
     }
 
+    /**
+     * ON DISABLE
+     */
     public void onDisable() {
         if (chunkThread != null) {
             chunkThread.saveConfig();
@@ -45,37 +53,76 @@ public class Main extends JavaPlugin {
         ChatUtils.printConsoleInfo("Disabled!", name);
     }
 
+    /**
+     * ON ENABLE
+     */
     public void onEnable() {
         name = "[" + getDescription().getName() + "]";
 
+        // CREATE DATAFOLDER
         File dataFolder = getDataFolder();
         dataFolder.mkdirs();
 
-        this.worldManager = new WorldManager(getDataFolder());
+        // INIT WORLDMANAGER
+        this.worldManager = new WorldManager(this.getDataFolder());
 
+        // INIT COMMANDLIST
         initCommandList();
 
+        // CREATE BORDERTHREAD
         Runnable borderThread = new BorderThread(this.worldManager);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, borderThread, 300L, 100L);
 
+        // CREATE LISTENER
         this.pListener = new GMPListener(this.worldManager);
         Bukkit.getPluginManager().registerEvent(Event.Type.PLAYER_TELEPORT, this.pListener, Event.Priority.Highest, this);
 
+        // PRINT INFO
         ChatUtils.printConsoleInfo("Version " + getDescription().getVersion() + " enabled!", name);
     }
 
+    /**
+     * INIT COMMANDLIST
+     */
     private void initCommandList() {
         int speed = getConfig().getInt("speed", 5);
         ChatUtils.printConsoleInfo("Default speed of generation thread is " + speed, name);
 
-        this.cmdList = new CommandList(new de.minestar.minstarlibrary.commands.Command[]{new GreenMileCommand("[GreenMile]", "/gm", "", "gm.status", new de.minestar.minstarlibrary.commands.Command[]{new GMTeleportCommand("[GreenMile]", "tp", "<WorldName>", "gm.teleport", this.worldManager), new CreateWorldCommand("[GreenMile]", "createworld", "<WorldName> [Environment [levelseed]]", "gm.createworld", this.worldManager), new ImportWorldCommand("[GreenMile]", "importworld", "<WorldName>", "gm.importworld", this.worldManager), new SetSpawnCommand("[GreenMile]", "setspawn", "", "gm.setspawn", this.worldManager), new StartCommand("[GreenMile]", "start", "<WorldName>", "gm.start", this.worldManager, this, speed), new StopCommand("[GreenMile]", "stop", "", "gm.stop"), new StatusCommand("[GreenMile]", "status", "", "gm.status"), new ChangeSizeCommand("[GreenMile]", "change", "<WorldName> <Size>", "gm.change", this.worldManager, this, speed), new ListCommand("[GreenMile]", "list", "", "gm.list", this.worldManager)}), new SpawnCommand("[GreenMile]", "/spawn", "[WorldName]", "", this.worldManager)});
+        //@formatter:off;
+        this.cmdList = new CommandList(
+                new Command[]
+                {
+                        new GreenMileCommand("[GreenMile]", "/gm", "", "gm.status", 
+                                new Command[]
+                                {
+                                    new GMTeleportCommand("[GreenMile]", "tp", "<WorldName>", "gm.teleport", this.worldManager), 
+                                    new CreateWorldCommand("[GreenMile]", "createworld", "<WorldName> [Environment [levelseed]]", "gm.createworld", this.worldManager), 
+                                    new ImportWorldCommand("[GreenMile]", "importworld", "<WorldName>", "gm.importworld", this.worldManager), 
+                                    new SetSpawnCommand("[GreenMile]", "setspawn", "", "gm.setspawn", this.worldManager), 
+                                    new StartCommand("[GreenMile]", "start", "<WorldName>", "gm.start", this.worldManager, this, speed), 
+                                    new StopCommand("[GreenMile]", "stop", "", "gm.stop"), new StatusCommand("[GreenMile]", "status", "", "gm.status"), 
+                                    new ChangeSizeCommand("[GreenMile]", "change", "<WorldName> <Size>", "gm.change", this.worldManager, this, speed), 
+                                    new ListCommand("[GreenMile]", "list", "", "gm.list", this.worldManager)
+                                }
+                        ), 
+                        new SpawnCommand("[GreenMile]", "/spawn", "[WorldName]", "", this.worldManager)
+                }
+         );
+        // @formatter: on;
     }
 
+    /**
+     * HANDLE COMMANDS
+     */
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         this.cmdList.handleCommand(sender, label, args);
         return true;
     }
 
+    /**
+     * GET PLUGIN-INSTANCE
+     * @return the Maininstance of GreenMile
+     */
     public static Main getInstance() {
         return instance;
     }

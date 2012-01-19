@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.World.Environment;
 import org.bukkit.WorldCreator;
 
 import de.minestar.greenmile.Main;
@@ -11,32 +12,47 @@ import de.minestar.minstarlibrary.utils.ChatUtils;
 
 public class GMWorld {
     private String worldName;
-    private GMWorldSettings settings;
+    private GMWorldSettings worldSettings;
     private GMWorldEventOptions eventSettings;
 
+    /**
+     * Constructor
+     * 
+     * @param worldName
+     * @param dataFolder
+     */
     public GMWorld(String worldName, File dataFolder) {
         this.worldName = worldName;
         this.eventSettings = new GMWorldEventOptions(worldName, dataFolder);
     }
 
+    /**
+     * LOAD SETTINGS
+     * 
+     * @param dataFolder
+     */
     public void loadSettings(File dataFolder) {
-        this.settings = new GMWorldSettings(getWorldName(), dataFolder);
+        this.worldSettings = new GMWorldSettings(getWorldName(), dataFolder);
     }
 
-    public void createSettings(long levelSeed, World.Environment environment, File dataFolder) {
-        this.settings = new GMWorldSettings(getWorldName(), levelSeed, environment, dataFolder);
+    /**
+     * CREATE SETTINGS
+     * 
+     * @param levelSeed
+     * @param environment
+     * @param dataFolder
+     */
+    public void createSettings(long levelSeed, Environment environment, File dataFolder) {
+        this.worldSettings = new GMWorldSettings(getWorldName(), levelSeed, environment, dataFolder);
+        this.eventSettings.saveSettings();
     }
 
-    public GMWorldSettings getWorldSettings() {
-        return this.settings;
-    }
-
-    public void setWorldSettings(GMWorldSettings settings) {
-        this.settings = settings;
-    }
-
+    /**
+     * GET BUKKITWORLD
+     * 
+     * @return the bukkitworld, of null if not found
+     */
     public World getBukkitWorld() {
-        System.out.println("worldname: " + this.worldName);
         return Bukkit.getServer().getWorld(this.worldName);
     }
 
@@ -45,57 +61,83 @@ public class GMWorld {
             return false;
         }
 
-        WorldCreator generator = new WorldCreator(worldName);
-        generator.environment(environment);
-        generator.seed(levelSeed);
-        generator.createWorld();
-        return true;
+        // GENERATE THE WORLD
+        try {
+            WorldCreator generator = new WorldCreator(worldName);
+            generator.environment(environment);
+            generator.seed(levelSeed);
+            generator.createWorld();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
+    /**
+     * LOAD BUKKIT WORLD
+     * 
+     * @return
+     */
     public boolean loadBukkitWorld() {
-        if (this.settings == null) {
+        if (this.worldSettings == null) {
             loadSettings(Main.getInstance().getDataFolder());
         }
 
-        if (!this.settings.isInitialized()) {
+        if (!this.worldSettings.isInitialized()) {
             return false;
         }
 
-        WorldCreator generator = new WorldCreator(this.worldName);
-        generator.environment(this.settings.getEnvironment());
-        generator.seed(this.settings.getLevelSeed());
-        generator.createWorld();
-
-        return true;
+        // GENERATE THE WORLD
+        try {
+            WorldCreator generator = new WorldCreator(this.worldName);
+            generator.environment(this.worldSettings.getEnvironment());
+            generator.seed(this.worldSettings.getLevelSeed());
+            generator.createWorld();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
+    /**
+     * @return the worldname
+     */
     public String getWorldName() {
         return this.worldName;
     }
 
-    public void setWorldName(String worldName) {
-        this.worldName = worldName;
-    }
-
+    /**
+     * @return the eventSettings
+     */
     public GMWorldEventOptions getEventSettings() {
         return this.eventSettings;
     }
 
+    /**
+     * UPDATE BUKKITWORLD
+     */
     public void updateBukkitWorld() {
+        // IS THERE A BUKKIT WORLD? IF NOT => RETURN
         World bukkitWorld = Bukkit.getServer().getWorld(this.worldName);
         if (bukkitWorld == null) {
-            ChatUtils.printConsoleError("Can't access world '" + this.worldName + "'!", Main.name);
+            ChatUtils.printConsoleError("Can't find bukkitworld '" + this.worldName + "'!", Main.name);
             return;
         }
 
-        bukkitWorld.setSpawnFlags(this.settings.isSpawnMonsters(), this.settings.isSpawnAnimals());
-        bukkitWorld.setAutoSave(this.settings.isAutoSave());
-        bukkitWorld.setDifficulty(this.settings.getDifficulty());
-        bukkitWorld.setKeepSpawnInMemory(this.settings.isKeepSpawnLoaded());
-        bukkitWorld.setSpawnLocation(this.settings.getWorldSpawn().getBlockX(), this.settings.getWorldSpawn().getBlockY(), this.settings.getWorldSpawn().getBlockZ());
+        // UPDATZ THE SETTINGS
+        bukkitWorld.setSpawnFlags(this.worldSettings.isSpawnMonsters(), this.worldSettings.isSpawnAnimals());
+        bukkitWorld.setAutoSave(this.worldSettings.isAutoSave());
+        bukkitWorld.setDifficulty(this.worldSettings.getDifficulty());
+        bukkitWorld.setKeepSpawnInMemory(this.worldSettings.isKeepSpawnLoaded());
+        bukkitWorld.setSpawnLocation(this.worldSettings.getWorldSpawn().getBlockX(), this.worldSettings.getWorldSpawn().getBlockY(), this.worldSettings.getWorldSpawn().getBlockZ());
+    }
+
+    /**
+     * @return the worldSettings
+     */
+    public GMWorldSettings getWorldSettings() {
+        return worldSettings;
     }
 }
-/*
- * Location: C:\Users\Chris\Desktop\GreenMile.jar Qualified Name:
- * de.minestar.greenmile.worlds.GMWorld JD-Core Version: 0.6.0
- */

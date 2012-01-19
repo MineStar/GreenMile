@@ -21,6 +21,7 @@ public class GMWorldEventOptions {
     private boolean allowBlockBreak = true;
     private boolean allowOpenChest = true;
     private boolean allowOpenFurnace = true;
+    private boolean allowOpenDispenser = true;
     private boolean allowOpenWorkbench = true;
     private boolean blockEndermanPickUp = true;
     private boolean blockEndermanPlace = true;
@@ -86,6 +87,7 @@ public class GMWorldEventOptions {
             // INTERACT
             this.allowOpenChest = config.getBoolean("events.use.chest", this.allowOpenChest);
             this.allowOpenFurnace = config.getBoolean("events.use.furnace", this.allowOpenFurnace);
+            this.allowOpenDispenser = config.getBoolean("events.use.dispenser", this.allowOpenDispenser);
             this.allowOpenWorkbench = config.getBoolean("events.use.workbench", this.allowOpenWorkbench);
 
             // ENTITYS
@@ -111,41 +113,42 @@ public class GMWorldEventOptions {
             YamlConfiguration config = new YamlConfiguration();
 
             // PLAYER
-            config.set("events.player.blockRegainHealth", Boolean.valueOf(this.blockRegainHealth));
+            config.set("events.player.blockRegainHealth", this.blockRegainHealth);
 
             // GENERAL
-            config.set("events.world.blockFire", Boolean.valueOf(this.blockFire));
-            config.set("events.world.blockIceForm", Boolean.valueOf(this.blockIceForm));
-            config.set("events.world.blockIceMelt", Boolean.valueOf(this.blockIceMelt));
-            config.set("events.world.blockSnowForm", Boolean.valueOf(this.blockSnowForm));
-            config.set("events.world.blockSnowMelt", Boolean.valueOf(this.blockSnowMelt));
+            config.set("events.world.blockFire", this.blockFire);
+            config.set("events.world.blockIceForm", this.blockIceForm);
+            config.set("events.world.blockIceMelt", this.blockIceMelt);
+            config.set("events.world.blockSnowForm", this.blockSnowForm);
+            config.set("events.world.blockSnowMelt", this.blockSnowMelt);
 
             // BLOCK-PHYSICS
-            config.set("events.physics.leaves.blockDecay", Boolean.valueOf(this.blockLeavesDecay));
-            config.set("events.physics.leaves.radius", Integer.valueOf(this.blockLeavesDecayRadius));
-            config.set("events.physics.portal.allowAnywhere", Boolean.valueOf(this.allowPortalAnywhere));
-            config.set("events.physics.sponge.enable", Boolean.valueOf(this.enableSponge));
-            config.set("events.physics.sponge.radius", Integer.valueOf(this.SpongeRadius));
-            config.set("events.physics.redstone.enabled", Boolean.valueOf(this.redstoneEnabled));
+            config.set("events.physics.leaves.blockDecay", this.blockLeavesDecay);
+            config.set("events.physics.leaves.radius", this.blockLeavesDecayRadius);
+            config.set("events.physics.portal.allowAnywhere", this.allowPortalAnywhere);
+            config.set("events.physics.sponge.enable", this.enableSponge);
+            config.set("events.physics.sponge.radius", this.SpongeRadius);
+            config.set("events.physics.redstone.enabled", this.redstoneEnabled);
 
             // PISTONS
-            config.set("events.pistons.blockSticky", Boolean.valueOf(this.blockStickyPistons));
-            config.set("events.pistons.blockNormal", Boolean.valueOf(this.blockNormalPistons));
+            config.set("events.pistons.blockSticky", this.blockStickyPistons);
+            config.set("events.pistons.blockNormal", this.blockNormalPistons);
 
             // GENERAL BLOCK-PLACE/BREAK
-            config.set("events.block.allowPlace", Boolean.valueOf(this.allowBlockPlace));
-            config.set("events.block.allowBreak", Boolean.valueOf(this.allowBlockBreak));
+            config.set("events.block.allowPlace", this.allowBlockPlace);
+            config.set("events.block.allowBreak", this.allowBlockBreak);
 
             // INTERACT
-            config.set("events.use.chest", Boolean.valueOf(this.allowOpenChest));
-            config.set("events.use.furnace", Boolean.valueOf(this.allowOpenFurnace));
-            config.set("events.use.workbench", Boolean.valueOf(this.allowOpenWorkbench));
+            config.set("events.use.chest", this.allowOpenChest);
+            config.set("events.use.furnace", this.allowOpenFurnace);
+            config.set("events.use.dispenser", this.allowOpenDispenser);
+            config.set("events.use.workbench", this.allowOpenWorkbench);
 
             // ENTITYS
-            config.set("events.entity.tnt.blockExplosion", Boolean.valueOf(this.blockTNT));
-            config.set("events.entity.creeper.blockExplosion", Boolean.valueOf(this.blockCreeperExplosions));
-            config.set("events.entity.enderman.blockPickUp", Boolean.valueOf(this.blockEndermanPickUp));
-            config.set("events.entity.enderman.blockPlace", Boolean.valueOf(this.blockEndermanPlace));
+            config.set("events.entity.tnt.blockExplosion", this.blockTNT);
+            config.set("events.entity.creeper.blockExplosion", this.blockCreeperExplosions);
+            config.set("events.entity.enderman.blockPickUp", this.blockEndermanPickUp);
+            config.set("events.entity.enderman.blockPlace", this.blockEndermanPlace);
 
             // SAVE FILE
             config.save(file);
@@ -273,6 +276,13 @@ public class GMWorldEventOptions {
      */
     public boolean isAllowOpenFurnace() {
         return allowOpenFurnace;
+    }
+
+    /**
+     * @return the allowOpenDispenser
+     */
+    public boolean isAllowOpenDispenser() {
+        return allowOpenDispenser;
     }
 
     /**
@@ -451,6 +461,14 @@ public class GMWorldEventOptions {
      */
     public void setAllowOpenFurnace(boolean allowOpenFurnace) {
         this.allowOpenFurnace = allowOpenFurnace;
+    }
+
+    /**
+     * @param allowOpenDispenser
+     *            the allowOpenDispenser to set
+     */
+    public void setAllowOpenDispenser(boolean allowOpenDispenser) {
+        this.allowOpenDispenser = allowOpenDispenser;
     }
 
     /**

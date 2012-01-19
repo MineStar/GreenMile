@@ -30,6 +30,9 @@ public class EventBlockListener extends BlockListener {
 
     @Override
     public void onBlockBreak(BlockBreakEvent event) {
+        if (event.getPlayer().isOp())
+            return;
+
         if (event.isCancelled())
             return;
 
@@ -241,6 +244,9 @@ public class EventBlockListener extends BlockListener {
 
     @Override
     public void onBlockPlace(BlockPlaceEvent event) {
+        if (event.getPlayer().isOp())
+            return;
+
         if (event.isCancelled())
             return;
 

@@ -57,11 +57,6 @@ public class GMWorld {
     }
 
     public static boolean loadOrCreateBukkitWorld(String worldName, World.Environment environment, long levelSeed) {
-        // IF THE WORLD ALREADY EXISTS OR IS LOADED => RETURN
-        if (Bukkit.getWorld(worldName) != null) {
-            return false;
-        }
-
         // GENERATE THE WORLD
         try {
             WorldCreator generator = new WorldCreator(worldName);

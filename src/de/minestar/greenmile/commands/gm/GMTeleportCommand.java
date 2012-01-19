@@ -31,7 +31,7 @@ public class GMTeleportCommand extends Command {
             return;
         }
 
-        player.teleport(bukkitWorld.getSpawnLocation());
+        player.teleport(this.worldManager.getGMWorld(worldName).getWorldSettings().getWorldSpawn());
         ChatUtils.printInfo(player, this.pluginName, ChatColor.AQUA, "Welcome to '" + worldName + "'!");
     }
 }

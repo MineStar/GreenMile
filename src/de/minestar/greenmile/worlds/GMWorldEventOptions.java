@@ -26,6 +26,7 @@ public class GMWorldEventOptions {
     private boolean blockEndermanPickUp = true;
     private boolean blockEndermanPlace = true;
     private boolean redstoneEnabled = true;
+    private boolean pvpEnabled = true;
 
     private int blockLeavesDecayRadius = 3;
     private int SpongeRadius = 3;
@@ -59,8 +60,9 @@ public class GMWorldEventOptions {
             config.load(file);
 
             // PLAYER
-            this.blockRegainHealth = config.getBoolean("events.player.blockRegainHealth", this.blockRegainHealth);
-
+            this.blockRegainHealth = config.getBoolean("events.player.blockAutoRegainHealth", this.blockRegainHealth);
+            this.pvpEnabled = config.getBoolean("events.player.pvpEnabled", this.pvpEnabled);
+            
             // GENERAL
             this.blockFire = config.getBoolean("events.world.blockFire", this.blockFire);
             this.blockIceForm = config.getBoolean("events.world.blockIceForm", this.blockIceForm);
@@ -113,7 +115,8 @@ public class GMWorldEventOptions {
             YamlConfiguration config = new YamlConfiguration();
 
             // PLAYER
-            config.set("events.player.blockRegainHealth", this.blockRegainHealth);
+            config.set("events.player.blockAutoRegainHealth", this.blockRegainHealth);
+            config.set("events.player.pvpEnabled", this.pvpEnabled);
 
             // GENERAL
             config.set("events.world.blockFire", this.blockFire);
@@ -307,6 +310,13 @@ public class GMWorldEventOptions {
     }
 
     /**
+     * @return the pvpEnabled
+     */
+    public boolean isPvpEnabled() {
+        return pvpEnabled;
+    }
+
+    /**
      * @return the redstoneEnabled
      */
     public boolean isRedstoneEnabled() {
@@ -493,6 +503,13 @@ public class GMWorldEventOptions {
      */
     public void setBlockEndermanPlace(boolean blockEndermanPlace) {
         this.blockEndermanPlace = blockEndermanPlace;
+    }
+
+    /**
+     * @param pvpEnabled the pvpEnabled to set
+     */
+    public void setPvpEnabled(boolean pvpEnabled) {
+        this.pvpEnabled = pvpEnabled;
     }
 
     /**

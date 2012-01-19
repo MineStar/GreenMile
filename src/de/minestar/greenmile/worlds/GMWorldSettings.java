@@ -64,22 +64,22 @@ public class GMWorldSettings {
 
         try {
             YamlConfiguration config = new YamlConfiguration();
-            config.set("settings.levelSeed", Long.valueOf(this.levelSeed));
+            config.set("settings.levelSeed", this.levelSeed);
             config.set("settings.environment", this.environment.toString());
-            config.set("settings.spawnMonsters", Boolean.valueOf(this.spawnMonsters));
-            config.set("settings.spawnAnimals", Boolean.valueOf(this.spawnAnimals));
+            config.set("settings.spawnMonsters", this.spawnMonsters);
+            config.set("settings.spawnAnimals", this.spawnAnimals);
             config.set("settings.difficulty", this.difficulty.toString());
-            config.set("settings.autoSave", Boolean.valueOf(this.autoSave));
-            config.set("settings.keepSpawnLoaded", Boolean.valueOf(this.keepSpawnLoaded));
-            config.set("settings.maxSize", Integer.valueOf(this.maxSize));
-            config.set("settings.spawn.x", Double.valueOf(this.worldSpawn.getX()));
-            config.set("settings.spawn.y", Double.valueOf(this.worldSpawn.getY()));
-            config.set("settings.spawn.z", Double.valueOf(this.worldSpawn.getZ()));
-            config.set("settings.spawn.pitch", Float.valueOf(this.worldSpawn.getPitch()));
-            config.set("settings.spawn.yaw", Float.valueOf(this.worldSpawn.getYaw()));
+            config.set("settings.autoSave", this.autoSave);
+            config.set("settings.keepSpawnLoaded", this.keepSpawnLoaded);
+            config.set("settings.maxSize", this.maxSize);
+            config.set("settings.spawn.x", this.worldSpawn.getX());
+            config.set("settings.spawn.y", this.worldSpawn.getY());
+            config.set("settings.spawn.z", this.worldSpawn.getZ());
+            config.set("settings.spawn.pitch", this.worldSpawn.getPitch());
+            config.set("settings.spawn.yaw", this.worldSpawn.getYaw());
             if (this.lastRenderedPosition != null) {
-                config.set("render.x", Integer.valueOf(this.lastRenderedPosition.x));
-                config.set("render.y", Integer.valueOf(this.lastRenderedPosition.y));
+                config.set("render.x", this.lastRenderedPosition.x);
+                config.set("render.y", this.lastRenderedPosition.y);
             } else {
                 config.set("lastRenderedChunk.x", "NULL");
                 config.set("lastRenderedChunk.y", "NULL");
@@ -91,7 +91,6 @@ public class GMWorldSettings {
         }
         return true;
     }
-
     /**
      * LOAD SETTINGS
      * 

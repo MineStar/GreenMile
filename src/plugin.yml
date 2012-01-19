@@ -5,3 +5,6 @@ commands:
   gm:
     description: Start/Stop a thread
     usage: /gm start world | /gm stop
+  spawn:
+    description: Teleport to the worldspawn
+    usage: /spawn [worldname]

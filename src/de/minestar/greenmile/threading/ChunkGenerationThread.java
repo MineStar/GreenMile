@@ -1,25 +1,6 @@
-/*
- * Copyright (C) 2011 MineStar.de 
- * 
- * This file is part of GreenMile.
- * 
- * GreenMile is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, version 3 of the License.
- * 
- * GreenMile is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with GreenMile.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package de.minestar.greenmile.threading;
 
 import java.awt.Point;
-import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,47 +8,50 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import de.minestar.greenmile.Main;
+import de.minestar.greenmile.worlds.GMWorldSettings;
+import de.minestar.greenmile.worlds.WorldManager;
 import de.minestar.minstarlibrary.utils.ChatUtils;
 
 public class ChunkGenerationThread implements Runnable {
-
     private World world = null;
     private int worldSizeInBlocks = 0;
     private int worldSizeInChunks = 0;
     private int BorderSizeInChunks = 20;
     private Point spawnChunk = null;
-    private Point maxVars = null, minVars = null;
+    private Point maxVars = null;
+    private Point minVars = null;
     private Point lastRenderedChunk = null;
     private int TaskID = -1;
-
+    private WorldManager worldManager;
     private long status = 0L;
     private long maxChunks;
-
     private List<Chunk> bufferChunks = new LinkedList<Chunk>();
 
-    public ChunkGenerationThread(int worldSize, String worldName) {
+    public ChunkGenerationThread(int worldSize, String worldName, WorldManager worldManager) {
         this.world = Bukkit.getServer().getWorld(worldName);
         this.worldSizeInBlocks = worldSize;
-        this.worldSizeInChunks = (int) ((double) worldSizeInBlocks / 16.0) + BorderSizeInChunks;
-        this.maxChunks = worldSizeInChunks * worldSizeInChunks * 4;
+        this.worldSizeInChunks = ((int) (this.worldSizeInBlocks / 16.0D) + this.BorderSizeInChunks);
+        this.maxChunks = (this.worldSizeInChunks * this.worldSizeInChunks * 4);
+        this.worldManager = worldManager;
 
-        if (world == null) {
+        if (this.world == null) {
             ChatUtils.printConsoleError("############################################", Main.name);
             ChatUtils.printConsoleError("World '" + worldName + "' was not found!", Main.name);
             ChatUtils.printConsoleError("############################################", Main.name);
             return;
         }
 
-        Location spawnLoc = world.getSpawnLocation();
-        this.spawnChunk = new Point((int) (spawnLoc.getBlockX() / 16), (int) (spawnLoc.getBlockZ() / 16));
+        Location spawnLoc = this.world.getSpawnLocation();
+        this.spawnChunk = new Point(spawnLoc.getBlockX() / 16, spawnLoc.getBlockZ() / 16);
         this.maxVars = new Point(this.spawnChunk.x + this.worldSizeInChunks, this.spawnChunk.y + this.worldSizeInChunks);
         this.minVars = new Point(this.spawnChunk.x - this.worldSizeInChunks, this.spawnChunk.y - this.worldSizeInChunks);
+        this.status = 0L;
 
-        this.loadConfig();
-        ChatUtils.printConsoleInfo(status + " of " + maxChunks, Main.name);
+        loadConfig();
+
+        ChatUtils.printConsoleInfo(this.status + " of " + this.maxChunks, Main.name);
     }
 
     public void setTaskID(int ID) {
@@ -79,66 +63,13 @@ public class ChunkGenerationThread implements Runnable {
     }
 
     public long getStatsAsInt() {
-        return status;
+        return this.status;
     }
 
     public String getStatus() {
-        return ((status * 100) / maxChunks) + "%";
+        return this.status * 100L / this.maxChunks + "%";
     }
 
-    private void loadConfig() {
-        File file = new File("plugins/GreenMile/worlds/", world.getName() + ".yml");
-        if (!file.exists()) {
-            lastRenderedChunk = new Point(maxVars.x, maxVars.y);
-            return;
-        }
-
-        try {
-            YamlConfiguration config = new YamlConfiguration();
-            config.load(file);
-            int lastX = config.getInt("lastRenderedChunk.X", this.maxVars.x);
-            int lastZ = config.getInt("lastRenderedChunk.Y", this.maxVars.y);
-            this.lastRenderedChunk = new Point(lastX, lastZ);
-            this.status = config.getInt("status", 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void saveConfig() {
-        File file = new File("plugins/GreenMile/worlds/", world.getName() + ".yml");
-        if (file.exists())
-            file.delete();
-
-        try {
-            YamlConfiguration config = new YamlConfiguration();
-            config.set("lastRenderedChunk.X", lastRenderedChunk.x);
-            config.set("lastRenderedChunk.Y", lastRenderedChunk.y + 1);
-            config.set("status", status);
-            config.save(file);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void resetRenderPosition() {
-        File file = new File("plugins/GreenMile/worlds/", world.getName() + ".yml");
-        if (!file.exists())
-            return;
-
-        try {
-            YamlConfiguration config = new YamlConfiguration();
-            config.load(file);
-            config.set("lastRenderedChunk.X", null);
-            config.set("lastRenderedChunk.Y", null);
-            config.set("status", 0);
-            config.save(file);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     public void run() {
         if (this.world == null) {
             return;
@@ -147,51 +78,63 @@ public class ChunkGenerationThread implements Runnable {
     }
 
     public boolean renderChunk() {
-        ++status;
-        if (lastRenderedChunk.y <= minVars.y) {
-            --lastRenderedChunk.x;
-            lastRenderedChunk.y = maxVars.y;
+        this.status += 1L;
+        if (this.lastRenderedChunk.y <= this.minVars.y) {
+            this.lastRenderedChunk.x -= 1;
+            this.lastRenderedChunk.y = this.maxVars.y;
         }
 
-        if (lastRenderedChunk.x <= minVars.x) {
+        if (this.lastRenderedChunk.x <= this.minVars.x) {
             ChatUtils.printConsoleInfo("############################################", Main.name);
-            ChatUtils.printConsoleInfo("RENDERING OF WORLD '" + world.getName() + "' FINISHED!", Main.name);
+            ChatUtils.printConsoleInfo("RENDERING OF WORLD '" + this.world.getName() + "' FINISHED!", Main.name);
             ChatUtils.printConsoleInfo("############################################", Main.name);
 
-            // RESET THREAD
-            resetRenderPosition();
-
-            // CANCEL TASK
             Bukkit.getServer().getScheduler().cancelTask(this.TaskID);
-            world.save();
+            this.world.save();
             Main.chunkThread = null;
 
+            resetConfig();
             return true;
         }
 
-        // Remember kids : A loaded chunk is a generated chunk!
-        if (world.isChunkLoaded(lastRenderedChunk.x, lastRenderedChunk.y)) {
-            --lastRenderedChunk.y;
+        if (this.world.isChunkLoaded(this.lastRenderedChunk.x, this.lastRenderedChunk.y)) {
+            this.lastRenderedChunk.y -= 1;
             return false;
         }
-        world.loadChunk(lastRenderedChunk.x, lastRenderedChunk.y);
-        bufferChunks.add(world.getChunkAt(lastRenderedChunk.x, lastRenderedChunk.y));
+        this.world.loadChunk(this.lastRenderedChunk.x, this.lastRenderedChunk.y);
+        this.bufferChunks.add(this.world.getChunkAt(this.lastRenderedChunk.x, this.lastRenderedChunk.y));
 
-        // Remember kids : Only free memory is good memory!
-        if (bufferChunks.size() > 50) {
+        if (this.bufferChunks.size() > 50) {
             unloadChunks();
             ChatUtils.printConsoleInfo(getStatus(), Main.name);
         }
-        --lastRenderedChunk.y;
+        this.lastRenderedChunk.y -= 1;
         return true;
     }
 
-    /**
-     * Unload all loaded chunks to free memory
-     */
+    private void resetConfig() {
+        GMWorldSettings settings = this.worldManager.getGMWorld(this.world.getName()).getWorldSettings();
+        settings.setLastRenderedPosition(null);
+        settings.saveSettings(this.world.getName(), this.worldManager.getDataFolder());
+    }
+
+    private void loadConfig() {
+        GMWorldSettings settings = this.worldManager.getGMWorld(this.world.getName()).getWorldSettings();
+        if (settings.getLastRenderedPosition() != null)
+            this.lastRenderedChunk = settings.getLastRenderedPosition();
+        else
+            this.lastRenderedChunk = ((Point) this.maxVars.clone());
+    }
+
+    public void saveConfig() {
+        GMWorldSettings settings = this.worldManager.getGMWorld(this.world.getName()).getWorldSettings();
+        settings.setLastRenderedPosition(this.lastRenderedChunk);
+        settings.saveSettings(this.world.getName(), this.worldManager.getDataFolder());
+    }
+
     private void unloadChunks() {
-        for (Chunk c : bufferChunks)
+        for (Chunk c : this.bufferChunks)
             c.unload();
-        bufferChunks.clear();
+        this.bufferChunks.clear();
     }
 }

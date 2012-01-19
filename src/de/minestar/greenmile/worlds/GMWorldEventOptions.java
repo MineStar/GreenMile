@@ -49,7 +49,7 @@ public class GMWorldEventOptions {
      * LOAD SETTINGS
      */
     private boolean loadSettings() {
-        File file = new File(this.dataFolder, "config_" + this.worldName + ".yml");
+        File file = new File(this.dataFolder, "events_" + this.worldName + ".yml");
 
         if (!file.exists()) {
             // IF SAVE FAILS, LOADING FAILS TOO
@@ -101,6 +101,8 @@ public class GMWorldEventOptions {
             this.blockEndermanPickUp = config.getBoolean("events.entity.enderman.blockPickUp", this.blockEndermanPickUp);
             this.blockEndermanPlace = config.getBoolean("events.entity.enderman.blockPlace", this.blockEndermanPlace);
 
+            this.saveSettings();
+
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -112,7 +114,7 @@ public class GMWorldEventOptions {
      * SAVE SETTINGS
      */
     public boolean saveSettings() {
-        File file = new File(this.dataFolder, "config_" + this.worldName + ".yml");
+        File file = new File(this.dataFolder, "events_" + this.worldName + ".yml");
 
         try {
             YamlConfiguration config = new YamlConfiguration();

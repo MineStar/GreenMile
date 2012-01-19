@@ -117,82 +117,152 @@ public class GMWorldSettings {
         return this.initialized;
     }
 
+    /**
+     * @return the levelSeed
+     */
     public long getLevelSeed() {
-        return this.levelSeed;
+        return levelSeed;
     }
 
+    /**
+     * @return the environment
+     */
     public World.Environment getEnvironment() {
-        return this.environment;
+        return environment;
     }
 
+    /**
+     * @return the worldSpawn
+     */
+    public Location getWorldSpawn() {
+        return worldSpawn;
+    }
+
+    /**
+     * @return the spawnMonsters
+     */
+    public boolean isSpawnMonsters() {
+        return spawnMonsters;
+    }
+
+    /**
+     * @return the spawnAnimals
+     */
+    public boolean isSpawnAnimals() {
+        return spawnAnimals;
+    }
+
+    /**
+     * @return the autoSave
+     */
+    public boolean isAutoSave() {
+        return autoSave;
+    }
+
+    /**
+     * @return the keepSpawnLoaded
+     */
+    public boolean isKeepSpawnLoaded() {
+        return keepSpawnLoaded;
+    }
+
+    /**
+     * @return the difficulty
+     */
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    /**
+     * @return the maxSize
+     */
+    public int getMaxSize() {
+        return maxSize;
+    }
+
+    /**
+     * @return the lastRenderedPosition
+     */
+    public Point getLastRenderedPosition() {
+        return lastRenderedPosition;
+    }
+
+    /**
+     * @param levelSeed
+     *            the levelSeed to set
+     */
     public void setLevelSeed(long levelSeed) {
         this.levelSeed = levelSeed;
     }
 
+    /**
+     * @param environment
+     *            the environment to set
+     */
     public void setEnvironment(World.Environment environment) {
         this.environment = environment;
     }
 
-    public boolean isSpawnMonsters() {
-        return this.spawnMonsters;
-    }
-
-    public void setSpawnMonsters(boolean spawnMonsters) {
-        this.spawnMonsters = spawnMonsters;
-    }
-
-    public boolean isSpawnAnimals() {
-        return this.spawnAnimals;
-    }
-
-    public void setSpawnAnimals(boolean spawnAnimals) {
-        this.spawnAnimals = spawnAnimals;
-    }
-
-    public boolean isAutoSave() {
-        return this.autoSave;
-    }
-
-    public void setAutoSave(boolean autoSave) {
-        this.autoSave = autoSave;
-    }
-
-    public Difficulty getDifficulty() {
-        return this.difficulty;
-    }
-
-    public void setDifficulty(Difficulty difficulty) {
-        this.difficulty = difficulty;
-    }
-
-    public boolean isKeepSpawnLoaded() {
-        return this.keepSpawnLoaded;
-    }
-
-    public void setKeepSpawnLoaded(boolean keepSpawnLoaded) {
-        this.keepSpawnLoaded = keepSpawnLoaded;
-    }
-
-    public int getMaxSize() {
-        return this.maxSize;
-    }
-
-    public void setMaxSize(int maxSize) {
-        this.maxSize = maxSize;
-    }
-
-    public Location getWorldSpawn() {
-        return this.worldSpawn;
-    }
-
+    /**
+     * @param worldSpawn
+     *            the worldSpawn to set
+     */
     public void setWorldSpawn(Location worldSpawn) {
         this.worldSpawn = worldSpawn;
     }
 
-    public Point getLastRenderedPosition() {
-        return this.lastRenderedPosition;
+    /**
+     * @param spawnMonsters
+     *            the spawnMonsters to set
+     */
+    public void setSpawnMonsters(boolean spawnMonsters) {
+        this.spawnMonsters = spawnMonsters;
     }
 
+    /**
+     * @param spawnAnimals
+     *            the spawnAnimals to set
+     */
+    public void setSpawnAnimals(boolean spawnAnimals) {
+        this.spawnAnimals = spawnAnimals;
+    }
+
+    /**
+     * @param autoSave
+     *            the autoSave to set
+     */
+    public void setAutoSave(boolean autoSave) {
+        this.autoSave = autoSave;
+    }
+
+    /**
+     * @param keepSpawnLoaded
+     *            the keepSpawnLoaded to set
+     */
+    public void setKeepSpawnLoaded(boolean keepSpawnLoaded) {
+        this.keepSpawnLoaded = keepSpawnLoaded;
+    }
+
+    /**
+     * @param difficulty
+     *            the difficulty to set
+     */
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    /**
+     * @param maxSize
+     *            the maxSize to set
+     */
+    public void setMaxSize(int maxSize) {
+        this.maxSize = maxSize;
+    }
+
+    /**
+     * @param lastRenderedPosition
+     *            the lastRenderedPosition to set
+     */
     public void setLastRenderedPosition(Point lastRenderedPosition) {
         this.lastRenderedPosition = lastRenderedPosition;
     }

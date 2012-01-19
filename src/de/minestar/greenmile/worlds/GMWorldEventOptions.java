@@ -126,187 +126,348 @@ public class GMWorldEventOptions {
         }
     }
 
+    /**
+     * @return the blockFire
+     */
     public boolean isBlockFire() {
-        return this.blockFire;
+        return blockFire;
     }
 
+    /**
+     * @return the blockLeavesDecay
+     */
+    public boolean isBlockLeavesDecay() {
+        return blockLeavesDecay;
+    }
+
+    /**
+     * @return the blockCreeperExplosions
+     */
+    public boolean isBlockCreeperExplosions() {
+        return blockCreeperExplosions;
+    }
+
+    /**
+     * @return the blockRegainHealth
+     */
+    public boolean isBlockRegainHealth() {
+        return blockRegainHealth;
+    }
+
+    /**
+     * @return the blockIceForm
+     */
+    public boolean isBlockIceForm() {
+        return blockIceForm;
+    }
+
+    /**
+     * @return the blockIceMelt
+     */
+    public boolean isBlockIceMelt() {
+        return blockIceMelt;
+    }
+
+    /**
+     * @return the blockSnowForm
+     */
+    public boolean isBlockSnowForm() {
+        return blockSnowForm;
+    }
+
+    /**
+     * @return the blockSnowMelt
+     */
+    public boolean isBlockSnowMelt() {
+        return blockSnowMelt;
+    }
+
+    /**
+     * @return the blockTNT
+     */
+    public boolean isBlockTNT() {
+        return blockTNT;
+    }
+
+    /**
+     * @return the blockStickyPistons
+     */
+    public boolean isBlockStickyPistons() {
+        return blockStickyPistons;
+    }
+
+    /**
+     * @return the blockNormalPistons
+     */
+    public boolean isBlockNormalPistons() {
+        return blockNormalPistons;
+    }
+
+    /**
+     * @return the allowPortalAnywhere
+     */
+    public boolean isAllowPortalAnywhere() {
+        return allowPortalAnywhere;
+    }
+
+    /**
+     * @return the enableSponge
+     */
+    public boolean isEnableSponge() {
+        return enableSponge;
+    }
+
+    /**
+     * @return the allowBlockPlace
+     */
+    public boolean isAllowBlockPlace() {
+        return allowBlockPlace;
+    }
+
+    /**
+     * @return the allowBlockBreak
+     */
+    public boolean isAllowBlockBreak() {
+        return allowBlockBreak;
+    }
+
+    /**
+     * @return the allowOpenChest
+     */
+    public boolean isAllowOpenChest() {
+        return allowOpenChest;
+    }
+
+    /**
+     * @return the allowOpenFurnace
+     */
+    public boolean isAllowOpenFurnace() {
+        return allowOpenFurnace;
+    }
+
+    /**
+     * @return the allowOpenWorkbench
+     */
+    public boolean isAllowOpenWorkbench() {
+        return allowOpenWorkbench;
+    }
+
+    /**
+     * @return the blockEndermanPickUp
+     */
+    public boolean isBlockEndermanPickUp() {
+        return blockEndermanPickUp;
+    }
+
+    /**
+     * @return the blockEndermanPlace
+     */
+    public boolean isBlockEndermanPlace() {
+        return blockEndermanPlace;
+    }
+
+    /**
+     * @return the redstoneEnabled
+     */
+    public boolean isRedstoneEnabled() {
+        return redstoneEnabled;
+    }
+
+    /**
+     * @return the blockLeavesDecayRadius
+     */
+    public int getBlockLeavesDecayRadius() {
+        return blockLeavesDecayRadius;
+    }
+
+    /**
+     * @return the spongeRadius
+     */
+    public int getSpongeRadius() {
+        return SpongeRadius;
+    }
+
+    /**
+     * @param blockFire
+     *            the blockFire to set
+     */
     public void setBlockFire(boolean blockFire) {
         this.blockFire = blockFire;
     }
 
-    public boolean isBlockLeavesDecay() {
-        return this.blockLeavesDecay;
-    }
-
+    /**
+     * @param blockLeavesDecay
+     *            the blockLeavesDecay to set
+     */
     public void setBlockLeavesDecay(boolean blockLeavesDecay) {
         this.blockLeavesDecay = blockLeavesDecay;
     }
 
-    public boolean isBlockCreeperExplosions() {
-        return this.blockCreeperExplosions;
-    }
-
+    /**
+     * @param blockCreeperExplosions
+     *            the blockCreeperExplosions to set
+     */
     public void setBlockCreeperExplosions(boolean blockCreeperExplosions) {
         this.blockCreeperExplosions = blockCreeperExplosions;
     }
 
-    public boolean isBlockRegainHealth() {
-        return this.blockRegainHealth;
-    }
-
+    /**
+     * @param blockRegainHealth
+     *            the blockRegainHealth to set
+     */
     public void setBlockRegainHealth(boolean blockRegainHealth) {
         this.blockRegainHealth = blockRegainHealth;
     }
 
-    public int getBlockLeavesDecayRadius() {
-        return this.blockLeavesDecayRadius;
-    }
-
-    public void setBlockLeavesDecayRadius(int blockLeavesDecayRadius) {
-        this.blockLeavesDecayRadius = blockLeavesDecayRadius;
-    }
-
-    public boolean isBlockIceForm() {
-        return this.blockIceForm;
-    }
-
+    /**
+     * @param blockIceForm
+     *            the blockIceForm to set
+     */
     public void setBlockIceForm(boolean blockIceForm) {
         this.blockIceForm = blockIceForm;
     }
 
-    public boolean isBlockIceMelt() {
-        return this.blockIceMelt;
-    }
-
+    /**
+     * @param blockIceMelt
+     *            the blockIceMelt to set
+     */
     public void setBlockIceMelt(boolean blockIceMelt) {
         this.blockIceMelt = blockIceMelt;
     }
 
-    public boolean isBlockSnowForm() {
-        return this.blockSnowForm;
-    }
-
+    /**
+     * @param blockSnowForm
+     *            the blockSnowForm to set
+     */
     public void setBlockSnowForm(boolean blockSnowForm) {
         this.blockSnowForm = blockSnowForm;
     }
 
-    public boolean isBlockSnowMelt() {
-        return this.blockSnowMelt;
-    }
-
+    /**
+     * @param blockSnowMelt
+     *            the blockSnowMelt to set
+     */
     public void setBlockSnowMelt(boolean blockSnowMelt) {
         this.blockSnowMelt = blockSnowMelt;
     }
 
-    public boolean isAllowPortalAnywhere() {
-        return this.allowPortalAnywhere;
-    }
-
-    public void setAllowPortalAnywhere(boolean allowPortalAnywhere) {
-        this.allowPortalAnywhere = allowPortalAnywhere;
-    }
-
-    public int getSpongeRadius() {
-        return this.SpongeRadius;
-    }
-
-    public void setSpongeRadius(int spongeRadius) {
-        this.SpongeRadius = spongeRadius;
-    }
-
-    public boolean isBlockTNT() {
-        return this.blockTNT;
-    }
-
+    /**
+     * @param blockTNT
+     *            the blockTNT to set
+     */
     public void setBlockTNT(boolean blockTNT) {
         this.blockTNT = blockTNT;
     }
 
-    public boolean isAllowBlockPlace() {
-        return this.allowBlockPlace;
-    }
-
-    public void setAllowBlockPlace(boolean allowBlockPlace) {
-        this.allowBlockPlace = allowBlockPlace;
-    }
-
-    public boolean isAllowBlockBreak() {
-        return this.allowBlockBreak;
-    }
-
-    public void setAllowBlockBreak(boolean allowBlockBreak) {
-        this.allowBlockBreak = allowBlockBreak;
-    }
-
-    public boolean isAllowOpenChest() {
-        return this.allowOpenChest;
-    }
-
-    public void setAllowOpenChest(boolean allowOpenChest) {
-        this.allowOpenChest = allowOpenChest;
-    }
-
-    public boolean isAllowOpenFurnace() {
-        return this.allowOpenFurnace;
-    }
-
-    public void setAllowOpenFurnace(boolean allowOpenFurnace) {
-        this.allowOpenFurnace = allowOpenFurnace;
-    }
-
-    public boolean isAllowOpenWorkbench() {
-        return this.allowOpenWorkbench;
-    }
-
-    public void setAllowOpenWorkbench(boolean allowOpenWorkbench) {
-        this.allowOpenWorkbench = allowOpenWorkbench;
-    }
-
-    public boolean isBlockEndermanPickUp() {
-        return this.blockEndermanPickUp;
-    }
-
-    public void setBlockEndermanPickUp(boolean blockEndermanPickUp) {
-        this.blockEndermanPickUp = blockEndermanPickUp;
-    }
-
-    public boolean isBlockEndermanPlace() {
-        return this.blockEndermanPlace;
-    }
-
-    public void setBlockEndermanPlace(boolean blockEndermanPlace) {
-        this.blockEndermanPlace = blockEndermanPlace;
-    }
-
-    public boolean isBlockStickyPistons() {
-        return this.blockStickyPistons;
-    }
-
-    public boolean isBlockNormalPistons() {
-        return this.blockNormalPistons;
-    }
-
+    /**
+     * @param blockStickyPistons
+     *            the blockStickyPistons to set
+     */
     public void setBlockStickyPistons(boolean blockStickyPistons) {
         this.blockStickyPistons = blockStickyPistons;
     }
 
+    /**
+     * @param blockNormalPistons
+     *            the blockNormalPistons to set
+     */
     public void setBlockNormalPistons(boolean blockNormalPistons) {
         this.blockNormalPistons = blockNormalPistons;
     }
 
-    public boolean isEnableSponge() {
-        return this.enableSponge;
+    /**
+     * @param allowPortalAnywhere
+     *            the allowPortalAnywhere to set
+     */
+    public void setAllowPortalAnywhere(boolean allowPortalAnywhere) {
+        this.allowPortalAnywhere = allowPortalAnywhere;
     }
 
+    /**
+     * @param enableSponge
+     *            the enableSponge to set
+     */
     public void setEnableSponge(boolean enableSponge) {
         this.enableSponge = enableSponge;
     }
 
-    public boolean isRedstoneEnabled() {
-        return this.redstoneEnabled;
+    /**
+     * @param allowBlockPlace
+     *            the allowBlockPlace to set
+     */
+    public void setAllowBlockPlace(boolean allowBlockPlace) {
+        this.allowBlockPlace = allowBlockPlace;
     }
 
+    /**
+     * @param allowBlockBreak
+     *            the allowBlockBreak to set
+     */
+    public void setAllowBlockBreak(boolean allowBlockBreak) {
+        this.allowBlockBreak = allowBlockBreak;
+    }
+
+    /**
+     * @param allowOpenChest
+     *            the allowOpenChest to set
+     */
+    public void setAllowOpenChest(boolean allowOpenChest) {
+        this.allowOpenChest = allowOpenChest;
+    }
+
+    /**
+     * @param allowOpenFurnace
+     *            the allowOpenFurnace to set
+     */
+    public void setAllowOpenFurnace(boolean allowOpenFurnace) {
+        this.allowOpenFurnace = allowOpenFurnace;
+    }
+
+    /**
+     * @param allowOpenWorkbench
+     *            the allowOpenWorkbench to set
+     */
+    public void setAllowOpenWorkbench(boolean allowOpenWorkbench) {
+        this.allowOpenWorkbench = allowOpenWorkbench;
+    }
+
+    /**
+     * @param blockEndermanPickUp
+     *            the blockEndermanPickUp to set
+     */
+    public void setBlockEndermanPickUp(boolean blockEndermanPickUp) {
+        this.blockEndermanPickUp = blockEndermanPickUp;
+    }
+
+    /**
+     * @param blockEndermanPlace
+     *            the blockEndermanPlace to set
+     */
+    public void setBlockEndermanPlace(boolean blockEndermanPlace) {
+        this.blockEndermanPlace = blockEndermanPlace;
+    }
+
+    /**
+     * @param redstoneEnabled
+     *            the redstoneEnabled to set
+     */
     public void setRedstoneEnabled(boolean redstoneEnabled) {
         this.redstoneEnabled = redstoneEnabled;
+    }
+
+    /**
+     * @param blockLeavesDecayRadius
+     *            the blockLeavesDecayRadius to set
+     */
+    public void setBlockLeavesDecayRadius(int blockLeavesDecayRadius) {
+        this.blockLeavesDecayRadius = blockLeavesDecayRadius;
+    }
+
+    /**
+     * @param spongeRadius
+     *            the spongeRadius to set
+     */
+    public void setSpongeRadius(int spongeRadius) {
+        SpongeRadius = spongeRadius;
     }
 }

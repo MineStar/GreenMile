@@ -31,30 +31,43 @@ public class GMWorldEventOptions {
     private String worldName;
     private File dataFolder;
 
+    /**
+     * Constructor
+     * 
+     * @param worldName
+     * @param dataFolder
+     */
     public GMWorldEventOptions(String worldName, File dataFolder) {
         this.worldName = worldName;
         this.dataFolder = dataFolder;
-        loadOrCreateSettings();
+        loadSettings();
     }
 
-    private void loadOrCreateSettings() {
+    /**
+     * LOAD SETTINGS
+     */
+    private boolean loadSettings() {
         File file = new File(this.dataFolder, "config_" + this.worldName + ".yml");
+
         if (!file.exists()) {
-            saveSettings();
-            return;
+            return false;
         }
+
         try {
             YamlConfiguration config = new YamlConfiguration();
             config.load(file);
 
+            // PLAYER
             this.blockRegainHealth = config.getBoolean("events.player.blockRegainHealth", this.blockRegainHealth);
 
+            // GENERAL
             this.blockFire = config.getBoolean("events.world.blockFire", this.blockFire);
             this.blockIceForm = config.getBoolean("events.world.blockIceForm", this.blockIceForm);
             this.blockIceMelt = config.getBoolean("events.world.blockIceMelt", this.blockIceMelt);
             this.blockSnowForm = config.getBoolean("events.world.blockSnowForm", this.blockSnowForm);
             this.blockSnowMelt = config.getBoolean("events.world.blockSnowMelt", this.blockSnowMelt);
 
+            // BLOCK-PHYSICS
             this.blockLeavesDecay = config.getBoolean("events.physics.leaves.blockDecay", this.blockLeavesDecay);
             this.blockLeavesDecayRadius = config.getInt("events.physics.leaves.radius", this.blockLeavesDecayRadius);
             this.allowPortalAnywhere = config.getBoolean("events.physics.portal.allowAnywhere", this.allowPortalAnywhere);
@@ -62,42 +75,52 @@ public class GMWorldEventOptions {
             this.SpongeRadius = config.getInt("events.physics.sponge.radius", this.SpongeRadius);
             this.redstoneEnabled = config.getBoolean("events.physics.redstone.enabled", this.redstoneEnabled);
 
+            // PISTONS
             this.blockStickyPistons = config.getBoolean("events.pistons.blockSticky", this.blockStickyPistons);
             this.blockNormalPistons = config.getBoolean("events.pistons.blockNormal", this.blockNormalPistons);
 
+            // GENERAL BLOCK-PLACE/BREAK
             this.allowBlockPlace = config.getBoolean("events.block.allowPlace", this.allowBlockPlace);
             this.allowBlockBreak = config.getBoolean("events.block.allowBreak", this.allowBlockBreak);
 
+            // INTERACT
             this.allowOpenChest = config.getBoolean("events.use.chest", this.allowOpenChest);
             this.allowOpenFurnace = config.getBoolean("events.use.furnace", this.allowOpenFurnace);
             this.allowOpenWorkbench = config.getBoolean("events.use.workbench", this.allowOpenWorkbench);
 
+            // ENTITYS
             this.blockTNT = config.getBoolean("events.entity.tnt.blockExplosion", this.blockTNT);
             this.blockCreeperExplosions = config.getBoolean("events.entity.creeper.blockExplosion", this.blockCreeperExplosions);
             this.blockEndermanPickUp = config.getBoolean("events.entity.enderman.blockPickUp", this.blockEndermanPickUp);
             this.blockEndermanPlace = config.getBoolean("events.entity.enderman.blockPlace", this.blockEndermanPlace);
+
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 
-    public void saveSettings() {
+    /**
+     * SAVE SETTINGS
+     */
+    public boolean saveSettings() {
         File file = new File(this.dataFolder, "config_" + this.worldName + ".yml");
-        if (!file.exists()) {
-            file.delete();
-            return;
-        }
+
         try {
             YamlConfiguration config = new YamlConfiguration();
 
+            // PLAYER
             config.set("events.player.blockRegainHealth", Boolean.valueOf(this.blockRegainHealth));
 
+            // GENERAL
             config.set("events.world.blockFire", Boolean.valueOf(this.blockFire));
             config.set("events.world.blockIceForm", Boolean.valueOf(this.blockIceForm));
             config.set("events.world.blockIceMelt", Boolean.valueOf(this.blockIceMelt));
             config.set("events.world.blockSnowForm", Boolean.valueOf(this.blockSnowForm));
             config.set("events.world.blockSnowMelt", Boolean.valueOf(this.blockSnowMelt));
 
+            // BLOCK-PHYSICS
             config.set("events.physics.leaves.blockDecay", Boolean.valueOf(this.blockLeavesDecay));
             config.set("events.physics.leaves.radius", Integer.valueOf(this.blockLeavesDecayRadius));
             config.set("events.physics.portal.allowAnywhere", Boolean.valueOf(this.allowPortalAnywhere));
@@ -105,24 +128,31 @@ public class GMWorldEventOptions {
             config.set("events.physics.sponge.radius", Integer.valueOf(this.SpongeRadius));
             config.set("events.physics.redstone.enabled", Boolean.valueOf(this.redstoneEnabled));
 
+            // PISTONS
             config.set("events.pistons.blockSticky", Boolean.valueOf(this.blockStickyPistons));
             config.set("events.pistons.blockNormal", Boolean.valueOf(this.blockNormalPistons));
 
+            // GENERAL BLOCK-PLACE/BREAK
             config.set("events.block.allowPlace", Boolean.valueOf(this.allowBlockPlace));
             config.set("events.block.allowBreak", Boolean.valueOf(this.allowBlockBreak));
 
+            // INTERACT
             config.set("events.use.chest", Boolean.valueOf(this.allowOpenChest));
             config.set("events.use.furnace", Boolean.valueOf(this.allowOpenFurnace));
             config.set("events.use.workbench", Boolean.valueOf(this.allowOpenWorkbench));
 
+            // ENTITYS
             config.set("events.entity.tnt.blockExplosion", Boolean.valueOf(this.blockTNT));
             config.set("events.entity.creeper.blockExplosion", Boolean.valueOf(this.blockCreeperExplosions));
             config.set("events.entity.enderman.blockPickUp", Boolean.valueOf(this.blockEndermanPickUp));
             config.set("events.entity.enderman.blockPlace", Boolean.valueOf(this.blockEndermanPlace));
 
+            // SAVE FILE
             config.save(file);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 

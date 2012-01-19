@@ -38,14 +38,14 @@ public class BorderThread implements Runnable {
                 continue;
             }
 
-            loc = world.getSpawnLocation();
+            loc = this.worldManager.getGMWorld(worldName).getWorldSettings().getWorldSpawn();
 
             xW = loc.getBlockX();
             zW = loc.getBlockZ();
 
             maxSize = this.worldManager.getGMWorld(worldName).getWorldSettings().getMaxSize();
 
-            for (Player player : Bukkit.getOnlinePlayers()) {
+            for (Player player : Bukkit.getWorld(worldName).getPlayers()) {
                 if ((player.isDead()) || (!player.isOnline())) {
                     continue;
                 }

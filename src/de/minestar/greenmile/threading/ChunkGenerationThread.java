@@ -105,7 +105,7 @@ public class ChunkGenerationThread implements Runnable {
         this.bufferChunks.add(this.world.getChunkAt(this.lastRenderedChunk.x, this.lastRenderedChunk.y));
 
         if (this.bufferChunks.size() > 50) {
-            unloadChunks();
+            // unloadChunks();
             ChatUtils.printConsoleInfo(getStatus(), Main.name);
         }
         this.lastRenderedChunk.y -= 1;
@@ -132,9 +132,9 @@ public class ChunkGenerationThread implements Runnable {
         settings.saveSettings(this.world.getName(), this.worldManager.getDataFolder());
     }
 
-    private void unloadChunks() {
-        for (Chunk c : this.bufferChunks)
-            c.unload();
-        this.bufferChunks.clear();
-    }
+//    private void unloadChunks() {
+//        for (Chunk c : this.bufferChunks)
+//            c.unload();
+//        this.bufferChunks.clear();
+//    }
 }

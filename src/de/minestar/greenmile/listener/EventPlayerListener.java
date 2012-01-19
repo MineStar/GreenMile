@@ -140,8 +140,9 @@ public class EventPlayerListener extends PlayerListener {
         }
 
         if (!world.getEventSettings().isPvpEnabled()) {
-            if (event.getRightClicked() instanceof Player)
+            if (event.getRightClicked() instanceof Player) {
                 event.setCancelled(true);
+            }
         }
         world = null;
     }

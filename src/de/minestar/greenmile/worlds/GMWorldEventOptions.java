@@ -51,10 +51,6 @@ public class GMWorldEventOptions {
     private boolean loadSettings() {
         File file = new File(this.dataFolder, "config_" + this.worldName + ".yml");
 
-        if (!file.exists()) {
-            return false;
-        }
-
         try {
             YamlConfiguration config = new YamlConfiguration();
             config.load(file);

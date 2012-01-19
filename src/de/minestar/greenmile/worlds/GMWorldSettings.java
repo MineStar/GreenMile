@@ -62,8 +62,6 @@ public class GMWorldSettings {
     public boolean saveSettings(String worldName, File dataFolder) {
         File file = new File(dataFolder, "config_" + worldName + ".yml");
 
-        if (file.exists())
-            file.delete();
         try {
             YamlConfiguration config = new YamlConfiguration();
             config.set("settings.levelSeed", Long.valueOf(this.levelSeed));

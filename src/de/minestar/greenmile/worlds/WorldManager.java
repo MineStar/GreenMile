@@ -77,9 +77,11 @@ public class WorldManager {
             return false;
 
         GMWorld newWorld = new GMWorld(worldName);
-        boolean result = GMWorld.createBukkitWorld(worldName, environment, seed);
-        newWorld.createSettings(seed, environment, this.dataFolder);
-        this.addWorld(newWorld);
+        boolean result = GMWorld.loadOrCreateBukkitWorld(worldName, environment, seed);
+        if (result) {
+            newWorld.createSettings(seed, environment, this.dataFolder);
+            this.addWorld(newWorld);
+        }
         return result;
     }
 
@@ -104,10 +106,13 @@ public class WorldManager {
         // FINALLY IMPORT THE WORLD
         GMWorld newWorld = new GMWorld(worldName);
         newWorld.createSettings(bukkitWorld.getSeed(), bukkitWorld.getEnvironment(), this.dataFolder);
-        newWorld.loadBukkitWorld();
-        newWorld.updateWorld();
-        this.addWorld(newWorld);
-        return true;
+        boolean result = GMWorld.loadOrCreateBukkitWorld(worldName, bukkitWorld.getEnvironment(), bukkitWorld.getSeed());;
+        if (result) {
+            newWorld.updateWorld();
+            this.addWorld(newWorld);
+        }
+
+        return result;
     }
 
     /**
@@ -154,10 +159,11 @@ public class WorldManager {
                     String worldName = fileName.replace("config_", "");
                     worldName = worldName.substring(0, worldName.length() - 4);
                     GMWorld world = new GMWorld(worldName);
-                    world.loadSettings(dataFolder);
+                    world.loadMainSettings(dataFolder);
                     if (world.getWorldSettings().isInitialized()) {
                         this.addWorld(world);
-                        world.loadBukkitWorld();
+                        GMWorld.loadOrCreateBukkitWorld(worldName, world.getWorldSettings().getEnvironment(), world.getWorldSettings().getLevelSeed());
+                        world.getWorldSettings().loadWorldSettings(worldName, this.dataFolder);
                         world.updateWorld();
                     }
                 }

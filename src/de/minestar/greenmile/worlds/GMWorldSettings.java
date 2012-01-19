@@ -65,7 +65,7 @@ public class GMWorldSettings {
      * @param dataFolder
      */
     public GMWorldSettings(String worldName, File dataFolder) {
-        this.initialized = this.loadSettings(worldName, dataFolder);
+        this.initialized = this.loadMainSettings(worldName, dataFolder);
     }
 
     public boolean saveSettings(String worldName, File dataFolder) {
@@ -97,7 +97,40 @@ public class GMWorldSettings {
         return true;
     }
 
-    private boolean loadSettings(String worldName, File dataFolder) {
+    public boolean loadWorldSettings(String worldName, File dataFolder) {
+        try {
+            File file = new File(dataFolder, "config_" + worldName + ".yml");
+            // CREATE FILE IF IT NOT EXISTS
+            if (!file.exists()) {
+                ChatUtils.printConsoleInfo("Can't load specific settings for world '" + worldName + "'. Resetting to default.", Main.name);
+                if (!this.saveSettings(worldName, dataFolder))
+                    return false;
+            }
+
+            YamlConfiguration config = new YamlConfiguration();
+            config.load(file);
+
+            Difficulty difficulty = EnumHelper.getDifficulty(config.getString("settings.difficulty", this.difficulty.toString()));
+            if (difficulty == null) {
+                throw new Exception("Difficulty not found!");
+            }
+
+            this.setSpawnMonsters(config.getBoolean("settings.spawnMonsters", this.spawnMonsters));
+            this.setSpawnAnimals(config.getBoolean("settings.spawnAnimals", this.spawnAnimals));
+            this.setAutoSave(config.getBoolean("settings.autoSave", this.autoSave));
+            this.setKeepSpawnLoaded(config.getBoolean("settings.keepSpawnLoaded", this.keepSpawnLoaded));
+            this.setDifficulty(difficulty);
+            this.setMaxSize(config.getInt("settings.maxSize", this.maxSize));
+            this.setWorldSpawn(new Location(Bukkit.getWorld(worldName), config.getDouble("settings.spawn.x", 0d), config.getDouble("settings.spawn.y", 128), config.getDouble("settings.spawn.z", 0d), (float) config.getDouble("settings.spawn.yaw", 0d), (float) config.getDouble("settings.spawn.pitch", 0d)));
+            ChatUtils.printConsoleInfo("Settings for world '" + worldName + "' loaded!\nSpawnMonster = " + spawnMonsters + "\nSpawnAnimals = " + spawnAnimals + "\nAutoSave = " + autoSave + "\nKeepSpawnLoaded = " + keepSpawnLoaded + "\nDifficulty = " + difficulty.toString() + "\nMaxSize = " + maxSize, Main.name);
+            return true;
+        } catch (Exception e) {
+            ChatUtils.printConsoleException(e, "Can't load worldsettings for world " + worldName + "!", Main.name);
+            return false;
+        }
+    }
+
+    private boolean loadMainSettings(String worldName, File dataFolder) {
         try {
             File file = new File(dataFolder, "config_" + worldName + ".yml");
             // CREATE FILE IF IT NOT EXISTS
@@ -107,25 +140,15 @@ public class GMWorldSettings {
 
             YamlConfiguration config = new YamlConfiguration();
             config.load(file);
+
             Environment environment = EnumHelper.getEnvironment(config.getString("settings.environment", this.environment.toString()));
-            Difficulty difficulty = EnumHelper.getDifficulty(config.getString("settings.difficulty", this.difficulty.toString()));
             if (environment == null) {
                 throw new Exception("Environment not found!");
-            }
-            if (difficulty == null) {
-                throw new Exception("Difficulty not found!");
             }
 
             this.setLevelSeed(config.getLong("settings.levelSeed", this.levelSeed));
             this.setEnvironment(environment);
-            this.setSpawnMonsters(config.getBoolean("settings.spawnMonsters", this.spawnMonsters));
-            this.setSpawnAnimals(config.getBoolean("settings.spawnAnimals", this.spawnAnimals));
-            this.setAutoSave(config.getBoolean("settings.autoSave", this.autoSave));
-            this.setKeepSpawnLoaded(config.getBoolean("settings.keepSpawnLoaded", this.keepSpawnLoaded));
-            this.setDifficulty(difficulty);
-            this.setMaxSize(config.getInt("settings.maxSize", this.maxSize));
-            this.setWorldSpawn(new Location(Bukkit.getWorld(worldName), config.getDouble("settings.spawn.x", 0d), config.getDouble("settings.spawn.y", 128), config.getDouble("settings.spawn.z", 0d), (float) config.getDouble("settings.spawn.yaw", 0d), (float) config.getDouble("settings.spawn.pitch", 0d)));
-            ChatUtils.printConsoleInfo("World '" + worldName + "' loaded!\nlevelSeed = " + levelSeed + "\nEnvironment = " + environment.toString() + "\nSpawnMonster = " + spawnMonsters + "\nSpawnAnimals = " + spawnAnimals + "\nAutoSave = " + autoSave + "\nKeepSpawnLoaded = " + keepSpawnLoaded + "\nDifficulty = " + difficulty.toString() + "\nMaxSize = " + maxSize, Main.name);
+            ChatUtils.printConsoleInfo("World '" + worldName + "' loaded!\nlevelSeed = " + levelSeed + "\nEnvironment = " + environment.toString(), Main.name);
             return true;
         } catch (Exception e) {
             ChatUtils.printConsoleException(e, "Can't load settings for world " + worldName + "!", Main.name);

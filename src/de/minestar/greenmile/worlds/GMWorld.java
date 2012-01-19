@@ -47,7 +47,7 @@ public class GMWorld {
         this.worldName = worldName;
     }
 
-    public void loadSettings(File dataFolder) {
+    public void loadMainSettings(File dataFolder) {
         this.settings = new GMWorldSettings(this.getWorldName(), dataFolder);
     }
 
@@ -90,47 +90,22 @@ public class GMWorld {
      *         <b>false</b> : if the world already exists or there was an
      *         internal error
      */
-    public static boolean createBukkitWorld(String worldName, Environment environment, long levelSeed) {
+    public static boolean loadOrCreateBukkitWorld(String worldName, Environment environment, long levelSeed) {
         // WORLD ALREADY EXISTS
         if (Bukkit.getWorld(worldName) != null)
             return false;
 
-        // FINALLY LOAD THE WORLD
-        WorldCreator generator = new WorldCreator(worldName);
-        generator.environment(environment);
-        generator.seed(levelSeed);
-        generator.createWorld();
-        return true;
-    }
-
-    /**
-     * Attempts to <b>load</b> the world on the server, only if the world
-     * already exists.
-     * 
-     * @return <b>true</b> : if the world was loaded<br />
-     *         <b>false</b> : if the world was not found
-     */
-    public boolean loadBukkitWorld() {
-        // WORLD DOES NOT EXIST
-        if (Bukkit.getWorld(this.worldName) == null)
+        try {
+            // FINALLY LOAD THE WORLD
+            WorldCreator generator = new WorldCreator(worldName);
+            generator.environment(environment);
+            generator.seed(levelSeed);
+            generator.createWorld();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
             return false;
-
-        // LOAD SETTINGS, IF THEY WERE NULL
-        if (this.settings == null) {
-            this.loadSettings(Main.getInstance().getDataFolder());
         }
-
-        // SETTINGS ARE INITIALIZED COMPLETELY
-        if (!this.settings.isInitialized())
-            return false;
-
-        // FINALLY LOAD THE WORLD
-        WorldCreator generator = new WorldCreator(this.worldName);
-        generator.environment(this.settings.getEnvironment());
-        generator.seed(this.settings.getLevelSeed());
-        generator.createWorld();
-
-        return true;
     }
 
     /**

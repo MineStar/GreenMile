@@ -20,9 +20,11 @@ package de.minestar.greenmile.listener;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -122,5 +124,25 @@ public class EventPlayerListener extends PlayerListener {
 
         // UPDATE THE SPAWN POSITION
         event.setRespawnLocation(worldManager.getGMWorld(worldName).getWorldSettings().getWorldSpawn());
+    }
+
+    @Override
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+        if (event.getPlayer().isOp())
+            return;
+
+        if (event.isCancelled())
+            return;
+
+        GMWorld world = this.worldManager.getGMWorld(event.getPlayer());
+        if (world == null) {
+            return;
+        }
+
+        if (!world.getEventSettings().isPvpEnabled()) {
+            if (event.getRightClicked() instanceof Player)
+                event.setCancelled(true);
+        }
+        world = null;
     }
 }

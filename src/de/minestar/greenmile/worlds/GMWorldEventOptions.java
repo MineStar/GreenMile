@@ -62,7 +62,7 @@ public class GMWorldEventOptions {
             // PLAYER
             this.blockRegainHealth = config.getBoolean("events.player.blockAutoRegainHealth", this.blockRegainHealth);
             this.pvpEnabled = config.getBoolean("events.player.pvpEnabled", this.pvpEnabled);
-            
+
             // GENERAL
             this.blockFire = config.getBoolean("events.world.blockFire", this.blockFire);
             this.blockIceForm = config.getBoolean("events.world.blockIceForm", this.blockIceForm);
@@ -506,7 +506,8 @@ public class GMWorldEventOptions {
     }
 
     /**
-     * @param pvpEnabled the pvpEnabled to set
+     * @param pvpEnabled
+     *            the pvpEnabled to set
      */
     public void setPvpEnabled(boolean pvpEnabled) {
         this.pvpEnabled = pvpEnabled;

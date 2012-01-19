@@ -27,6 +27,14 @@ public class GMWorldSettings {
     private int maxSize = 1000;
     private Point lastRenderedPosition = null;
 
+    /**
+     * This constructor is used when a world is newly created
+     * 
+     * @param worldName
+     * @param levelSeed
+     * @param environment
+     * @param dataFolder
+     */
     public GMWorldSettings(String worldName, long levelSeed, World.Environment environment, File dataFolder) {
         this.worldSpawn = Bukkit.getWorld(worldName).getSpawnLocation();
         this.levelSeed = levelSeed;
@@ -34,10 +42,23 @@ public class GMWorldSettings {
         this.initialized = saveSettings(worldName, dataFolder);
     }
 
+    /**
+     * This constructor is used when a world is loaded
+     * 
+     * @param worldName
+     * @param dataFolder
+     */
     public GMWorldSettings(String worldName, File dataFolder) {
         this.initialized = loadSettings(worldName, dataFolder);
     }
 
+    /**
+     * SAVE SETTINGS
+     * 
+     * @param worldName
+     * @param dataFolder
+     * @return <b>true</b> if saving was successful, otherwise <b>false</b>
+     */
     public boolean saveSettings(String worldName, File dataFolder) {
         File file = new File(dataFolder, "config_" + worldName + ".yml");
 
@@ -73,15 +94,30 @@ public class GMWorldSettings {
         return true;
     }
 
+    /**
+     * LOAD SETTINGS
+     * 
+     * @param worldName
+     * @param dataFolder
+     * @return <b>true</b> if loading was successful, otherwise <b>false</b>
+     */
     private boolean loadSettings(String worldName, File dataFolder) {
         try {
             File file = new File(dataFolder, "config_" + worldName + ".yml");
 
-            if ((!file.exists()) && (!saveSettings(worldName, dataFolder))) {
-                return false;
+            // SETTINGS DO NOT EXIST => TRY TO CREATE THEM
+            if (!file.exists()) {
+                // IF SAVE FAILS, LOADING FAILS TOO
+                if (!saveSettings(worldName, dataFolder)) {
+                    return false;
+                }
             }
+
+            // LOAD YAML
             YamlConfiguration config = new YamlConfiguration();
             config.load(file);
+
+            // GET VARS
             World.Environment environment = EnumHelper.getEnvironment(config.getString("settings.environment", this.environment.toString()));
             Difficulty difficulty = EnumHelper.getDifficulty(config.getString("settings.difficulty", this.difficulty.toString()));
             if (environment == null) {
@@ -113,6 +149,12 @@ public class GMWorldSettings {
         return false;
     }
 
+    /**
+     * isInitzialized()
+     * 
+     * @return <b>true</b> if initialization was successful, otherwise
+     *         <b>false</b>
+     */
     public boolean isInitialized() {
         return this.initialized;
     }

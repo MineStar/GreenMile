@@ -52,9 +52,11 @@ public class WorldManager {
             return false;
         }
         GMWorld newWorld = new GMWorld(worldName, dataFolder);
-        boolean result = GMWorld.createBukkitWorld(worldName, environment, seed);
-        newWorld.createSettings(seed, environment, this.dataFolder);
-        addWorld(newWorld);
+        boolean result = GMWorld.loadOrCreateBukkitWorld(worldName, environment, seed);
+        if (result) {
+            newWorld.createSettings(seed, environment, this.dataFolder);
+            addWorld(newWorld);
+        }
         return result;
     }
 
@@ -62,21 +64,23 @@ public class WorldManager {
      * IMPORT WORLD
      * 
      * @param worldName
-     * @return
+     * @return<b>true</b> if the import was successful, otherwise <b>false</b>
      */
     public boolean importWorld(String worldName) {
+        // WE CAN ONLY IMPORT, IF THE WORLD IS NOT COVERED BY GREENMILE
         if (worldExists(worldName)) {
             return false;
         }
 
+        // WE CAN ONLY IMPORT, IF THE BUKKITWORLD IS FOUND
         World bukkitWorld = Bukkit.getWorld(worldName);
         if (bukkitWorld == null) {
             return false;
         }
 
+        // FINALLY IMPORT THE WORLD
         GMWorld newWorld = new GMWorld(worldName, this.dataFolder);
         newWorld.createSettings(bukkitWorld.getSeed(), bukkitWorld.getEnvironment(), this.dataFolder);
-        newWorld.loadBukkitWorld();
         newWorld.updateBukkitWorld();
         addWorld(newWorld);
         return true;
@@ -166,14 +170,20 @@ public class WorldManager {
                     // GET WORLDNAME
                     String worldName = fileName.replace("config_", "");
                     worldName = worldName.substring(0, worldName.length() - 4);
-                    // CREATE GM WORLD
+                    // CREATE GMWORLD
                     GMWorld world = new GMWorld(worldName, this.dataFolder);
                     world.loadSettings(this.dataFolder);
-                    if ((!world.getWorldSettings().isInitialized()) || (!world.loadBukkitWorld()))
+                    if (!world.getWorldSettings().isInitialized())
                         continue;
-                    addWorld(world);
-                    // UPDATE BUKKIT WORLD
-                    world.updateBukkitWorld();
+
+                    if (GMWorld.loadOrCreateBukkitWorld(worldName, world.getWorldSettings().getEnvironment(), world.getWorldSettings().getLevelSeed())) {
+                        // ADD WORLD TO WORLDLIST
+                        addWorld(world);
+                        // LOAD WORLDSPECIFIC SETTINGS
+                        world.getWorldSettings().loadWorldSettings(worldName, this.getDataFolder());
+                        // UPDATE BUKKIT WORLD
+                        world.updateBukkitWorld();
+                    }
                 }
             }
         } catch (Exception e) {

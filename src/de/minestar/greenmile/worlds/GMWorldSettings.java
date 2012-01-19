@@ -49,7 +49,7 @@ public class GMWorldSettings {
      * @param dataFolder
      */
     public GMWorldSettings(String worldName, File dataFolder) {
-        this.initialized = loadSettings(worldName, dataFolder);
+        this.initialized = loadMainSettings(worldName, dataFolder);
     }
 
     /**
@@ -101,7 +101,7 @@ public class GMWorldSettings {
      * @param dataFolder
      * @return <b>true</b> if loading was successful, otherwise <b>false</b>
      */
-    private boolean loadSettings(String worldName, File dataFolder) {
+    private boolean loadMainSettings(String worldName, File dataFolder) {
         try {
             File file = new File(dataFolder, "config_" + worldName + ".yml");
 
@@ -119,16 +119,44 @@ public class GMWorldSettings {
 
             // GET VARS
             World.Environment environment = EnumHelper.getEnvironment(config.getString("settings.environment", this.environment.toString()));
-            Difficulty difficulty = EnumHelper.getDifficulty(config.getString("settings.difficulty", this.difficulty.toString()));
             if (environment == null) {
                 throw new Exception("Environment not found!");
-            }
-            if (difficulty == null) {
-                throw new Exception("Difficulty not found!");
             }
 
             setLevelSeed(config.getLong("settings.levelSeed", this.levelSeed));
             setEnvironment(environment);
+
+            ChatUtils.printConsoleInfo("Worldsettings for '" + worldName + "' loaded!\nlevelSeed = " + this.levelSeed + "\nEnvironment = " + environment.toString(), Main.name);
+            return true;
+        } catch (Exception e) {
+            ChatUtils.printConsoleException(e, "Can't load worldsettings for world " + worldName + "!", Main.name);
+        }
+        return false;
+    }
+
+    public boolean loadWorldSettings(String worldName, File dataFolder) {
+        try {
+            File file = new File(dataFolder, "config_" + worldName + ".yml");
+
+            // SETTINGS DO NOT EXIST => TRY TO CREATE THEM
+            if (!file.exists()) {
+                // IF SAVE FAILS, LOADING FAILS TOO
+                if (!saveSettings(worldName, dataFolder)) {
+                    return false;
+                }
+            }
+
+            // LOAD YAML
+            YamlConfiguration config = new YamlConfiguration();
+            config.load(file);
+
+            // GET VARS
+            Difficulty difficulty = EnumHelper.getDifficulty(config.getString("settings.difficulty", this.difficulty.toString()));
+
+            if (difficulty == null) {
+                throw new Exception("Difficulty not found!");
+            }
+
             setSpawnMonsters(config.getBoolean("settings.spawnMonsters", this.spawnMonsters));
             setSpawnAnimals(config.getBoolean("settings.spawnAnimals", this.spawnAnimals));
             setAutoSave(config.getBoolean("settings.autoSave", this.autoSave));
@@ -141,10 +169,10 @@ public class GMWorldSettings {
                 setLastRenderedPosition(new Point(config.getInt("lastRenderedChunk.x"), config.getInt("lastRenderedChunk.y")));
             }
 
-            ChatUtils.printConsoleInfo("World '" + worldName + "' loaded!\nlevelSeed = " + this.levelSeed + "\nEnvironment = " + environment.toString() + "\nSpawnMonster = " + this.spawnMonsters + "\nSpawnAnimals = " + this.spawnAnimals + "\nAutoSave = " + this.autoSave + "\nKeepSpawnLoaded = " + this.keepSpawnLoaded + "\nDifficulty = " + difficulty.toString() + "\nMaxSize = " + this.maxSize, Main.name);
+            ChatUtils.printConsoleInfo("Specific settings for '" + worldName + "' loaded!\nSpawnMonster = " + this.spawnMonsters + "\nSpawnAnimals = " + this.spawnAnimals + "\nAutoSave = " + this.autoSave + "\nKeepSpawnLoaded = " + this.keepSpawnLoaded + "\nDifficulty = " + difficulty.toString() + "\nMaxSize = " + this.maxSize, Main.name);
             return true;
         } catch (Exception e) {
-            ChatUtils.printConsoleException(e, "Can't load settings for world " + worldName + "!", Main.name);
+            ChatUtils.printConsoleException(e, "Can't load worldspecific settings for world " + worldName + "!", Main.name);
         }
         return false;
     }

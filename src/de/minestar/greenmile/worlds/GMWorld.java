@@ -56,7 +56,8 @@ public class GMWorld {
         return Bukkit.getServer().getWorld(this.worldName);
     }
 
-    public static boolean createBukkitWorld(String worldName, World.Environment environment, long levelSeed) {
+    public static boolean loadOrCreateBukkitWorld(String worldName, World.Environment environment, long levelSeed) {
+        // IF THE WORLD ALREADY EXISTS OR IS LOADED => RETURN
         if (Bukkit.getWorld(worldName) != null) {
             return false;
         }
@@ -66,33 +67,6 @@ public class GMWorld {
             WorldCreator generator = new WorldCreator(worldName);
             generator.environment(environment);
             generator.seed(levelSeed);
-            generator.createWorld();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    /**
-     * LOAD BUKKIT WORLD
-     * 
-     * @return
-     */
-    public boolean loadBukkitWorld() {
-        if (this.worldSettings == null) {
-            loadSettings(Main.getInstance().getDataFolder());
-        }
-
-        if (!this.worldSettings.isInitialized()) {
-            return false;
-        }
-
-        // GENERATE THE WORLD
-        try {
-            WorldCreator generator = new WorldCreator(this.worldName);
-            generator.environment(this.worldSettings.getEnvironment());
-            generator.seed(this.worldSettings.getLevelSeed());
             generator.createWorld();
             return true;
         } catch (Exception e) {

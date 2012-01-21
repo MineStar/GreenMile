@@ -3,13 +3,12 @@ package de.minestar.greenmile.commands.gm;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World.Environment;
-import org.bukkit.entity.Player;
-
-import com.bukkit.gemo.utils.ChatUtils;
+import org.bukkit.command.CommandSender;
 
 import de.minestar.greenmile.helper.EnumHelper;
 import de.minestar.greenmile.worlds.WorldManager;
 import de.minestar.minstarlibrary.commands.ExtendedCommand;
+import de.minestar.minstarlibrary.utils.ChatUtils;
 
 public class CreateWorldCommand extends ExtendedCommand {
     private WorldManager worldManager;
@@ -20,7 +19,7 @@ public class CreateWorldCommand extends ExtendedCommand {
         this.worldManager = worldManager;
     }
 
-    public void execute(String[] args, Player player) {
+    public void execute(String[] args, CommandSender sender) {
         Long seed = 1337l;
         Environment environment = Environment.NORMAL;
 
@@ -29,7 +28,7 @@ public class CreateWorldCommand extends ExtendedCommand {
         if (args.length >= 2) {
             environment = EnumHelper.getEnvironment(args[1]);
             if (environment == null) {
-                ChatUtils.printInfo(player, "[GreenMile]", ChatColor.GRAY, "Environment '" + args[1] + "' not found");
+                ChatUtils.printInfo(sender, "[GreenMile]", ChatColor.GRAY, "Environment '" + args[1] + "' not found");
                 return;
             }
 
@@ -45,18 +44,18 @@ public class CreateWorldCommand extends ExtendedCommand {
         }
 
         if ((this.worldManager.worldExists(worldName)) || (Bukkit.getServer().getWorld(worldName) != null)) {
-            ChatUtils.printError(player, this.pluginName, "Error while creating world '" + worldName + "'!");
-            ChatUtils.printInfo(player, this.pluginName, ChatColor.GRAY, "A world with that name does already exist.");
+            ChatUtils.printError(sender, this.pluginName, "Error while creating world '" + worldName + "'!");
+            ChatUtils.printInfo(sender, this.pluginName, ChatColor.GRAY, "A world with that name does already exist.");
             return;
         }
 
         boolean result = this.worldManager.createWorld(worldName, environment, seed.longValue(), this.worldManager.getDataFolder());
 
         if (result) {
-            ChatUtils.printSuccess(player, this.pluginName, "World '" + worldName + "' created!");
+            ChatUtils.printSuccess(sender, this.pluginName, "World '" + worldName + "' created!");
         } else {
-            ChatUtils.printError(player, this.pluginName, "Error while creating world '" + worldName + "'!");
-            ChatUtils.printInfo(player, this.pluginName, ChatColor.GRAY, "There was an internal error while creating the worldsettings.");
+            ChatUtils.printError(sender, this.pluginName, "Error while creating world '" + worldName + "'!");
+            ChatUtils.printInfo(sender, this.pluginName, ChatColor.GRAY, "There was an internal error while creating the worldsettings.");
         }
     }
 }

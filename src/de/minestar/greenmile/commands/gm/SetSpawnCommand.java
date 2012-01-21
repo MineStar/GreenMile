@@ -1,12 +1,13 @@
 package de.minestar.greenmile.commands.gm;
 
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import com.bukkit.gemo.utils.ChatUtils;
 
 import de.minestar.greenmile.worlds.GMWorld;
 import de.minestar.greenmile.worlds.WorldManager;
 import de.minestar.minstarlibrary.commands.Command;
+import de.minestar.minstarlibrary.utils.ChatUtils;
 
 public class SetSpawnCommand extends Command {
     private WorldManager worldManager;
@@ -17,7 +18,13 @@ public class SetSpawnCommand extends Command {
         this.worldManager = worldManager;
     }
 
-    public void execute(String[] args, Player player) {
+    public void execute(String[] args, CommandSender sender) {
+        if (!(sender instanceof Player)) {
+            ChatUtils.printInfo(sender, this.pluginName, ChatColor.GRAY, "This is only an ingamecommand!");
+            return;
+        }
+
+        Player player = (Player) sender;
         String worldName = player.getWorld().getName();
         if (!this.worldManager.worldExists(worldName)) {
             ChatUtils.printError(player, this.pluginName, "You need to import this world!");

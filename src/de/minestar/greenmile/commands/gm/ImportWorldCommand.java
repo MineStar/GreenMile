@@ -1,11 +1,12 @@
 package de.minestar.greenmile.commands.gm;
 
-import com.bukkit.gemo.utils.ChatUtils;
-import de.minestar.greenmile.worlds.WorldManager;
-import de.minestar.minstarlibrary.commands.Command;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
+
+import de.minestar.greenmile.worlds.WorldManager;
+import de.minestar.minstarlibrary.commands.Command;
+import de.minestar.minstarlibrary.utils.ChatUtils;
 
 public class ImportWorldCommand extends Command {
     private WorldManager worldManager;
@@ -16,26 +17,26 @@ public class ImportWorldCommand extends Command {
         this.worldManager = worldManager;
     }
 
-    public void execute(String[] args, Player player) {
+    public void execute(String[] args, CommandSender sender) {
         String worldName = args[0];
 
         if (this.worldManager.worldExists(worldName)) {
-            ChatUtils.printError(player, this.pluginName, "This world does already exist!");
+            ChatUtils.printError(sender, this.pluginName, "This world does already exist!");
             return;
         }
 
         if (Bukkit.getWorld(worldName) == null) {
-            ChatUtils.printError(player, this.pluginName, "This bukkitworld does not exist!");
+            ChatUtils.printError(sender, this.pluginName, "This bukkitworld does not exist!");
             return;
         }
 
         boolean result = this.worldManager.importWorld(worldName);
 
         if (result) {
-            ChatUtils.printSuccess(player, this.pluginName, "World '" + worldName + "' imported!");
+            ChatUtils.printSuccess(sender, this.pluginName, "World '" + worldName + "' imported!");
         } else {
-            ChatUtils.printError(player, this.pluginName, "Error while importing world '" + worldName + "'!");
-            ChatUtils.printInfo(player, this.pluginName, ChatColor.GRAY, "There was an internal error while importing the worldsettings.");
+            ChatUtils.printError(sender, this.pluginName, "Error while importing world '" + worldName + "'!");
+            ChatUtils.printInfo(sender, this.pluginName, ChatColor.GRAY, "There was an internal error while importing the worldsettings.");
         }
     }
 }

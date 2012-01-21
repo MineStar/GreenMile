@@ -1,7 +1,7 @@
 package de.minestar.greenmile.commands.gm;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 
 import de.minestar.greenmile.Main;
 import de.minestar.minstarlibrary.commands.Command;
@@ -13,14 +13,14 @@ public class StopCommand extends Command {
         this.description = "Stopt den Renderthread";
     }
 
-    public void execute(String[] args, Player player) {
+    public void execute(String[] args, CommandSender sender) {
         if (Main.chunkThread == null) {
-            ChatUtils.printError(player, this.pluginName, "Es existiert kein Thread!");
+            ChatUtils.printError(sender, this.pluginName, "Es existiert kein Thread!");
         } else {
             Bukkit.getServer().getScheduler().cancelTask(Main.chunkThread.getTaskID());
             Main.chunkThread.saveConfig();
             Main.chunkThread = null;
-            ChatUtils.printSuccess(player, this.pluginName, "Thread angehalten!");
+            ChatUtils.printSuccess(sender, this.pluginName, "Thread angehalten!");
         }
     }
 }

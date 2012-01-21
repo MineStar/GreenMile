@@ -9,17 +9,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	<repositories>
-		<repository>
-			<id>bukkit-releases</id>
-			<url>http://repo.bukkit.org/content/repositories/releases</url>
-		</repository>
-		<repository>
-			<id>Minestar</id>
-			<url>http://test.minestar.de:8081/artifactory</url>
-		</repository>
-	</repositories>
-
 	<dependencies>
 		<!-- Bukkit -->
 		<dependency>
@@ -31,8 +20,8 @@
 		<!-- MineStar -->
 		<dependency>
 			<groupId>de.minestar</groupId>
-			<artifactId>MineStarLibrary</artifactId>
-			<version>2</version>
+			<artifactId>minestarlibrary</artifactId>
+			<version>1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>de.minestar</groupId>

@@ -1,7 +1,7 @@
 package de.minestar.greenmile.commands.gm;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 
 import de.minestar.greenmile.worlds.GMWorld;
 import de.minestar.greenmile.worlds.WorldManager;
@@ -16,14 +16,14 @@ public class ListCommand extends Command {
         this.worldManager = worldManager;
     }
 
-    public void execute(String[] args, Player player) {
+    public void execute(String[] args, CommandSender sender) {
         if (this.worldManager.getWorldList().size() < 1) {
-            ChatUtils.printError(player, this.pluginName, "GreenMile ueberwacht keine Welt!");
+            ChatUtils.printError(sender, this.pluginName, "GreenMile ueberwacht keine Welt!");
             return;
         }
 
-        ChatUtils.printInfo(player, this.pluginName, ChatColor.GOLD, "GreenMile ueberwacht folgende Welten:");
+        ChatUtils.printInfo(sender, this.pluginName, ChatColor.GOLD, "GreenMile ueberwacht folgende Welten:");
         for (GMWorld world : this.worldManager.getWorldList())
-            ChatUtils.printInfo(player, this.pluginName, ChatColor.GREEN, "'" + world.getWorldName() + "' : " + world.getWorldSettings().getMaxSize());
+            ChatUtils.printInfo(sender, this.pluginName, ChatColor.GREEN, "'" + world.getWorldName() + "' : " + world.getWorldSettings().getMaxSize());
     }
 }

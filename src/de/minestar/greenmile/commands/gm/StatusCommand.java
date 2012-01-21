@@ -1,7 +1,7 @@
 package de.minestar.greenmile.commands.gm;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 
 import de.minestar.greenmile.Main;
 import de.minestar.minstarlibrary.commands.Command;
@@ -13,10 +13,10 @@ public class StatusCommand extends Command {
         this.description = "Zeigt Status des Threads an";
     }
 
-    public void execute(String[] args, Player player) {
+    public void execute(String[] args, CommandSender sender) {
         if (Main.chunkThread == null)
-            ChatUtils.printError(player, this.pluginName, "Es existiert kein Thread!");
+            ChatUtils.printError(sender, this.pluginName, "Es existiert kein Thread!");
         else
-            ChatUtils.printInfo(player, this.pluginName, ChatColor.GRAY, "Status: " + Main.chunkThread.getStatus());
+            ChatUtils.printInfo(sender, this.pluginName, ChatColor.GRAY, "Status: " + Main.chunkThread.getStatus());
     }
 }

@@ -39,7 +39,7 @@ public class Settings {
     private WorldManager worldManager;
 
     //@formatter:off
-    private Event.Priority MONITOR_LEVEL        = Event.Priority.Normal;
+    private Event.Priority MONITOR_LEVEL        = Event.Priority.Lowest;
     
     // MONITOR SETTINGS - BLOCKLISTENER
     private boolean monitorBlockBreak           = true;
@@ -118,7 +118,7 @@ public class Settings {
         this.registerEvent(this.monitorPlayerBucketEmpty,       pListener, Event.Type.PLAYER_BUCKET_EMPTY);
         this.registerEvent(this.monitorPlayerBucketFill,        pListener, Event.Type.PLAYER_BUCKET_FILL);
         this.registerEvent(this.monitorPlayerInteract,          pListener, Event.Type.PLAYER_INTERACT);
-        this.registerEvent(this.monitorPlayerInteractEntity,    pListener, Event.Type.PLAYER_INTERACT_ENTITY);        
+        this.registerEvent(this.monitorPlayerInteractEntity,    pListener, Event.Type.PLAYER_INTERACT_ENTITY);      
         //@formatter:on
     }
 

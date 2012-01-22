@@ -207,6 +207,17 @@ public class WorldManager {
                     }
                 }
             }
+
+            // IMPORT KNOWN BUKKITWORLDS
+            for (World world : Bukkit.getWorlds()) {
+                if (!this.worldExists(world.getName())) {
+                    if (!this.importWorld(world.getName())) {
+                        ChatUtils.printConsoleError("Could not import world '" + world.getName() + "'!", Main.name);
+                    } else {
+                        ChatUtils.printConsoleInfo("World '" + world.getName() + "' imported!", Main.name);
+                    }
+                }
+            }
         } catch (Exception e) {
             ChatUtils.printConsoleException(e, "Can't load worlds from " + this.dataFolder, Main.name);
         }

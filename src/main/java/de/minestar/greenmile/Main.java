@@ -58,7 +58,7 @@ public class Main extends JavaPlugin {
      * ON ENABLE
      */
     public void onEnable() {
-        name = getDescription().getName();
+        name = "[ " + getDescription().getName() + " ]";
 
         // CREATE DATAFOLDER
         File dataFolder = getDataFolder();

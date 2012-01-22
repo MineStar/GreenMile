@@ -9,6 +9,7 @@ public class GMWorldEventOptions {
     private boolean blockLeavesDecay = true;
     private boolean blockCreeperExplosions = true;
     private boolean blockRegainHealth = true;
+    private boolean allowFoodLevelChange = true;
     private boolean blockIceForm = true;
     private boolean blockIceMelt = true;
     private boolean blockSnowForm = true;
@@ -66,6 +67,7 @@ public class GMWorldEventOptions {
             // PLAYER
             this.blockRegainHealth = config.getBoolean("events.player.blockAutoRegainHealth", this.blockRegainHealth);
             this.pvpEnabled = config.getBoolean("events.player.pvpEnabled", this.pvpEnabled);
+            this.allowFoodLevelChange = config.getBoolean("events.player.foodLevelChange", this.allowFoodLevelChange);
 
             // GENERAL
             this.blockFire = config.getBoolean("events.world.blockFire", this.blockFire);
@@ -123,6 +125,7 @@ public class GMWorldEventOptions {
             // PLAYER
             config.set("events.player.blockAutoRegainHealth", this.blockRegainHealth);
             config.set("events.player.pvpEnabled", this.pvpEnabled);
+            config.set("events.player.foodLevelChange", this.allowFoodLevelChange);
 
             // GENERAL
             config.set("events.world.blockFire", this.blockFire);
@@ -166,6 +169,13 @@ public class GMWorldEventOptions {
             e.printStackTrace();
             return false;
         }
+    }
+
+    /**
+     * @return the blockFoodLevelChange
+     */
+    public boolean isAllowFoodLevelChange() {
+        return allowFoodLevelChange;
     }
 
     /**
@@ -341,6 +351,14 @@ public class GMWorldEventOptions {
      */
     public int getSpongeRadius() {
         return SpongeRadius;
+    }
+
+    /**
+     * @param blockFoodLevelChange
+     *            the blockFoodLevelChange to set
+     */
+    public void setAllowFoodLevelChange(boolean allowFoodLevelChange) {
+        this.allowFoodLevelChange = allowFoodLevelChange;
     }
 
     /**

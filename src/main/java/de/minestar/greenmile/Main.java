@@ -33,6 +33,7 @@ public class Main extends JavaPlugin {
     private CommandList cmdList;
     public static String name;
     private WorldManager worldManager;
+    private Settings gmSettings;
 
     /**
      * Constructor
@@ -57,7 +58,7 @@ public class Main extends JavaPlugin {
      * ON ENABLE
      */
     public void onEnable() {
-        name = "[" + getDescription().getName() + "]";
+        name = getDescription().getName();
 
         // CREATE DATAFOLDER
         File dataFolder = getDataFolder();
@@ -65,6 +66,14 @@ public class Main extends JavaPlugin {
 
         // INIT WORLDMANAGER
         this.worldManager = new WorldManager(this.getDataFolder());
+
+        this.gmSettings = new Settings("config.yml", this.getDataFolder(), worldManager);
+        if (gmSettings.loadSettings(true)) {
+            gmSettings.registerAllEvents();
+        } else {
+            ChatUtils.printConsoleError("Could not load settings!\n\n GREENMILE WILL BE DISABLED !!! \n\n", Main.name);
+            this.setEnabled(false);
+        }
 
         // INIT COMMANDLIST
         initCommandList();
@@ -118,7 +127,9 @@ public class Main extends JavaPlugin {
         this.cmdList.handleCommand(sender, label, args);
         return true;
     }
+    
 
+    
     /**
      * GET PLUGIN-INSTANCE
      * @return the Maininstance of GreenMile

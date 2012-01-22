@@ -95,7 +95,7 @@ public class GMWorld {
             return;
         }
 
-        // UPDATZ THE SETTINGS
+        // UPDATE THE SETTINGS
         bukkitWorld.setSpawnFlags(this.worldSettings.isSpawnMonsters(), this.worldSettings.isSpawnAnimals());
         bukkitWorld.setAutoSave(this.worldSettings.isAutoSave());
         bukkitWorld.setDifficulty(this.worldSettings.getDifficulty());

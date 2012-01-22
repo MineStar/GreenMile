@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import de.minestar.greenmile.Main;
@@ -122,6 +123,16 @@ public class WorldManager {
     }
 
     /**
+     * Check if GMWorld exists (by entity)
+     * 
+     * @param worldName
+     * @return <b>true</b> if the world exists, otherwise <b>false</b>
+     */
+    public boolean worldExists(Entity entity) {
+        return worldExists(entity.getWorld().getName());
+    }
+
+    /**
      * Get the GMWorld by the worldname
      * 
      * @param worldName
@@ -154,6 +165,16 @@ public class WorldManager {
      */
     public GMWorld getGMWorld(Player player) {
         return getGMWorld(player.getWorld().getName());
+    }
+
+    /**
+     * Get the GMWorld by an entity
+     * 
+     * @param worldName
+     * @return the GMWorld, or null if not found
+     */
+    public GMWorld getGMWorld(Entity entity) {
+        return getGMWorld(entity.getWorld().getName());
     }
 
     /**

@@ -82,6 +82,8 @@ public class WorldManager {
         // FINALLY IMPORT THE WORLD
         GMWorld newWorld = new GMWorld(worldName, this.dataFolder);
         newWorld.createSettings(bukkitWorld.getSeed(), bukkitWorld.getEnvironment(), this.dataFolder);
+        newWorld.getWorldSettings().setWorldSpawn(bukkitWorld.getSpawnLocation());
+        newWorld.getWorldSettings().saveSettings(worldName, dataFolder);
         newWorld.updateBukkitWorld();
         addWorld(newWorld);
         return true;

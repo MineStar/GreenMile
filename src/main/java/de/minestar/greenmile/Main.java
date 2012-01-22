@@ -105,12 +105,12 @@ public class Main extends JavaPlugin {
                                 new Command[]
                                 {
                                     new GMTeleportCommand("[GreenMile]", "tp", "<WorldName>", "gm.teleport", this.worldManager), 
-                                    new CreateWorldCommand("[GreenMile]", "createworld", "<WorldName> [Environment [levelseed]]", "gm.createworld", this.worldManager), 
-                                    new ImportWorldCommand("[GreenMile]", "importworld", "<WorldName>", "gm.importworld", this.worldManager), 
+                                    new CreateWorldCommand("[GreenMile]", "create", "<WorldName> [Environment [levelseed]]", "gm.createworld", this.worldManager), 
+                                    new ImportWorldCommand("[GreenMile]", "import", "<WorldName>", "gm.importworld", this.worldManager), 
                                     new SetSpawnCommand("[GreenMile]", "setspawn", "", "gm.setspawn", this.worldManager), 
                                     new StartCommand("[GreenMile]", "start", "<WorldName>", "gm.start", this.worldManager, this, speed), 
                                     new StopCommand("[GreenMile]", "stop", "", "gm.stop"), new StatusCommand("[GreenMile]", "status", "", "gm.status"), 
-                                    new ChangeSizeCommand("[GreenMile]", "change", "<WorldName> <Size>", "gm.change", this.worldManager, this, speed), 
+                                    new ChangeSizeCommand("[GreenMile]", "size", "<WorldName> <Size>", "gm.change", this.worldManager, this, speed), 
                                     new ListCommand("[GreenMile]", "list", "", "gm.list", this.worldManager)
                                 }
                         ), 

@@ -138,7 +138,7 @@ public class GMWorldEventOptions {
             config.set("events.physics.leaves.blockDecay", this.blockLeavesDecay);
             config.set("events.physics.leaves.radius", this.blockLeavesDecayRadius);
             config.set("events.physics.portal.allowAnywhere", this.allowPortalAnywhere);
-            config.set("events.physics.sponge.enable", this.enableSponge);
+            config.set("events.physics.sponge.enabled", this.enableSponge);
             config.set("events.physics.sponge.radius", this.SpongeRadius);
             config.set("events.physics.redstone.enabled", this.redstoneEnabled);
 

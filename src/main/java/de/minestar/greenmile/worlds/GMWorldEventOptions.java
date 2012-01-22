@@ -6,17 +6,17 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class GMWorldEventOptions {
     private boolean blockFire = true;
-    private boolean blockLeavesDecay = true;
+    private boolean blockLeavesDecay = false;
     private boolean blockCreeperExplosions = true;
-    private boolean blockRegainHealth = true;
+    private boolean blockRegainHealth = false;
     private boolean allowFoodLevelChange = true;
     private boolean blockIceForm = true;
     private boolean blockIceMelt = true;
     private boolean blockSnowForm = true;
     private boolean blockSnowMelt = true;
     private boolean blockTNT = false;
-    private boolean blockStickyPistons = true;
-    private boolean blockNormalPistons = true;
+    private boolean blockStickyPistons = false;
+    private boolean blockNormalPistons = false;
     private boolean allowPortalAnywhere = true;
     private boolean enableSponge = false;
     private boolean allowBlockPlace = true;

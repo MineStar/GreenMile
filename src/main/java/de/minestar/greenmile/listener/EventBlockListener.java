@@ -244,8 +244,6 @@ public class EventBlockListener extends BlockListener {
 
     @Override
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (event.getPlayer().isOp())
-            return;
 
         if (event.isCancelled())
             return;
@@ -254,10 +252,31 @@ public class EventBlockListener extends BlockListener {
         if (world == null) {
             return;
         }
-        event.setCancelled(!world.getEventSettings().isAllowBlockPlace());
+        if (!event.getPlayer().isOp()) {
+            event.setCancelled(!world.getEventSettings().isAllowBlockPlace());
+        }
+
+        // SPONGE
+        if (!event.isCancelled() && event.getBlockPlaced().getTypeId() == Material.SPONGE.getId()) {
+            if (world.getEventSettings().isEnableSponge()) {
+                Block block = event.getBlock();
+                GMWorldEventOptions options = world.getEventSettings();
+                for (int x = -(options.getSpongeRadius() + 1); x <= (options.getSpongeRadius() + 1); x++) {
+                    for (int z = -(options.getSpongeRadius() + 1); z <= (options.getSpongeRadius() + 1); z++) {
+                        for (int y = -(options.getSpongeRadius() + 1); y <= (options.getSpongeRadius() + 1); y++) {
+                            block = event.getBlock().getRelative(x, y, z);
+                            if (block.getTypeId() == Material.WATER.getId() || block.getTypeId() == Material.STATIONARY_WATER.getId()) {
+                                block.setType(Material.AIR);
+                            }
+                        }
+                    }
+                }
+                options = null;
+                block = null;
+            }
+        }
         world = null;
     }
-
     @Override
     public void onBlockSpread(BlockSpreadEvent event) {
         if (event.isCancelled())

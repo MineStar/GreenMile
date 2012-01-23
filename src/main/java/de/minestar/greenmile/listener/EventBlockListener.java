@@ -46,7 +46,7 @@ public class EventBlockListener extends BlockListener {
         }
 
         // CANCEL ICE-BREAK
-        if (!event.isCancelled()) {
+        if (!event.isCancelled() && event.getBlock().getTypeId() == Material.ICE.getId()) {
             if (world.getEventSettings().isBlockIceMelt()) {
                 event.setCancelled(true);
                 event.getBlock().setType(Material.AIR);

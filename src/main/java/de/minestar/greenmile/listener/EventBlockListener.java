@@ -32,8 +32,6 @@ public class EventBlockListener extends BlockListener {
 
     @Override
     public void onBlockBreak(BlockBreakEvent event) {
-        if (event.getPlayer().isOp())
-            return;
 
         if (event.isCancelled())
             return;
@@ -42,7 +40,10 @@ public class EventBlockListener extends BlockListener {
         if (world == null) {
             return;
         }
-        event.setCancelled(!world.getEventSettings().isAllowBlockBreak());
+
+        if (!event.getPlayer().isOp()) {
+            event.setCancelled(!world.getEventSettings().isAllowBlockBreak());
+        }
 
         // CANCEL ICE-BREAK
         if (!event.isCancelled()) {

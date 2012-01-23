@@ -4,6 +4,7 @@ import org.bukkit.Difficulty;
 import org.bukkit.World.Environment;
 import org.bukkit.event.Event.Priority;
 
+@SuppressWarnings("deprecation")
 public class EnumHelper {
     /**
      * Get the World.Environment by the name

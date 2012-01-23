@@ -32,6 +32,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import de.minestar.greenmile.worlds.GMWorld;
 import de.minestar.greenmile.worlds.WorldManager;
 
+@SuppressWarnings("deprecation")
 public class EventEntityListener extends EntityListener {
     private final WorldManager worldManager;
 

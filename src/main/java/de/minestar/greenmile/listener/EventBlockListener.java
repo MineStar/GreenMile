@@ -16,11 +16,13 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
+import org.bukkit.inventory.ItemStack;
 
 import de.minestar.greenmile.worlds.GMWorld;
 import de.minestar.greenmile.worlds.GMWorldEventOptions;
 import de.minestar.greenmile.worlds.WorldManager;
 
+@SuppressWarnings("deprecation")
 public class EventBlockListener extends BlockListener {
     private final WorldManager worldManager;
 
@@ -41,6 +43,16 @@ public class EventBlockListener extends BlockListener {
             return;
         }
         event.setCancelled(!world.getEventSettings().isAllowBlockBreak());
+
+        // CANCEL ICE-BREAK
+        if (!event.isCancelled()) {
+            if (world.getEventSettings().isBlockIceMelt()) {
+                event.setCancelled(true);
+                event.getBlock().setType(Material.AIR);
+                ItemStack item = new ItemStack(Material.ICE, 1);
+                event.getBlock().getWorld().dropItem(event.getBlock().getLocation(), item);
+            }
+        }
         world = null;
     }
 

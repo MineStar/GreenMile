@@ -57,6 +57,7 @@ public class Main extends JavaPlugin {
     /**
      * ON ENABLE
      */
+    @SuppressWarnings("deprecation")
     public void onEnable() {
         name = "[ " + getDescription().getName() + " ]";
 

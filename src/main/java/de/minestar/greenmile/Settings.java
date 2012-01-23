@@ -31,7 +31,7 @@ import de.minestar.greenmile.listener.EventBlockListener;
 import de.minestar.greenmile.listener.EventEntityListener;
 import de.minestar.greenmile.listener.EventPlayerListener;
 import de.minestar.greenmile.worlds.WorldManager;
-
+@SuppressWarnings("deprecation")
 public class Settings {
 
     private String CONFIG_FILE = "config.yml";
@@ -39,6 +39,7 @@ public class Settings {
     private WorldManager worldManager;
 
     //@formatter:off
+
     private Event.Priority MONITOR_LEVEL        = Event.Priority.Lowest;
     
     // MONITOR SETTINGS - BLOCKLISTENER

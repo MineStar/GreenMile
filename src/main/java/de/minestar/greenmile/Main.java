@@ -4,7 +4,6 @@ import java.io.File;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.event.Event;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.minestar.greenmile.commands.gm.ChangeSizeCommand;
@@ -57,7 +56,6 @@ public class Main extends JavaPlugin {
     /**
      * ON ENABLE
      */
-    @SuppressWarnings("deprecation")
     public void onEnable() {
         name = "[ " + getDescription().getName() + " ]";
 
@@ -85,7 +83,7 @@ public class Main extends JavaPlugin {
 
         // CREATE LISTENER
         this.pListener = new GMPListener(this.worldManager);
-        Bukkit.getPluginManager().registerEvent(Event.Type.PLAYER_TELEPORT, this.pListener, Event.Priority.Highest, this);
+        Bukkit.getPluginManager().registerEvents(this.pListener, this);
 
         // PRINT INFO
         ChatUtils.printConsoleInfo("Version " + getDescription().getVersion() + " enabled!", name);
@@ -105,14 +103,14 @@ public class Main extends JavaPlugin {
                         new GreenMileCommand("[GreenMile]", "/gm", "", "gm.status", 
                                 new Command[]
                                 {
-                                    new GMTeleportCommand("[GreenMile]", "tp", "<WorldName>", "gm.teleport", this.worldManager), 
-                                    new CreateWorldCommand("[GreenMile]", "create", "<WorldName> [Environment [levelseed]]", "gm.createworld", this.worldManager), 
-                                    new ImportWorldCommand("[GreenMile]", "import", "<WorldName>", "gm.importworld", this.worldManager), 
-                                    new SetSpawnCommand("[GreenMile]", "setspawn", "", "gm.setspawn", this.worldManager), 
-                                    new StartCommand("[GreenMile]", "start", "<WorldName>", "gm.start", this.worldManager, this, speed), 
-                                    new StopCommand("[GreenMile]", "stop", "", "gm.stop"), new StatusCommand("[GreenMile]", "status", "", "gm.status"), 
-                                    new ChangeSizeCommand("[GreenMile]", "size", "<WorldName> <Size>", "gm.change", this.worldManager, this, speed), 
-                                    new ListCommand("[GreenMile]", "list", "", "gm.list", this.worldManager)
+                                    new GMTeleportCommand("[GreenMile]", "tp", "<WorldName>", "greenmile.teleport", this.worldManager), 
+                                    new CreateWorldCommand("[GreenMile]", "create", "<WorldName> [Environment [levelseed]]", "greenmile.createworld", this.worldManager), 
+                                    new ImportWorldCommand("[GreenMile]", "import", "<WorldName>", "greenmile.importworld", this.worldManager), 
+                                    new SetSpawnCommand("[GreenMile]", "setspawn", "", "greenmile.setspawn", this.worldManager), 
+                                    new StartCommand("[GreenMile]", "start", "<WorldName>", "greenmile.start", this.worldManager, this, speed), 
+                                    new StopCommand("[GreenMile]", "stop", "", "gm.stop"), new StatusCommand("[GreenMile]", "status", "", "greenmile.status"), 
+                                    new ChangeSizeCommand("[GreenMile]", "size", "<WorldName> <Size>", "greenmile.change", this.worldManager, this, speed), 
+                                    new ListCommand("[GreenMile]", "list", "", "greenmile.list", this.worldManager)
                                 }
                         ), 
                         new SpawnCommand("[GreenMile]", "/spawn", "[WorldName]", "", this.worldManager)

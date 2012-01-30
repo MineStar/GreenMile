@@ -2,6 +2,8 @@ package de.minestar.greenmile.listener;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockFadeEvent;
@@ -9,7 +11,6 @@ import org.bukkit.event.block.BlockFormEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockIgniteEvent.IgniteCause;
-import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
@@ -22,15 +23,14 @@ import de.minestar.greenmile.worlds.GMWorld;
 import de.minestar.greenmile.worlds.GMWorldEventOptions;
 import de.minestar.greenmile.worlds.WorldManager;
 
-@SuppressWarnings("deprecation")
-public class EventBlockListener extends BlockListener {
+public class EventBlockListener implements Listener {
     private final WorldManager worldManager;
 
     public EventBlockListener(WorldManager worldManager) {
         this.worldManager = worldManager;
     }
 
-    @Override
+    @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
 
         if (event.isCancelled())
@@ -57,7 +57,7 @@ public class EventBlockListener extends BlockListener {
         world = null;
     }
 
-    @Override
+    @EventHandler
     public void onBlockBurn(BlockBurnEvent event) {
         if (event.isCancelled())
             return;
@@ -70,7 +70,7 @@ public class EventBlockListener extends BlockListener {
         world = null;
     }
 
-    @Override
+    @EventHandler
     public void onBlockFade(BlockFadeEvent event) {
         if (event.isCancelled())
             return;
@@ -88,7 +88,7 @@ public class EventBlockListener extends BlockListener {
         world = null;
     }
 
-    @Override
+    @EventHandler
     public void onBlockForm(BlockFormEvent event) {
         if (event.isCancelled())
             return;
@@ -106,7 +106,7 @@ public class EventBlockListener extends BlockListener {
         world = null;
     }
 
-    @Override
+    @EventHandler
     public void onBlockFromTo(BlockFromToEvent event) {
         if (event.isCancelled())
             return;
@@ -139,7 +139,7 @@ public class EventBlockListener extends BlockListener {
         world = null;
     }
 
-    @Override
+    @EventHandler
     public void onBlockIgnite(BlockIgniteEvent event) {
         if (event.isCancelled())
             return;
@@ -158,7 +158,7 @@ public class EventBlockListener extends BlockListener {
         }
     }
 
-    @Override
+    @EventHandler
     public void onLeavesDecay(LeavesDecayEvent event) {
         if (event.isCancelled())
             return;
@@ -192,7 +192,7 @@ public class EventBlockListener extends BlockListener {
         world = null;
     }
 
-    @Override
+    @EventHandler
     public void onBlockPhysics(BlockPhysicsEvent event) {
         if (event.isCancelled())
             return;
@@ -238,7 +238,7 @@ public class EventBlockListener extends BlockListener {
         world = null;
     }
 
-    @Override
+    @EventHandler
     public void onBlockPistonExtend(BlockPistonExtendEvent event) {
         if (event.isCancelled())
             return;
@@ -255,7 +255,7 @@ public class EventBlockListener extends BlockListener {
         world = null;
     }
 
-    @Override
+    @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
 
         if (event.isCancelled())
@@ -290,7 +290,7 @@ public class EventBlockListener extends BlockListener {
         }
         world = null;
     }
-    @Override
+    @EventHandler
     public void onBlockSpread(BlockSpreadEvent event) {
         if (event.isCancelled())
             return;

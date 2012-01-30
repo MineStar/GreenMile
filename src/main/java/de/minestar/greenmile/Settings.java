@@ -22,16 +22,11 @@ import java.io.File;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Listener;
 
-import de.minestar.greenmile.helper.EnumHelper;
 import de.minestar.greenmile.listener.EventBlockListener;
 import de.minestar.greenmile.listener.EventEntityListener;
 import de.minestar.greenmile.listener.EventPlayerListener;
 import de.minestar.greenmile.worlds.WorldManager;
-@SuppressWarnings("deprecation")
 public class Settings {
 
     private String CONFIG_FILE = "config.yml";
@@ -40,7 +35,7 @@ public class Settings {
 
     //@formatter:off
 
-    private Event.Priority MONITOR_LEVEL        = Event.Priority.Lowest;
+   // private Event.Priority MONITOR_LEVEL        = Event.Priority.Lowest;
     
     // MONITOR SETTINGS - BLOCKLISTENER
     private boolean monitorBlockBreak           = true;
@@ -92,50 +87,55 @@ public class Settings {
         EventEntityListener eListener = new EventEntityListener(worldManager);
         EventPlayerListener pListener = new EventPlayerListener(worldManager);
 
-        //@formatter:off
-        // BLOCKLISTENER
-        this.registerEvent(this.monitorBlockBreak,          bListener, Event.Type.BLOCK_BREAK);
-        this.registerEvent(this.monitorBlockBurn,           bListener, Event.Type.BLOCK_BURN);
-        this.registerEvent(this.monitorBlockFade,           bListener, Event.Type.BLOCK_FADE);
-        this.registerEvent(this.monitorBlockForm,           bListener, Event.Type.BLOCK_FORM);
-        this.registerEvent(this.monitorBlockFromTo,         bListener, Event.Type.BLOCK_FROMTO);
-        this.registerEvent(this.monitorBlockIgnite,         bListener, Event.Type.BLOCK_IGNITE);
-        this.registerEvent(this.monitorBlockPhysics,        bListener, Event.Type.BLOCK_PHYSICS);
-        this.registerEvent(this.monitorBlockPistonExtend,   bListener, Event.Type.BLOCK_PISTON_EXTEND);
-        this.registerEvent(this.monitorBlockPistonRetract,  bListener, Event.Type.BLOCK_PISTON_RETRACT);
-        this.registerEvent(this.monitorBlockPlace,          bListener, Event.Type.BLOCK_PLACE);
-        this.registerEvent(this.monitorBlockSpread,         bListener, Event.Type.BLOCK_SPREAD);
-        this.registerEvent(this.monitorBlockLeavesDecay,    bListener, Event.Type.LEAVES_DECAY);
-        
-        // ENTITYLISTENER
-        this.registerEvent(this.monitorEntityEndermanPickup,    eListener, Event.Type.ENDERMAN_PICKUP);
-        this.registerEvent(this.monitorEntityEndermanPlace,     eListener, Event.Type.ENDERMAN_PLACE);
-        this.registerEvent(this.monitorEntityDamage,            eListener, Event.Type.ENTITY_DAMAGE);
-        this.registerEvent(this.monitorEntityExplode,           eListener, Event.Type.ENTITY_EXPLODE);
-        this.registerEvent(this.monitorEntityRegainHealth,      eListener, Event.Type.ENTITY_REGAIN_HEALTH);
-        this.registerEvent(this.monitorEntityFoodLevelChange,   eListener, Event.Type.FOOD_LEVEL_CHANGE);
-        
-        // PLAYERLISTENER
-        this.registerEvent(this.monitorPlayerBucketEmpty,       pListener, Event.Type.PLAYER_BUCKET_EMPTY);
-        this.registerEvent(this.monitorPlayerBucketFill,        pListener, Event.Type.PLAYER_BUCKET_FILL);
-        this.registerEvent(this.monitorPlayerInteract,          pListener, Event.Type.PLAYER_INTERACT);
-        this.registerEvent(this.monitorPlayerInteractEntity,    pListener, Event.Type.PLAYER_INTERACT_ENTITY);      
-        //@formatter:on
+        Bukkit.getPluginManager().registerEvents(bListener, Main.getInstance());
+        Bukkit.getPluginManager().registerEvents(eListener, Main.getInstance());
+        Bukkit.getPluginManager().registerEvents(pListener, Main.getInstance());
+//        
+//        //@formatter:off
+//        // BLOCKLISTENER
+//        
+//        this.registerEvent(this.monitorBlockBreak,          bListener, Event.Type.BLOCK_BREAK);
+//        this.registerEvent(this.monitorBlockBurn,           bListener, Event.Type.BLOCK_BURN);
+//        this.registerEvent(this.monitorBlockFade,           bListener, Event.Type.BLOCK_FADE);
+//        this.registerEvent(this.monitorBlockForm,           bListener, Event.Type.BLOCK_FORM);
+//        this.registerEvent(this.monitorBlockFromTo,         bListener, Event.Type.BLOCK_FROMTO);
+//        this.registerEvent(this.monitorBlockIgnite,         bListener, Event.Type.BLOCK_IGNITE);
+//        this.registerEvent(this.monitorBlockPhysics,        bListener, Event.Type.BLOCK_PHYSICS);
+//        this.registerEvent(this.monitorBlockPistonExtend,   bListener, Event.Type.BLOCK_PISTON_EXTEND);
+//        this.registerEvent(this.monitorBlockPistonRetract,  bListener, Event.Type.BLOCK_PISTON_RETRACT);
+//        this.registerEvent(this.monitorBlockPlace,          bListener, Event.Type.BLOCK_PLACE);
+//        this.registerEvent(this.monitorBlockSpread,         bListener, Event.Type.BLOCK_SPREAD);
+//        this.registerEvent(this.monitorBlockLeavesDecay,    bListener, Event.Type.LEAVES_DECAY);
+//        
+//        // ENTITYLISTENER
+//        this.registerEvent(this.monitorEntityEndermanPickup,    eListener, Event.Type.ENDERMAN_PICKUP);
+//        this.registerEvent(this.monitorEntityEndermanPlace,     eListener, Event.Type.ENDERMAN_PLACE);
+//        this.registerEvent(this.monitorEntityDamage,            eListener, Event.Type.ENTITY_DAMAGE);
+//        this.registerEvent(this.monitorEntityExplode,           eListener, Event.Type.ENTITY_EXPLODE);
+//        this.registerEvent(this.monitorEntityRegainHealth,      eListener, Event.Type.ENTITY_REGAIN_HEALTH);
+//        this.registerEvent(this.monitorEntityFoodLevelChange,   eListener, Event.Type.FOOD_LEVEL_CHANGE);
+//        
+//        // PLAYERLISTENER
+//        this.registerEvent(this.monitorPlayerBucketEmpty,       pListener, Event.Type.PLAYER_BUCKET_EMPTY);
+//        this.registerEvent(this.monitorPlayerBucketFill,        pListener, Event.Type.PLAYER_BUCKET_FILL);
+//        this.registerEvent(this.monitorPlayerInteract,          pListener, Event.Type.PLAYER_INTERACT);
+//        this.registerEvent(this.monitorPlayerInteractEntity,    pListener, Event.Type.PLAYER_INTERACT_ENTITY);      
+//        //@formatter:on
     }
 
-    /**
-     * Register a single event
-     * 
-     * @param registerListener
-     * @param listener
-     * @param eventType
-     */
-    private void registerEvent(boolean registerListener, Listener listener, Event.Type eventType) {
-        if (!registerListener)
-            return;
-
-        Bukkit.getPluginManager().registerEvent(eventType, listener, this.MONITOR_LEVEL, Main.getInstance());
-    }
+//    /**
+//     * Register a single event
+//     * 
+//     * @param registerListener
+//     * @param listener
+//     * @param eventType
+//     */
+//    private void registerEvent(boolean registerListener, Listener listener, Event.Type eventType) {
+//        if (!registerListener)
+//            return;
+//
+//        Bukkit.getPluginManager().registerEvent(eventType, listener, this.MONITOR_LEVEL, Main.getInstance());
+//    }
 
     /**
      * SAVE SETTINGS
@@ -156,7 +156,7 @@ public class Settings {
 
             // @formatter:off
             // MONITOR SETTINGS - LEVEL
-            config.set("monitor.level",                     this.MONITOR_LEVEL.toString());
+            //config.set("monitor.level",                     this.MONITOR_LEVEL.toString());
             
             // MONITOR SETTINGS - BLOCKLISTENER
             config.set("monitor.block.break",               this.monitorBlockBreak);
@@ -214,11 +214,11 @@ public class Settings {
 
             // @formatter:off
             // MONITOR SETTINGS - LEVEL
-            Priority level = EnumHelper.getPriority(config.getString("monitor.level"));
-            if(level == null) {
-                throw new Exception("Priority not found!");
-            }
-            this.setMONITOR_LEVEL(level);
+//            Priority level = EnumHelper.getPriority(config.getString("monitor.level"));
+//            if(level == null) {
+//                throw new Exception("Priority not found!");
+//            }
+//            this.setMONITOR_LEVEL(level);
             
             // MONITOR SETTINGS - BLOCKLISTENER
             this.setMonitorBlockBreak(config.getBoolean("monitor.block.break"));
@@ -263,13 +263,13 @@ public class Settings {
         }
     }
 
-    /**
-     * @param mONITOR_LEVEL
-     *            the mONITOR_LEVEL to set
-     */
-    private void setMONITOR_LEVEL(Event.Priority mONITOR_LEVEL) {
-        MONITOR_LEVEL = mONITOR_LEVEL;
-    }
+//    /**
+//     * @param mONITOR_LEVEL
+//     *            the mONITOR_LEVEL to set
+//     */
+//    private void setMONITOR_LEVEL(Event.Priority mONITOR_LEVEL) {
+//         MONITOR_LEVEL = mONITOR_LEVEL;
+//    }
 
     /**
      * @param monitorBlockBreak

@@ -3,7 +3,8 @@ package de.minestar.greenmile.listener;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerListener;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 import de.minestar.greenmile.Main;
@@ -11,8 +12,7 @@ import de.minestar.greenmile.threading.BorderThread;
 import de.minestar.greenmile.worlds.WorldManager;
 import de.minestar.minstarlibrary.utils.ChatUtils;
 
-@SuppressWarnings("deprecation")
-public class GMPListener extends PlayerListener {
+public class GMPListener implements Listener {
     private final WorldManager worldManager;
 
     /**
@@ -27,6 +27,7 @@ public class GMPListener extends PlayerListener {
     /**
      * ON PLAYER TELEPORT
      */
+    @EventHandler
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         String worldName = event.getTo().getWorld().getName();
 

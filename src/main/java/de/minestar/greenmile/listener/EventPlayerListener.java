@@ -21,26 +21,26 @@ package de.minestar.greenmile.listener;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 import de.minestar.greenmile.worlds.GMWorld;
 import de.minestar.greenmile.worlds.WorldManager;
 
-@SuppressWarnings("deprecation")
-public class EventPlayerListener extends PlayerListener {
+public class EventPlayerListener implements Listener {
     private final WorldManager worldManager;
 
     public EventPlayerListener(WorldManager worldManager) {
         this.worldManager = worldManager;
     }
 
-    @Override
+    @EventHandler
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
         if (event.getPlayer().isOp())
             return;
@@ -56,7 +56,7 @@ public class EventPlayerListener extends PlayerListener {
         world = null;
     }
 
-    @Override
+    @EventHandler
     public void onPlayerBucketFill(PlayerBucketFillEvent event) {
         if (event.getPlayer().isOp())
             return;
@@ -72,7 +72,7 @@ public class EventPlayerListener extends PlayerListener {
         world = null;
     }
 
-    @Override
+    @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getPlayer().isOp())
             return;
@@ -112,7 +112,7 @@ public class EventPlayerListener extends PlayerListener {
         world = null;
     }
 
-    @Override
+    @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         String worldName = Bukkit.getWorlds().get(0).getName();
         if (!worldManager.worldExists(worldName)) {
@@ -127,7 +127,7 @@ public class EventPlayerListener extends PlayerListener {
         event.setRespawnLocation(worldManager.getGMWorld(worldName).getWorldSettings().getWorldSpawn());
     }
 
-    @Override
+    @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         if (event.getPlayer().isOp())
             return;

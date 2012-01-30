@@ -20,27 +20,27 @@ package de.minestar.greenmile.listener;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EndermanPickupEvent;
 import org.bukkit.event.entity.EndermanPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 
 import de.minestar.greenmile.worlds.GMWorld;
 import de.minestar.greenmile.worlds.WorldManager;
 
-@SuppressWarnings("deprecation")
-public class EventEntityListener extends EntityListener {
+public class EventEntityListener implements Listener {
     private final WorldManager worldManager;
 
     public EventEntityListener(WorldManager worldManager) {
         this.worldManager = worldManager;
     }
 
-    @Override
+    @EventHandler
     public void onEndermanPickup(EndermanPickupEvent event) {
         if (event.isCancelled())
             return;
@@ -53,7 +53,7 @@ public class EventEntityListener extends EntityListener {
         world = null;
     }
 
-    @Override
+    @EventHandler
     public void onEndermanPlace(EndermanPlaceEvent event) {
         if (event.isCancelled())
             return;
@@ -66,7 +66,7 @@ public class EventEntityListener extends EntityListener {
         world = null;
     }
 
-    @Override
+    @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
         if (event.isCancelled())
             return;
@@ -90,7 +90,7 @@ public class EventEntityListener extends EntityListener {
         return;
     }
 
-    @Override
+    @EventHandler
     public void onEntityExplode(EntityExplodeEvent event) {
         if (event.isCancelled())
             return;
@@ -111,7 +111,7 @@ public class EventEntityListener extends EntityListener {
         return;
     }
 
-    @Override
+    @EventHandler
     public void onEntityRegainHealth(EntityRegainHealthEvent event) {
         if (event.isCancelled())
             return;
@@ -127,7 +127,7 @@ public class EventEntityListener extends EntityListener {
         world = null;
     }
 
-    @Override
+    @EventHandler
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         if (event.isCancelled())
             return;

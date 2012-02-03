@@ -162,8 +162,11 @@ public class GMWorldSettings {
             setMaxSize(config.getInt("settings.maxSize", this.maxSize));
             setWorldSpawn(new Location(Bukkit.getWorld(worldName), config.getDouble("settings.spawn.x", 0.0D), config.getDouble("settings.spawn.y", 128.0D), config.getDouble("settings.spawn.z", 0.0D), (float) config.getDouble("settings.spawn.yaw", 0.0D), (float) config.getDouble("settings.spawn.pitch", 0.0D)));
 
-            if (!config.getString("lastRenderedChunk.x").equalsIgnoreCase("NULL")) {
-                setLastRenderedPosition(new Point(config.getInt("lastRenderedChunk.x"), config.getInt("lastRenderedChunk.y")));
+            String lastR = config.getString("lastRenderedChunk.x");
+            if (lastR != null) {
+                if (!lastR.equalsIgnoreCase("NULL")) {
+                    setLastRenderedPosition(new Point(config.getInt("lastRenderedChunk.x"), config.getInt("lastRenderedChunk.y")));
+                }
             }
 
             ChatUtils.printConsoleInfo("Specific settings for '" + worldName + "' loaded!\nSpawnMonster = " + this.spawnMonsters + "\nSpawnAnimals = " + this.spawnAnimals + "\nAutoSave = " + this.autoSave + "\nKeepSpawnLoaded = " + this.keepSpawnLoaded + "\nDifficulty = " + difficulty.toString() + "\nMaxSize = " + this.maxSize, Main.name);

@@ -20,7 +20,7 @@ public class StartCommand extends AbstractExtendedCommand {
     private final int speed;
 
     public StartCommand(String syntax, String arguments, String node, WorldManager worldManager, Plugin plugin, int speed) {
-        super(Main.name, syntax, arguments, node);
+        super(Main.NAME, syntax, arguments, node);
         this.plugin = plugin;
         this.speed = speed;
         this.worldManager = worldManager;

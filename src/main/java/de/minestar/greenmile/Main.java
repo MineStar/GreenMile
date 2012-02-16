@@ -26,11 +26,12 @@ import de.minestar.minestarlibrary.utils.ConsoleUtils;
 
 public class Main extends JavaPlugin {
 
+    public final static String NAME = "GreenMile";
+
     private static Main instance;
     public static ChunkGenerationThread chunkThread = null;
     private GMPListener pListener = null;
     private CommandList cmdList;
-    public static String name;
     private WorldManager worldManager;
     private Settings gmSettings;
 
@@ -50,14 +51,13 @@ public class Main extends JavaPlugin {
             chunkThread.saveConfig();
         }
         this.cmdList = null;
-        ConsoleUtils.printInfo(name, "Disabled!");
+        ConsoleUtils.printInfo(NAME, "Disabled!");
     }
 
     /**
      * ON ENABLE
      */
     public void onEnable() {
-        name = "[ " + getDescription().getName() + " ]";
 
         // CREATE DATAFOLDER
         File dataFolder = getDataFolder();
@@ -70,7 +70,7 @@ public class Main extends JavaPlugin {
         if (gmSettings.loadSettings(true)) {
             gmSettings.registerAllEvents();
         } else {
-            ConsoleUtils.printError(Main.name, "Could not load settings!\n\n GREENMILE WILL BE DISABLED !!! \n\n");
+            ConsoleUtils.printError(Main.NAME, "Could not load settings!\n\n GREENMILE WILL BE DISABLED !!! \n\n");
             this.setEnabled(false);
         }
 
@@ -86,7 +86,7 @@ public class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(this.pListener, this);
 
         // PRINT INFO
-        ConsoleUtils.printInfo(name, "Version " + getDescription().getVersion() + " enabled!");
+        ConsoleUtils.printInfo(NAME, "Version " + getDescription().getVersion() + " enabled!");
     }
 
     /**
@@ -94,7 +94,7 @@ public class Main extends JavaPlugin {
      */
     private void initCommandList() {
         int speed = getConfig().getInt("speed", 5);
-        ConsoleUtils.printInfo(name, "Default speed of generation thread is " + speed);
+        ConsoleUtils.printInfo(NAME, "Default speed of generation thread is " + speed);
 
         //@formatter:off;
         this.cmdList = new CommandList(

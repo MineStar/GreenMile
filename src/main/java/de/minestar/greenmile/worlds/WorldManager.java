@@ -33,7 +33,7 @@ public class WorldManager {
      */
     private void addWorld(GMWorld world) {
         if (worldExists(world.getWorldName())) {
-            ConsoleUtils.printWarning(Main.name, "World '" + world.getWorldName() + "' already exists!");
+            ConsoleUtils.printWarning(Main.NAME, "World '" + world.getWorldName() + "' already exists!");
             return;
         }
         this.worldList.add(world);
@@ -214,14 +214,14 @@ public class WorldManager {
             for (World world : Bukkit.getWorlds()) {
                 if (!this.worldExists(world.getName())) {
                     if (!this.importWorld(world.getName()))
-                        ConsoleUtils.printError(Main.name, "Could not import world '" + world.getName() + "'!");
+                        ConsoleUtils.printError(Main.NAME, "Could not import world '" + world.getName() + "'!");
                     else
-                        ConsoleUtils.printError(Main.name, "World '" + world.getName() + "' imported!");
+                        ConsoleUtils.printWarning(Main.NAME, "World '" + world.getName() + "' imported!");
 
                 }
             }
         } catch (Exception e) {
-            ConsoleUtils.printException(e, Main.name, "Can't load worlds from " + this.dataFolder);
+            ConsoleUtils.printException(e, Main.NAME, "Can't load worlds from " + this.dataFolder);
         }
     }
 

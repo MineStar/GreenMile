@@ -16,7 +16,7 @@ public class ListCommand extends AbstractCommand {
     private WorldManager worldManager;
 
     public ListCommand(String syntax, String arguments, String node, WorldManager worldManager) {
-        super(Main.name, syntax, arguments, node);
+        super(Main.NAME, syntax, arguments, node);
         this.worldManager = worldManager;
     }
 

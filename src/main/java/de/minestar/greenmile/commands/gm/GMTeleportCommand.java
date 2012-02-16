@@ -12,7 +12,7 @@ public class GMTeleportCommand extends AbstractCommand {
     private WorldManager worldManager;
 
     public GMTeleportCommand(String syntax, String arguments, String node, WorldManager worldManager) {
-        super(Main.name, syntax, arguments, node);
+        super(Main.NAME, syntax, arguments, node);
         this.description = "Teleport to a world";
         this.worldManager = worldManager;
     }

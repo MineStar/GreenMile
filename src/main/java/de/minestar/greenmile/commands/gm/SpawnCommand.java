@@ -15,7 +15,7 @@ public class SpawnCommand extends AbstractExtendedCommand {
     private WorldManager worldManager;
 
     public SpawnCommand(String syntax, String arguments, String node, WorldManager worldManager) {
-        super(Main.name, syntax, arguments, node);
+        super(Main.NAME, syntax, arguments, node);
         this.description = "Teleport to the given spawn";
         this.worldManager = worldManager;
     }

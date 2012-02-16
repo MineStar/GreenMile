@@ -9,7 +9,7 @@ import de.minestar.minestarlibrary.commands.AbstractSuperCommand;
 public class GreenMileCommand extends AbstractSuperCommand {
 
     public GreenMileCommand(String syntax, String arguments, String node, AbstractCommand... subCommands) {
-        super(Main.name, syntax, arguments, node, false, subCommands);
+        super(Main.NAME, syntax, arguments, node, false, subCommands);
     }
 
     public void execute(String[] args, Player player) {

@@ -86,7 +86,7 @@ public class GMWorldSettings {
             }
             config.save(file);
         } catch (Exception e) {
-            ConsoleUtils.printException(e, Main.name, "Can't save settings for world " + worldName + "!");
+            ConsoleUtils.printException(e, Main.NAME, "Can't save settings for world " + worldName + "!");
             return false;
         }
         return true;
@@ -123,10 +123,10 @@ public class GMWorldSettings {
             setLevelSeed(config.getLong("settings.levelSeed", this.levelSeed));
             setEnvironment(environment);
 
-            ConsoleUtils.printInfo(Main.name, "Worldsettings for '" + worldName + "' loaded!\nlevelSeed = " + this.levelSeed + "\nEnvironment = " + environment.toString());
+            ConsoleUtils.printInfo(Main.NAME, "Worldsettings for '" + worldName + "' loaded!\nlevelSeed = " + this.levelSeed + "\nEnvironment = " + environment.toString());
             return true;
         } catch (Exception e) {
-            ConsoleUtils.printException(e, Main.name, "Can't load worldsettings for world " + worldName + "!");
+            ConsoleUtils.printException(e, Main.NAME, "Can't load worldsettings for world " + worldName + "!");
         }
         return false;
     }
@@ -169,10 +169,10 @@ public class GMWorldSettings {
                 }
             }
 
-            ConsoleUtils.printInfo(Main.name, "Specific settings for '" + worldName + "' loaded!\nSpawnMonster = " + this.spawnMonsters + "\nSpawnAnimals = " + this.spawnAnimals + "\nAutoSave = " + this.autoSave + "\nKeepSpawnLoaded = " + this.keepSpawnLoaded + "\nDifficulty = " + difficulty.toString() + "\nMaxSize = " + this.maxSize);
+            ConsoleUtils.printInfo(Main.NAME, "Specific settings for '" + worldName + "' loaded!\nSpawnMonster = " + this.spawnMonsters + "\nSpawnAnimals = " + this.spawnAnimals + "\nAutoSave = " + this.autoSave + "\nKeepSpawnLoaded = " + this.keepSpawnLoaded + "\nDifficulty = " + difficulty.toString() + "\nMaxSize = " + this.maxSize);
             return true;
         } catch (Exception e) {
-            ConsoleUtils.printException(e, Main.name, "Can't load worldspecific settings for world " + worldName + "!");
+            ConsoleUtils.printException(e, Main.NAME, "Can't load worldspecific settings for world " + worldName + "!");
         }
         return false;
     }

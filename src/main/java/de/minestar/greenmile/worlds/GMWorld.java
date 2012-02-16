@@ -91,7 +91,7 @@ public class GMWorld {
         // IS THERE A BUKKIT WORLD? IF NOT => RETURN
         World bukkitWorld = Bukkit.getServer().getWorld(this.worldName);
         if (bukkitWorld == null) {
-            ConsoleUtils.printError(Main.name, "Can't find bukkitworld '" + this.worldName + "'!");
+            ConsoleUtils.printError(Main.NAME, "Can't find bukkitworld '" + this.worldName + "'!");
             return;
         }
 

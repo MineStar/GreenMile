@@ -37,9 +37,9 @@ public class ChunkGenerationThread implements Runnable {
         this.worldManager = worldManager;
 
         if (this.world == null) {
-            ConsoleUtils.printError(Main.name, "############################################");
-            ConsoleUtils.printError(Main.name, "World '" + worldName + "' was not found!");
-            ConsoleUtils.printError(Main.name, "############################################");
+            ConsoleUtils.printError(Main.NAME, "############################################");
+            ConsoleUtils.printError(Main.NAME, "World '" + worldName + "' was not found!");
+            ConsoleUtils.printError(Main.NAME, "############################################");
             return;
         }
 
@@ -51,7 +51,7 @@ public class ChunkGenerationThread implements Runnable {
 
         loadConfig();
 
-        ConsoleUtils.printInfo(Main.name, this.status + " of " + this.maxChunks);
+        ConsoleUtils.printInfo(Main.NAME, this.status + " of " + this.maxChunks);
     }
 
     public void setTaskID(int ID) {
@@ -85,9 +85,9 @@ public class ChunkGenerationThread implements Runnable {
         }
 
         if (this.lastRenderedChunk.x <= this.minVars.x) {
-            ConsoleUtils.printInfo(Main.name, "############################################");
-            ConsoleUtils.printInfo(Main.name, "RENDERING OF WORLD '" + this.world.getName() + "' FINISHED!");
-            ConsoleUtils.printInfo(Main.name, "############################################");
+            ConsoleUtils.printInfo(Main.NAME, "############################################");
+            ConsoleUtils.printInfo(Main.NAME, "RENDERING OF WORLD '" + this.world.getName() + "' FINISHED!");
+            ConsoleUtils.printInfo(Main.NAME, "############################################");
 
             Bukkit.getServer().getScheduler().cancelTask(this.TaskID);
             this.world.save();
@@ -106,7 +106,7 @@ public class ChunkGenerationThread implements Runnable {
 
         if (this.bufferChunks.size() > 50) {
             // unloadChunks();
-            ConsoleUtils.printInfo(Main.name, getStatus());
+            ConsoleUtils.printInfo(Main.NAME, getStatus());
         }
         this.lastRenderedChunk.y -= 1;
         return true;

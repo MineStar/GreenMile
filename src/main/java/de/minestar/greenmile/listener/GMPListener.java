@@ -43,8 +43,8 @@ public class GMPListener implements Listener {
         if ((!BorderThread.isInside(event.getTo().getBlockX(), event.getTo().getBlockZ(), worldSpawn.getBlockX(), worldSpawn.getBlockZ(), maxSize)) && (!event.getFrom().getWorld().getName().equals(event.getTo().getWorld().getName()))) {
             event.setTo(worldSpawn.clone());
             Player player = event.getPlayer();
-            PlayerUtils.sendError(player, Main.name, "Du hast die maximale Grenze der Map erreicht!");
-            PlayerUtils.sendInfo(player, Main.name, "Du wurdest zum Spawn zurück teleportiert!");
+            PlayerUtils.sendError(player, Main.NAME, "Du hast die maximale Grenze der Map erreicht!");
+            PlayerUtils.sendInfo(player, Main.NAME, "Du wurdest zum Spawn zurück teleportiert!");
         }
     }
 }

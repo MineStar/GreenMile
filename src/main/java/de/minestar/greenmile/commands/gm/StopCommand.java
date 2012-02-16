@@ -12,7 +12,7 @@ import de.minestar.minestarlibrary.utils.ChatUtils;
 public class StopCommand extends AbstractCommand {
 
     public StopCommand(String syntax, String arguments, String node) {
-        super(Main.name, syntax, arguments, node);
+        super(Main.NAME, syntax, arguments, node);
         this.description = "Stopt den Renderthread";
     }
 

@@ -70,7 +70,7 @@ public class BorderThread implements Runnable {
                         loc = worldManager.getGMWorld(worldName).getWorldSettings().getWorldSpawn();
 
                     player.teleport(loc);
-                    PlayerUtils.sendError(player, Main.name, "Du hast die maximale Grenze der Map erreicht!");
+                    PlayerUtils.sendError(player, Main.NAME, "Du hast die maximale Grenze der Map erreicht!");
                 } else
                     // save last position
                     lastPosition.put(player.getName(), loc);

@@ -19,7 +19,7 @@ public class ChangeSizeCommand extends AbstractExtendedCommand {
     private final int speed;
 
     public ChangeSizeCommand(String syntax, String arguments, String node, WorldManager worldManager, Plugin plugin, int speed) {
-        super(Main.name, syntax, arguments, node);
+        super(Main.NAME, syntax, arguments, node);
         this.worldManager = worldManager;
         this.plugin = plugin;
         this.speed = speed;

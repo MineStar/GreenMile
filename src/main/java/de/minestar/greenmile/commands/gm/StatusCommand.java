@@ -9,7 +9,7 @@ import de.minestar.minestarlibrary.utils.PlayerUtils;
 public class StatusCommand extends AbstractCommand {
 
     public StatusCommand(String syntax, String arguments, String node) {
-        super(Main.name, syntax, arguments, node);
+        super(Main.NAME, syntax, arguments, node);
         this.description = "Zeigt Status des Threads an";
     }
 

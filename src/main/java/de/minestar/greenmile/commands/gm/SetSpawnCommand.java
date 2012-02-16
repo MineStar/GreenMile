@@ -12,7 +12,7 @@ public class SetSpawnCommand extends AbstractCommand {
     private WorldManager worldManager;
 
     public SetSpawnCommand(String syntax, String arguments, String node, WorldManager worldManager) {
-        super(Main.name, syntax, arguments, node);
+        super(Main.NAME, syntax, arguments, node);
         this.description = "Set the spawn of the current world";
         this.worldManager = worldManager;
     }

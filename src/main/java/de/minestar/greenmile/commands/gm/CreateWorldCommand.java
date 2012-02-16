@@ -17,7 +17,7 @@ public class CreateWorldCommand extends AbstractExtendedCommand {
     private WorldManager worldManager;
 
     public CreateWorldCommand(String syntax, String arguments, String node, WorldManager worldManager) {
-        super(Main.name, syntax, arguments, node);
+        super(Main.NAME, syntax, arguments, node);
         this.description = "Create a new world";
         this.worldManager = worldManager;
     }

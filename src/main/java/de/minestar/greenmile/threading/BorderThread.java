@@ -12,6 +12,7 @@ import de.minestar.greenmile.worlds.WorldManager;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class BorderThread implements Runnable {
+
     private HashMap<String, Location> lastPosition = new HashMap<String, Location>();
     private final WorldManager worldManager;
 
@@ -34,40 +35,50 @@ public class BorderThread implements Runnable {
         for (World world : Bukkit.getWorlds()) {
             worldName = world.getName();
 
-            if (!this.worldManager.worldExists(worldName)) {
+            // World is not existing -> ignore
+            if (!worldManager.worldExists(worldName))
                 continue;
-            }
 
-            loc = this.worldManager.getGMWorld(worldName).getWorldSettings().getWorldSpawn();
+            // World Spawn Location
+            loc = worldManager.getGMWorld(worldName).getWorldSettings().getWorldSpawn();
 
             xW = loc.getBlockX();
             zW = loc.getBlockZ();
 
-            maxSize = this.worldManager.getGMWorld(worldName).getWorldSettings().getMaxSize();
+            // Allowed size of the world
+            maxSize = worldManager.getGMWorld(worldName).getWorldSettings().getMaxSize();
 
+            // look at every players location
             for (Player player : Bukkit.getWorld(worldName).getPlayers()) {
-                if ((player.isDead()) || (!player.isOnline())) {
+                if ((player.isDead()) || (!player.isOnline()))
                     continue;
-                }
+
+                // Players location
                 loc = player.getLocation();
                 xP = loc.getBlockX();
                 zP = loc.getBlockZ();
 
+                // player has left the world
                 if (!isInside(xP, zP, xW, zW, maxSize)) {
-                    loc = (Location) this.lastPosition.get(player.getName());
-                    if ((loc == null) || (!isInside(loc.getBlockX(), loc.getBlockZ(), xW, zW, maxSize))) {
-                        loc = this.worldManager.getGMWorld(worldName).getWorldSettings().getWorldSpawn();
-                    }
+                    // get last position which is inside the world to teleport
+                    // him
+                    loc = lastPosition.get(player.getName());
+
+                    // have reconnected or last position is the current position
+                    // -> teleport to spawn
+                    if ((loc == null) || (!isInside(loc.getBlockX(), loc.getBlockZ(), xW, zW, maxSize)))
+                        loc = worldManager.getGMWorld(worldName).getWorldSettings().getWorldSpawn();
+
                     player.teleport(loc);
                     PlayerUtils.sendError(player, Main.name, "Du hast die maximale Grenze der Map erreicht!");
-                } else {
-                    this.lastPosition.put(player.getName(), loc);
-                }
+                } else
+                    // save last position
+                    lastPosition.put(player.getName(), loc);
             }
         }
     }
 
-    public static boolean isInside(int x, int z, int x1, int z1, int width) {
-        return (x < x1 + width) && (x > x1 - width) && (z < z1 + width) && (z > z1 - width);
+    public static boolean isInside(int xP, int zP, int xW, int zW, int width) {
+        return (xP < xW + width) && (xP > xW - width) && (zP < zW + width) && (zP > zW - width);
     }
 }

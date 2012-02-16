@@ -103,10 +103,10 @@ public class Main extends JavaPlugin {
                         new CreateWorldCommand  ("create", "<WorldName> [Environment [levelseed]]", "greenmile.createworld", worldManager),
                         new ImportWorldCommand  ("import", "<WorldName>", "greenmile.importworld", worldManager),
                         new SetSpawnCommand     ("setspawn", "", "greenmile.setspawn", worldManager),
-                        new StartCommand        ("start", "<WorldName>", "greenmile.start", worldManager, this, speed),
+                        new StartCommand        ("start", "<WorldName> [Speed]", "greenmile.start", worldManager, this, speed),
                         new StopCommand         ("stop", "", "gm.stop"),
                         new StatusCommand       ("status", "", "greenmile.status"),
-                        new ChangeSizeCommand   ("size", "<WorldName> <Size>", "greenmile.change", worldManager, this, speed),
+                        new ChangeSizeCommand   ("size", "<WorldName> <Size> [f [Speed]", "greenmile.change", worldManager, this, speed),
                         new ListCommand         ("list", "", "greenmile.list", worldManager)                
                 ),
 

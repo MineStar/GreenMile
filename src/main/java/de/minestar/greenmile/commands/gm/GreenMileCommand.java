@@ -1,5 +1,6 @@
 package de.minestar.greenmile.commands.gm;
 
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import de.minestar.greenmile.Main;
@@ -13,6 +14,11 @@ public class GreenMileCommand extends AbstractSuperCommand {
     }
 
     public void execute(String[] args, Player player) {
+        // Do nothing
+    }
+
+    @Override
+    public void execute(String[] args, ConsoleCommandSender console) {
         // Do nothing
     }
 }

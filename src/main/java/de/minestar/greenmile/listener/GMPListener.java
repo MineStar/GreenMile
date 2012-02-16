@@ -1,6 +1,5 @@
 package de.minestar.greenmile.listener;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,7 +9,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import de.minestar.greenmile.Main;
 import de.minestar.greenmile.threading.BorderThread;
 import de.minestar.greenmile.worlds.WorldManager;
-import de.minestar.minstarlibrary.utils.ChatUtils;
+import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class GMPListener implements Listener {
     private final WorldManager worldManager;
@@ -44,8 +43,8 @@ public class GMPListener implements Listener {
         if ((!BorderThread.isInside(event.getTo().getBlockX(), event.getTo().getBlockZ(), worldSpawn.getBlockX(), worldSpawn.getBlockZ(), maxSize)) && (!event.getFrom().getWorld().getName().equals(event.getTo().getWorld().getName()))) {
             event.setTo(worldSpawn.clone());
             Player player = event.getPlayer();
-            ChatUtils.printError(player, Main.name, "Du hast die maximale Grenze der Map erreicht!");
-            ChatUtils.printInfo(player, Main.name, ChatColor.GRAY, "Du wurdest zum Spawn zurück teleportiert!");
+            PlayerUtils.sendError(player, Main.name, "Du hast die maximale Grenze der Map erreicht!");
+            PlayerUtils.sendInfo(player, Main.name, "Du wurdest zum Spawn zurück teleportiert!");
         }
     }
 }

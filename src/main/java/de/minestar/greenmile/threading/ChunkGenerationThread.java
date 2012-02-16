@@ -12,7 +12,7 @@ import org.bukkit.World;
 import de.minestar.greenmile.Main;
 import de.minestar.greenmile.worlds.GMWorldSettings;
 import de.minestar.greenmile.worlds.WorldManager;
-import de.minestar.minstarlibrary.utils.ChatUtils;
+import de.minestar.minestarlibrary.utils.ConsoleUtils;
 
 public class ChunkGenerationThread implements Runnable {
     private World world = null;
@@ -37,9 +37,9 @@ public class ChunkGenerationThread implements Runnable {
         this.worldManager = worldManager;
 
         if (this.world == null) {
-            ChatUtils.printConsoleError("############################################", Main.name);
-            ChatUtils.printConsoleError("World '" + worldName + "' was not found!", Main.name);
-            ChatUtils.printConsoleError("############################################", Main.name);
+            ConsoleUtils.printError(Main.name, "############################################");
+            ConsoleUtils.printError(Main.name, "World '" + worldName + "' was not found!");
+            ConsoleUtils.printError(Main.name, "############################################");
             return;
         }
 
@@ -51,7 +51,7 @@ public class ChunkGenerationThread implements Runnable {
 
         loadConfig();
 
-        ChatUtils.printConsoleInfo(this.status + " of " + this.maxChunks, Main.name);
+        ConsoleUtils.printInfo(Main.name, this.status + " of " + this.maxChunks);
     }
 
     public void setTaskID(int ID) {
@@ -85,9 +85,9 @@ public class ChunkGenerationThread implements Runnable {
         }
 
         if (this.lastRenderedChunk.x <= this.minVars.x) {
-            ChatUtils.printConsoleInfo("############################################", Main.name);
-            ChatUtils.printConsoleInfo("RENDERING OF WORLD '" + this.world.getName() + "' FINISHED!", Main.name);
-            ChatUtils.printConsoleInfo("############################################", Main.name);
+            ConsoleUtils.printInfo(Main.name, "############################################");
+            ConsoleUtils.printInfo(Main.name, "RENDERING OF WORLD '" + this.world.getName() + "' FINISHED!");
+            ConsoleUtils.printInfo(Main.name, "############################################");
 
             Bukkit.getServer().getScheduler().cancelTask(this.TaskID);
             this.world.save();
@@ -106,7 +106,7 @@ public class ChunkGenerationThread implements Runnable {
 
         if (this.bufferChunks.size() > 50) {
             // unloadChunks();
-            ChatUtils.printConsoleInfo(getStatus(), Main.name);
+            ConsoleUtils.printInfo(Main.name, getStatus());
         }
         this.lastRenderedChunk.y -= 1;
         return true;

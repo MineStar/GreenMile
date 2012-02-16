@@ -21,11 +21,11 @@ import de.minestar.greenmile.listener.GMPListener;
 import de.minestar.greenmile.threading.BorderThread;
 import de.minestar.greenmile.threading.ChunkGenerationThread;
 import de.minestar.greenmile.worlds.WorldManager;
-import de.minestar.minstarlibrary.commands.Command;
-import de.minestar.minstarlibrary.commands.CommandList;
-import de.minestar.minstarlibrary.utils.ChatUtils;
+import de.minestar.minestarlibrary.commands.CommandList;
+import de.minestar.minestarlibrary.utils.ConsoleUtils;
 
 public class Main extends JavaPlugin {
+
     private static Main instance;
     public static ChunkGenerationThread chunkThread = null;
     private GMPListener pListener = null;
@@ -50,7 +50,7 @@ public class Main extends JavaPlugin {
             chunkThread.saveConfig();
         }
         this.cmdList = null;
-        ChatUtils.printConsoleInfo("Disabled!", name);
+        ConsoleUtils.printInfo(name, "Disabled!");
     }
 
     /**
@@ -70,7 +70,7 @@ public class Main extends JavaPlugin {
         if (gmSettings.loadSettings(true)) {
             gmSettings.registerAllEvents();
         } else {
-            ChatUtils.printConsoleError("Could not load settings!\n\n GREENMILE WILL BE DISABLED !!! \n\n", Main.name);
+            ConsoleUtils.printError(Main.name, "Could not load settings!\n\n GREENMILE WILL BE DISABLED !!! \n\n");
             this.setEnabled(false);
         }
 
@@ -86,7 +86,7 @@ public class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(this.pListener, this);
 
         // PRINT INFO
-        ChatUtils.printConsoleInfo("Version " + getDescription().getVersion() + " enabled!", name);
+        ConsoleUtils.printInfo(name, "Version " + getDescription().getVersion() + " enabled!");
     }
 
     /**
@@ -94,31 +94,27 @@ public class Main extends JavaPlugin {
      */
     private void initCommandList() {
         int speed = getConfig().getInt("speed", 5);
-        ChatUtils.printConsoleInfo("Default speed of generation thread is " + speed, name);
+        ConsoleUtils.printInfo(name, "Default speed of generation thread is " + speed);
 
         //@formatter:off;
         this.cmdList = new CommandList(
-                new Command[]
-                {
-                        new GreenMileCommand("[GreenMile]", "/gm", "", "gm.status", 
-                                new Command[]
-                                {
-                                    new GMTeleportCommand("[GreenMile]", "tp", "<WorldName>", "greenmile.teleport", this.worldManager), 
-                                    new CreateWorldCommand("[GreenMile]", "create", "<WorldName> [Environment [levelseed]]", "greenmile.createworld", this.worldManager), 
-                                    new ImportWorldCommand("[GreenMile]", "import", "<WorldName>", "greenmile.importworld", this.worldManager), 
-                                    new SetSpawnCommand("[GreenMile]", "setspawn", "", "greenmile.setspawn", this.worldManager), 
-                                    new StartCommand("[GreenMile]", "start", "<WorldName>", "greenmile.start", this.worldManager, this, speed), 
-                                    new StopCommand("[GreenMile]", "stop", "", "gm.stop"), new StatusCommand("[GreenMile]", "status", "", "greenmile.status"), 
-                                    new ChangeSizeCommand("[GreenMile]", "size", "<WorldName> <Size>", "greenmile.change", this.worldManager, this, speed), 
-                                    new ListCommand("[GreenMile]", "list", "", "greenmile.list", this.worldManager)
-                                }
-                        ), 
-                        new SpawnCommand("[GreenMile]", "/spawn", "[WorldName]", "", this.worldManager)
-                }
+                new GreenMileCommand    ("/gm", "", "gm.status",
+                        new GMTeleportCommand   ("tp", "<WorldName>", "greenmile.teleport", worldManager),
+                        new CreateWorldCommand  ("create", "<WorldName> [Environment [levelseed]]", "greenmile.createworld", worldManager),
+                        new ImportWorldCommand  ("import", "<WorldName>", "greenmile.importworld", worldManager),
+                        new SetSpawnCommand     ("setspawn", "", "greenmile.setspawn", worldManager),
+                        new StartCommand        ("start", "<WorldName>", "greenmile.start", worldManager, this, speed),
+                        new StopCommand         ("stop", "", "gm.stop"),
+                        new StatusCommand       ("status", "", "greenmile.status"),
+                        new ChangeSizeCommand   ("size", "<WorldName> <Size>", "greenmile.change", worldManager, this, speed),
+                        new ListCommand         ("list", "", "greenmile.list", worldManager)                
+                ),
+
+                new SpawnCommand("/spawn", "[WorldName]", "", worldManager)
          );
         // @formatter: on;
     }
-
+    
     /**
      * HANDLE COMMANDS
      */
@@ -126,11 +122,10 @@ public class Main extends JavaPlugin {
         this.cmdList.handleCommand(sender, label, args);
         return true;
     }
-    
 
-    
     /**
      * GET PLUGIN-INSTANCE
+     * 
      * @return the Maininstance of GreenMile
      */
     public static Main getInstance() {

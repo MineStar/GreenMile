@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 import de.minestar.greenmile.Main;
 import de.minestar.greenmile.worlds.WorldManager;
-import de.minestar.minstarlibrary.utils.ChatUtils;
+import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class BorderThread implements Runnable {
     private HashMap<String, Location> lastPosition = new HashMap<String, Location>();
@@ -59,7 +59,7 @@ public class BorderThread implements Runnable {
                         loc = this.worldManager.getGMWorld(worldName).getWorldSettings().getWorldSpawn();
                     }
                     player.teleport(loc);
-                    ChatUtils.printError(player, Main.name, "Du hast die maximale Grenze der Map erreicht!");
+                    PlayerUtils.sendError(player, Main.name, "Du hast die maximale Grenze der Map erreicht!");
                 } else {
                     this.lastPosition.put(player.getName(), loc);
                 }

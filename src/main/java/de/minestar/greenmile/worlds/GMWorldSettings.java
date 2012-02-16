@@ -11,7 +11,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import de.minestar.greenmile.Main;
 import de.minestar.greenmile.helper.EnumHelper;
-import de.minestar.minstarlibrary.utils.ChatUtils;
+import de.minestar.minestarlibrary.utils.ConsoleUtils;
 
 public class GMWorldSettings {
     private final boolean initialized;
@@ -86,7 +86,7 @@ public class GMWorldSettings {
             }
             config.save(file);
         } catch (Exception e) {
-            ChatUtils.printConsoleException(e, "Can't save settings for world " + worldName + "!", Main.name);
+            ConsoleUtils.printException(e, Main.name, "Can't save settings for world " + worldName + "!");
             return false;
         }
         return true;
@@ -123,10 +123,10 @@ public class GMWorldSettings {
             setLevelSeed(config.getLong("settings.levelSeed", this.levelSeed));
             setEnvironment(environment);
 
-            ChatUtils.printConsoleInfo("Worldsettings for '" + worldName + "' loaded!\nlevelSeed = " + this.levelSeed + "\nEnvironment = " + environment.toString(), Main.name);
+            ConsoleUtils.printInfo(Main.name, "Worldsettings for '" + worldName + "' loaded!\nlevelSeed = " + this.levelSeed + "\nEnvironment = " + environment.toString());
             return true;
         } catch (Exception e) {
-            ChatUtils.printConsoleException(e, "Can't load worldsettings for world " + worldName + "!", Main.name);
+            ConsoleUtils.printException(e, Main.name, "Can't load worldsettings for world " + worldName + "!");
         }
         return false;
     }
@@ -169,10 +169,10 @@ public class GMWorldSettings {
                 }
             }
 
-            ChatUtils.printConsoleInfo("Specific settings for '" + worldName + "' loaded!\nSpawnMonster = " + this.spawnMonsters + "\nSpawnAnimals = " + this.spawnAnimals + "\nAutoSave = " + this.autoSave + "\nKeepSpawnLoaded = " + this.keepSpawnLoaded + "\nDifficulty = " + difficulty.toString() + "\nMaxSize = " + this.maxSize, Main.name);
+            ConsoleUtils.printInfo(Main.name, "Specific settings for '" + worldName + "' loaded!\nSpawnMonster = " + this.spawnMonsters + "\nSpawnAnimals = " + this.spawnAnimals + "\nAutoSave = " + this.autoSave + "\nKeepSpawnLoaded = " + this.keepSpawnLoaded + "\nDifficulty = " + difficulty.toString() + "\nMaxSize = " + this.maxSize);
             return true;
         } catch (Exception e) {
-            ChatUtils.printConsoleException(e, "Can't load worldspecific settings for world " + worldName + "!", Main.name);
+            ConsoleUtils.printException(e, Main.name, "Can't load worldspecific settings for world " + worldName + "!");
         }
         return false;
     }

@@ -1,42 +1,54 @@
 package de.minestar.greenmile.commands.gm;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 
+import de.minestar.greenmile.Main;
 import de.minestar.greenmile.worlds.WorldManager;
-import de.minestar.minstarlibrary.commands.Command;
-import de.minestar.minstarlibrary.utils.ChatUtils;
+import de.minestar.minestarlibrary.commands.AbstractCommand;
+import de.minestar.minestarlibrary.utils.ChatUtils;
 
-public class ImportWorldCommand extends Command {
+public class ImportWorldCommand extends AbstractCommand {
+
     private WorldManager worldManager;
 
-    public ImportWorldCommand(String pluginName, String syntax, String arguments, String node, WorldManager worldManager) {
-        super(pluginName, syntax, arguments, node);
+    public ImportWorldCommand(String syntax, String arguments, String node, WorldManager worldManager) {
+        super(Main.name, syntax, arguments, node);
         this.description = "Create a new world";
         this.worldManager = worldManager;
     }
 
-    public void execute(String[] args, CommandSender sender) {
+    public void execute(String[] args, Player player) {
+        importWorld(args, player);
+    }
+
+    @Override
+    public void execute(String[] args, ConsoleCommandSender console) {
+        importWorld(args, console);
+    }
+
+    private void importWorld(String[] args, CommandSender sender) {
         String worldName = args[0];
 
-        if (this.worldManager.worldExists(worldName)) {
-            ChatUtils.printError(sender, this.pluginName, "This world does already exist!");
+        if (worldManager.worldExists(worldName)) {
+            ChatUtils.writeError(sender, pluginName, "This world does already exist!");
             return;
         }
 
         if (Bukkit.getWorld(worldName) == null) {
-            ChatUtils.printError(sender, this.pluginName, "This bukkitworld does not exist!");
+            ChatUtils.writeError(sender, pluginName, "This bukkitworld does not exist!");
             return;
         }
 
-        boolean result = this.worldManager.importWorld(worldName);
+        boolean result = worldManager.importWorld(worldName);
 
         if (result) {
-            ChatUtils.printSuccess(sender, this.pluginName, "World '" + worldName + "' imported!");
+            ChatUtils.writeSuccess(sender, pluginName, "World '" + worldName + "' imported!");
         } else {
-            ChatUtils.printError(sender, this.pluginName, "Error while importing world '" + worldName + "'!");
-            ChatUtils.printInfo(sender, this.pluginName, ChatColor.GRAY, "There was an internal error while importing the worldsettings.");
+            ChatUtils.writeError(sender, pluginName, "Error while creating world '" + worldName + "'!");
+            ChatUtils.writeError(sender, pluginName, "There was an internal error while creating the worldsettings.");
         }
     }
 }

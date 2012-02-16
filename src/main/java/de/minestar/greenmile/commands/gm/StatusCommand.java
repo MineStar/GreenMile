@@ -1,22 +1,23 @@
 package de.minestar.greenmile.commands.gm;
 
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import de.minestar.greenmile.Main;
-import de.minestar.minstarlibrary.commands.Command;
-import de.minestar.minstarlibrary.utils.ChatUtils;
+import de.minestar.minestarlibrary.commands.AbstractCommand;
+import de.minestar.minestarlibrary.utils.PlayerUtils;
 
-public class StatusCommand extends Command {
-    public StatusCommand(String pluginName, String syntax, String arguments, String node) {
-        super(pluginName, syntax, arguments, node);
+public class StatusCommand extends AbstractCommand {
+
+    public StatusCommand(String syntax, String arguments, String node) {
+        super(Main.name, syntax, arguments, node);
         this.description = "Zeigt Status des Threads an";
     }
 
-    public void execute(String[] args, CommandSender sender) {
+    public void execute(String[] args, Player player) {
+        // TODO: Server command
         if (Main.chunkThread == null)
-            ChatUtils.printError(sender, this.pluginName, "Es existiert kein Thread!");
+            PlayerUtils.sendError(player, this.pluginName, "Es existiert kein Thread!");
         else
-            ChatUtils.printInfo(sender, this.pluginName, ChatColor.GRAY, "Status: " + Main.chunkThread.getStatus());
+            PlayerUtils.sendInfo(player, this.pluginName, "Status: " + Main.chunkThread.getStatus());
     }
 }

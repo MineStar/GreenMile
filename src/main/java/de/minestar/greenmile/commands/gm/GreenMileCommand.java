@@ -1,15 +1,18 @@
 package de.minestar.greenmile.commands.gm;
 
-import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
-import de.minestar.minstarlibrary.commands.Command;
-import de.minestar.minstarlibrary.commands.SuperCommand;
+import de.minestar.greenmile.Main;
+import de.minestar.minestarlibrary.commands.AbstractCommand;
+import de.minestar.minestarlibrary.commands.AbstractSuperCommand;
 
-public class GreenMileCommand extends SuperCommand {
-    public GreenMileCommand(String pluginName, String syntax, String arguments, String node, Command[] subCommands) {
-        super(syntax, arguments, node, subCommands);
+public class GreenMileCommand extends AbstractSuperCommand {
+
+    public GreenMileCommand(String syntax, String arguments, String node, AbstractCommand... subCommands) {
+        super(Main.name, syntax, arguments, node, false, subCommands);
     }
 
-    public void execute(String[] args, CommandSender sender) {
+    public void execute(String[] args, Player player) {
+        // Do nothing
     }
 }

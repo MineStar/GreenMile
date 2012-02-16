@@ -9,6 +9,7 @@ import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class SetSpawnCommand extends AbstractCommand {
+
     private WorldManager worldManager;
 
     public SetSpawnCommand(String syntax, String arguments, String node, WorldManager worldManager) {
@@ -20,16 +21,17 @@ public class SetSpawnCommand extends AbstractCommand {
     public void execute(String[] args, Player player) {
 
         String worldName = player.getWorld().getName();
-        if (!this.worldManager.worldExists(worldName)) {
-            PlayerUtils.sendError(player, this.pluginName, "You need to import this world!");
+        GMWorld thisWorld = worldManager.getGMWorld(worldName);
+        if (thisWorld == null) {
+            PlayerUtils.sendError(player, pluginName, "You need to import this world!");
             return;
         }
-        GMWorld thisWorld = this.worldManager.getGMWorld(worldName);
+
         thisWorld.getWorldSettings().setWorldSpawn(player.getLocation());
         thisWorld.updateBukkitWorld();
-        if (thisWorld.getWorldSettings().saveSettings(worldName, this.worldManager.getDataFolder()))
-            PlayerUtils.sendSuccess(player, this.pluginName, "Spawn set.");
+        if (thisWorld.getWorldSettings().saveSettings(worldName, worldManager.getDataFolder()))
+            PlayerUtils.sendSuccess(player, pluginName, "Spawn set.");
         else
-            PlayerUtils.sendError(player, this.pluginName, "Error while saving settings.");
+            PlayerUtils.sendError(player, pluginName, "Error while saving settings.");
     }
 }

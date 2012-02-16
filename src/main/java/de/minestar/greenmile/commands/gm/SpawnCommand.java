@@ -12,6 +12,7 @@ import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class SpawnCommand extends AbstractExtendedCommand {
+
     private WorldManager worldManager;
 
     public SpawnCommand(String syntax, String arguments, String node, WorldManager worldManager) {
@@ -22,22 +23,22 @@ public class SpawnCommand extends AbstractExtendedCommand {
 
     public void execute(String[] args, Player player) {
 
-        String worldName = Bukkit.getWorlds().get(0).getName();
-        if (args.length > 0) {
+        String worldName = null;
+        if (args.length > 0)
             worldName = args[0];
-        }
+        else
+            worldName = Bukkit.getWorlds().get(0).getName();
 
-        if (!this.worldManager.worldExists(worldName)) {
-            PlayerUtils.sendError(player, this.pluginName, "World '" + worldName + "' does not exist!");
+        GMWorld world = worldManager.getGMWorld(worldName);
+        if (world == null) {
+            PlayerUtils.sendError(player, pluginName, "World '" + worldName + "' does not exist!");
             return;
         }
 
         if (UtilPermissions.playerCanUseCommand(player, "greenmile.spawn." + worldName)) {
-            GMWorld thisWorld = this.worldManager.getGMWorld(worldName);
-            player.teleport(thisWorld.getWorldSettings().getWorldSpawn());
-            PlayerUtils.sendSuccess(player, this.pluginName, "Welcome to the spawn of '" + worldName + "'!");
-            return;
-        }
-        PlayerUtils.sendError(player, this.pluginName, "You are not allowed to teleport to '" + worldName + "'!");
+            player.teleport(world.getWorldSettings().getWorldSpawn());
+            PlayerUtils.sendSuccess(player, pluginName, "Welcome to the spawn of '" + worldName + "'!");
+        } else
+            PlayerUtils.sendError(player, pluginName, "You are not allowed to teleport to '" + worldName + "'!");
     }
 }

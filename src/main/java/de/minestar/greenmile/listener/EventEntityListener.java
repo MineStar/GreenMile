@@ -24,6 +24,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -41,7 +42,7 @@ public class EventEntityListener implements Listener {
     }
 
     @EventHandler
-    public void onEntityBlockChange(EntityBlockChangeEvent event) {
+    public void onEntityBlockChange(EntityChangeBlockEvent event) {
         if (event.isCancelled())
             return;
 
@@ -53,7 +54,7 @@ public class EventEntityListener implements Listener {
         }
     }
 
-    public void onEndermanPickup(EntityBlockChangeEvent event) {
+    public void onEndermanPickup(EntityChangeBlockEvent event) {
         GMWorld world = this.worldManager.getGMWorld(event.getEntity());
         if (world == null) {
             return;
@@ -62,7 +63,7 @@ public class EventEntityListener implements Listener {
         world = null;
     }
 
-    public void onEndermanPlace(EntityBlockChangeEvent event) {
+    public void onEndermanPlace(EntityChangeBlockEvent event) {
         GMWorld world = this.worldManager.getGMWorld(event.getEntity());
         if (world == null) {
             return;

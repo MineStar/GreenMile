@@ -18,12 +18,12 @@
 
 package de.minestar.greenmile.listener;
 
+import org.bukkit.Material;
+import org.bukkit.entity.Enderman;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EndermanPickupEvent;
-import org.bukkit.event.entity.EndermanPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -41,10 +41,19 @@ public class EventEntityListener implements Listener {
     }
 
     @EventHandler
-    public void onEndermanPickup(EndermanPickupEvent event) {
+    public void onEntityBlockChange(EntityBlockChangeEvent event) {
         if (event.isCancelled())
             return;
 
+        if (event.getEntity() instanceof Enderman) {
+            if (event.getTo().getId() == Material.AIR.getId())
+                this.onEndermanPickup(event);
+            else
+                this.onEndermanPlace(event);
+        }
+    }
+
+    public void onEndermanPickup(EntityBlockChangeEvent event) {
         GMWorld world = this.worldManager.getGMWorld(event.getEntity());
         if (world == null) {
             return;
@@ -53,11 +62,7 @@ public class EventEntityListener implements Listener {
         world = null;
     }
 
-    @EventHandler
-    public void onEndermanPlace(EndermanPlaceEvent event) {
-        if (event.isCancelled())
-            return;
-
+    public void onEndermanPlace(EntityBlockChangeEvent event) {
         GMWorld world = this.worldManager.getGMWorld(event.getEntity());
         if (world == null) {
             return;

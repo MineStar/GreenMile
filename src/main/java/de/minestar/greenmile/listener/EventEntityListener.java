@@ -19,7 +19,7 @@
 package de.minestar.greenmile.listener;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Enderman;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -46,7 +46,7 @@ public class EventEntityListener implements Listener {
         if (event.isCancelled())
             return;
 
-        if (event.getEntity() instanceof Enderman) {
+        if (event.getEntityType() == EntityType.ENDERMAN) {
             if (event.getTo().getId() == Material.AIR.getId())
                 this.onEndermanPickup(event);
             else

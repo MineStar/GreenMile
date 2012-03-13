@@ -1,6 +1,6 @@
 name: GreenMile
 main: de.minestar.greenmile.Main
-version: 1.2.1
+version: 1.3
 commands:
   gm:
     description: Start/Stop a thread

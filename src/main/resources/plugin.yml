@@ -1,6 +1,6 @@
 name: GreenMile
 main: de.minestar.greenmile.Main
-version: 1.4
+version: ${pom.version}
 depend: [MineStarLibrary]
 commands:
   gm:

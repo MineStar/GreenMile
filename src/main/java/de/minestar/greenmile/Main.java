@@ -119,7 +119,8 @@ public class Main extends JavaPlugin {
      * HANDLE COMMANDS
      */
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
-        this.cmdList.handleCommand(sender, label, args);
+        if(this.cmdList != null)
+            this.cmdList.handleCommand(sender, label, args);
         return true;
     }
 

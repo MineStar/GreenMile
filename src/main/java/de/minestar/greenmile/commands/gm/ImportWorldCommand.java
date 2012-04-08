@@ -1,6 +1,9 @@
 package de.minestar.greenmile.commands.gm;
 
-import org.bukkit.Bukkit;
+import java.io.File;
+
+import net.minecraft.server.WorldData;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -37,12 +40,14 @@ public class ImportWorldCommand extends AbstractCommand {
             return;
         }
 
-        if (Bukkit.getWorld(worldName) == null) {
-            ChatUtils.writeError(sender, pluginName, "This bukkitworld does not exist!");
+        File levelFile = new File(worldName + "/level.dat");
+        WorldData worldData;
+        if (!levelFile.exists() || (worldData = this.worldManager.getWorldData(levelFile)) == null) {
+            ChatUtils.writeError(sender, pluginName, "World '" + worldName + "' does not exist!");
             return;
         }
 
-        boolean result = worldManager.importWorld(worldName);
+        boolean result = worldManager.importWorld(worldData);
 
         if (result) {
             ChatUtils.writeSuccess(sender, pluginName, "World '" + worldName + "' imported!");

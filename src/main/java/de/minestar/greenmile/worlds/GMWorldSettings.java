@@ -3,6 +3,8 @@ package de.minestar.greenmile.worlds;
 import java.awt.Point;
 import java.io.File;
 
+import net.minecraft.server.WorldData;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.Location;
@@ -36,10 +38,26 @@ public class GMWorldSettings {
      * @param dataFolder
      */
     public GMWorldSettings(String worldName, long levelSeed, World.Environment environment, File dataFolder) {
-        this.worldSpawn = Bukkit.getWorld(worldName).getSpawnLocation();
+        if (Bukkit.getWorld(worldName) != null) {
+            this.worldSpawn = Bukkit.getWorld(worldName).getSpawnLocation();
+        }
         this.levelSeed = levelSeed;
         this.environment = environment;
         this.initialized = saveSettings(worldName, dataFolder);
+    }
+
+    /**
+     * This constructor is used when a world is newly created
+     * 
+     * @param worldName
+     * @param levelSeed
+     * @param environment
+     * @param dataFolder
+     */
+    public GMWorldSettings(WorldData worldData, File dataFolder) {
+        this.levelSeed = worldData.getSeed();
+        this.environment = World.Environment.getEnvironment(worldData.g());
+        this.initialized = saveSettings(worldData.name, dataFolder);
     }
 
     /**
@@ -72,11 +90,13 @@ public class GMWorldSettings {
             config.set("settings.autoSave", this.autoSave);
             config.set("settings.keepSpawnLoaded", this.keepSpawnLoaded);
             config.set("settings.maxSize", this.maxSize);
-            config.set("settings.spawn.x", this.worldSpawn.getX());
-            config.set("settings.spawn.y", this.worldSpawn.getY());
-            config.set("settings.spawn.z", this.worldSpawn.getZ());
-            config.set("settings.spawn.pitch", this.worldSpawn.getPitch());
-            config.set("settings.spawn.yaw", this.worldSpawn.getYaw());
+            if (this.worldSpawn != null) {
+                config.set("settings.spawn.x", this.worldSpawn.getX());
+                config.set("settings.spawn.y", this.worldSpawn.getY());
+                config.set("settings.spawn.z", this.worldSpawn.getZ());
+                config.set("settings.spawn.pitch", this.worldSpawn.getPitch());
+                config.set("settings.spawn.yaw", this.worldSpawn.getYaw());
+            }
             if (this.lastRenderedPosition != null) {
                 config.set("render.x", this.lastRenderedPosition.x);
                 config.set("render.y", this.lastRenderedPosition.y);
@@ -91,6 +111,7 @@ public class GMWorldSettings {
         }
         return true;
     }
+
     /**
      * LOAD SETTINGS
      * 

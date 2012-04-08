@@ -1,7 +1,13 @@
 package de.minestar.greenmile.worlds;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
+
+import net.minecraft.server.NBTCompressedStreamTools;
+import net.minecraft.server.NBTTagCompound;
+import net.minecraft.server.WorldData;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -67,23 +73,21 @@ public class WorldManager {
      * @param worldName
      * @return<b>true</b> if the import was successful, otherwise <b>false</b>
      */
-    public boolean importWorld(String worldName) {
-        // WE CAN ONLY IMPORT, IF THE WORLD IS NOT COVERED BY GREENMILE
-        if (worldExists(worldName)) {
+    public boolean importWorld(WorldData worldData) {
+        // WE NEED WORLDDATA
+        if (worldData == null)
             return false;
-        }
 
-        // WE CAN ONLY IMPORT, IF THE BUKKITWORLD IS FOUND
-        World bukkitWorld = Bukkit.getWorld(worldName);
-        if (bukkitWorld == null) {
+        // WE CAN ONLY IMPORT, IF THE WORLD IS NOT COVERED BY GREENMILE
+        if (worldExists(worldData.name)) {
             return false;
         }
 
         // FINALLY IMPORT THE WORLD
-        GMWorld newWorld = new GMWorld(worldName, this.dataFolder);
-        newWorld.createSettings(bukkitWorld.getSeed(), bukkitWorld.getEnvironment(), this.dataFolder);
-        newWorld.getWorldSettings().setWorldSpawn(bukkitWorld.getSpawnLocation());
-        newWorld.getWorldSettings().saveSettings(worldName, dataFolder);
+        GMWorld newWorld = new GMWorld(worldData.name, this.dataFolder);
+        newWorld.createSettings(worldData.getSeed(), World.Environment.getEnvironment(worldData.g()), this.dataFolder);
+        // newWorld.getWorldSettings().setWorldSpawn(bukkitWorld.getSpawnLocation());
+        newWorld.getWorldSettings().saveSettings(worldData.name, dataFolder);
         newWorld.updateBukkitWorld();
         addWorld(newWorld);
         return true;
@@ -213,7 +217,13 @@ public class WorldManager {
             // IMPORT KNOWN BUKKITWORLDS
             for (World world : Bukkit.getWorlds()) {
                 if (!this.worldExists(world.getName())) {
-                    if (!this.importWorld(world.getName()))
+                    File levelFile = new File(world.getName() + "/level.dat");
+                    WorldData worldData;
+                    if (!levelFile.exists() || (worldData = this.getWorldData(levelFile)) == null) {
+                        continue;
+                    }
+
+                    if (!this.importWorld(worldData))
                         ConsoleUtils.printError(Main.NAME, "Could not import world '" + world.getName() + "'!");
                     else
                         ConsoleUtils.printWarning(Main.NAME, "World '" + world.getName() + "' imported!");
@@ -223,6 +233,22 @@ public class WorldManager {
         } catch (Exception e) {
             ConsoleUtils.printException(e, Main.NAME, "Can't load worlds from " + this.dataFolder);
         }
+    }
+
+    public WorldData getWorldData(File levelFile) {
+        NBTTagCompound mainCompound, dataCompound;
+
+        if (levelFile.exists()) {
+            try {
+                mainCompound = NBTCompressedStreamTools.a((InputStream) (new FileInputStream(levelFile)));
+                dataCompound = mainCompound.getCompound("Data");
+                return new WorldData(dataCompound);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        }
+
+        return null;
     }
 
     /**

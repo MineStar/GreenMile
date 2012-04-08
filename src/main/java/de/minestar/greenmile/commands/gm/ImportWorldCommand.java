@@ -4,8 +4,12 @@ import java.io.File;
 
 import net.minecraft.server.WorldData;
 
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
 
 import de.minestar.greenmile.Main;
@@ -46,6 +50,13 @@ public class ImportWorldCommand extends AbstractCommand {
             ChatUtils.writeError(sender, pluginName, "World '" + worldName + "' does not exist!");
             return;
         }
+
+        // CREATE THE WORLD
+        WorldCreator generator = new WorldCreator(worldName);
+        generator.environment(World.Environment.getEnvironment(worldData.g()));
+        generator.seed(worldData.g());
+        CraftServer cServer = (CraftServer) Bukkit.getServer();
+        cServer.addWorld(generator.createWorld());
 
         boolean result = worldManager.importWorld(worldData);
 

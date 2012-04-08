@@ -76,12 +76,10 @@ public class WorldManager {
     public boolean importWorld(WorldData worldData) {
         // WE NEED WORLDDATA
         if (worldData == null) {
-            System.out.println("no worlddata");
             return false;
         }
         // WE CAN ONLY IMPORT, IF THE WORLD IS NOT COVERED BY GREENMILE
         if (worldExists(worldData.name)) {
-            System.out.println("world exists");
             return false;
         }
 

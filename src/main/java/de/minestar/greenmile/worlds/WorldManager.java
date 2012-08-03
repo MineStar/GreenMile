@@ -79,15 +79,16 @@ public class WorldManager {
             return false;
         }
         // WE CAN ONLY IMPORT, IF THE WORLD IS NOT COVERED BY GREENMILE
-        if (worldExists(worldData.name)) {
+        if (worldExists(worldData.getName())) {
             return false;
         }
 
         // FINALLY IMPORT THE WORLD
-        GMWorld newWorld = new GMWorld(worldData.name, this.dataFolder);
-        newWorld.createSettings(worldData.getSeed(), World.Environment.getEnvironment(worldData.g()), this.dataFolder);
-        newWorld.getWorldSettings().setWorldSpawn(Bukkit.getWorld(worldData.name).getSpawnLocation());
-        newWorld.getWorldSettings().saveSettings(worldData.name, dataFolder);
+        GMWorld newWorld = new GMWorld(worldData.getName(), this.dataFolder);
+        // i() == Normal or Nether or The End
+        newWorld.createSettings(worldData.getSeed(), World.Environment.getEnvironment(worldData.i()), this.dataFolder);
+        newWorld.getWorldSettings().setWorldSpawn(Bukkit.getWorld(worldData.getName()).getSpawnLocation());
+        newWorld.getWorldSettings().saveSettings(worldData.getName(), dataFolder);
         newWorld.updateBukkitWorld();
         addWorld(newWorld);
         return true;

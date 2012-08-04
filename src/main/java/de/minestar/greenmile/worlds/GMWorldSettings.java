@@ -11,7 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import de.minestar.greenmile.Main;
+import de.minestar.greenmile.core.GreenMileCore;
 import de.minestar.greenmile.helper.EnumHelper;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
 
@@ -107,7 +107,7 @@ public class GMWorldSettings {
             }
             config.save(file);
         } catch (Exception e) {
-            ConsoleUtils.printException(e, Main.NAME, "Can't save settings for world " + worldName + "!");
+            ConsoleUtils.printException(e, GreenMileCore.NAME, "Can't save settings for world " + worldName + "!");
             return false;
         }
         return true;
@@ -145,10 +145,10 @@ public class GMWorldSettings {
             setLevelSeed(config.getLong("settings.levelSeed", this.levelSeed));
             setEnvironment(environment);
 
-            ConsoleUtils.printInfo(Main.NAME, "Worldsettings for '" + worldName + "' loaded!\nlevelSeed = " + this.levelSeed + "\nEnvironment = " + environment.toString());
+            ConsoleUtils.printInfo(GreenMileCore.NAME, "Worldsettings for '" + worldName + "' loaded!\nlevelSeed = " + this.levelSeed + "\nEnvironment = " + environment.toString());
             return true;
         } catch (Exception e) {
-            ConsoleUtils.printException(e, Main.NAME, "Can't load worldsettings for world " + worldName + "!");
+            ConsoleUtils.printException(e, GreenMileCore.NAME, "Can't load worldsettings for world " + worldName + "!");
         }
         return false;
     }
@@ -191,10 +191,10 @@ public class GMWorldSettings {
                 }
             }
 
-            ConsoleUtils.printInfo(Main.NAME, "Specific settings for '" + worldName + "' loaded!\nSpawnMonster = " + this.spawnMonsters + "\nSpawnAnimals = " + this.spawnAnimals + "\nAutoSave = " + this.autoSave + "\nKeepSpawnLoaded = " + this.keepSpawnLoaded + "\nDifficulty = " + difficulty.toString() + "\nMaxSize = " + this.maxSize);
+            ConsoleUtils.printInfo(GreenMileCore.NAME, "Specific settings for '" + worldName + "' loaded!\nSpawnMonster = " + this.spawnMonsters + "\nSpawnAnimals = " + this.spawnAnimals + "\nAutoSave = " + this.autoSave + "\nKeepSpawnLoaded = " + this.keepSpawnLoaded + "\nDifficulty = " + difficulty.toString() + "\nMaxSize = " + this.maxSize);
             return true;
         } catch (Exception e) {
-            ConsoleUtils.printException(e, Main.NAME, "Can't load worldspecific settings for world " + worldName + "!");
+            ConsoleUtils.printException(e, GreenMileCore.NAME, "Can't load worldspecific settings for world " + worldName + "!");
         }
         return false;
     }

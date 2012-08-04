@@ -3,7 +3,7 @@ package de.minestar.greenmile.commands.gm;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import de.minestar.greenmile.Main;
+import de.minestar.greenmile.core.GreenMileCore;
 import de.minestar.greenmile.worlds.GMWorld;
 import de.minestar.greenmile.worlds.WorldManager;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
@@ -13,7 +13,7 @@ public class GMTeleportCommand extends AbstractCommand {
     private WorldManager worldManager;
 
     public GMTeleportCommand(String syntax, String arguments, String node, WorldManager worldManager) {
-        super(Main.NAME, syntax, arguments, node);
+        super(GreenMileCore.NAME, syntax, arguments, node);
         this.description = "Teleport to a world";
         this.worldManager = worldManager;
     }

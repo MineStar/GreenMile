@@ -1,11 +1,11 @@
-package de.minestar.greenmile;
+package de.minestar.greenmile.core;
 
 import java.io.File;
 
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.scheduler.BukkitScheduler;
 
+import de.minestar.greenmile.Settings;
 import de.minestar.greenmile.commands.gm.ChangeSizeCommand;
 import de.minestar.greenmile.commands.gm.CreateWorldCommand;
 import de.minestar.greenmile.commands.gm.GMTeleportCommand;
@@ -21,78 +21,96 @@ import de.minestar.greenmile.listener.GMPListener;
 import de.minestar.greenmile.threading.BorderThread;
 import de.minestar.greenmile.threading.ChunkGenerationThread;
 import de.minestar.greenmile.worlds.WorldManager;
+import de.minestar.minestarlibrary.AbstractCore;
 import de.minestar.minestarlibrary.commands.CommandList;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
 
-public class Main extends JavaPlugin {
+public class GreenMileCore extends AbstractCore {
 
+    /* NAME */
     public final static String NAME = "GreenMile";
 
-    private static Main instance;
-    public static ChunkGenerationThread chunkThread = null;
-    private GMPListener pListener = null;
-    private CommandList cmdList;
-    private WorldManager worldManager;
-    private Settings gmSettings;
+    /* INSTANCE */
+    public static GreenMileCore INSTANCE;
 
-    /**
-     * Constructor
-     */
-    public Main() {
-        if (instance == null)
-            instance = this;
+    /* THREADS */
+    public static ChunkGenerationThread chunkThread;
+    public static BorderThread borderThread;
+
+    /* LISTENER */
+    private GMPListener pListener;
+
+    /* MANAGER */
+    public static WorldManager worldManager;
+
+    /* SETTINGS */
+    public static Settings gmSettings;
+
+    public GreenMileCore() {
+        super(NAME);
+        INSTANCE = this;
     }
 
-    /**
-     * ON DISABLE
-     */
-    public void onDisable() {
-        if (chunkThread != null) {
+    @Override
+    protected boolean commonDisable() {
+        if (chunkThread != null)
             chunkThread.saveConfig();
-        }
-        this.cmdList = null;
-        ConsoleUtils.printInfo(NAME, "Disabled!");
+
+        return super.commonDisable();
     }
 
-    /**
-     * ON ENABLE
-     */
-    public void onEnable() {
+    @Override
+    protected boolean loadingConfigs(File dataFolder) {
 
-        // CREATE DATAFOLDER
-        File dataFolder = getDataFolder();
-        dataFolder.mkdirs();
-
-        // INIT WORLDMANAGER
-        this.worldManager = new WorldManager(this.getDataFolder());
-
-        this.gmSettings = new Settings("config.yml", this.getDataFolder(), worldManager);
-        if (gmSettings.loadSettings(true)) {
+        gmSettings = new Settings("config.yml", dataFolder);
+        if (gmSettings.loadSettings(true))
             gmSettings.registerAllEvents();
-        } else {
-            ConsoleUtils.printError(Main.NAME, "Could not load settings!\n\n GREENMILE WILL BE DISABLED !!! \n\n");
+        else {
+            ConsoleUtils.printError(GreenMileCore.NAME, "Could not load settings!\n\n GREENMILE WILL BE DISABLED !!! \n\n");
             this.setEnabled(false);
         }
 
-        // INIT COMMANDLIST
-        initCommandList();
-
-        // CREATE BORDERTHREAD
-        Runnable borderThread = new BorderThread(this.worldManager);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, borderThread, 300L, 100L);
-
-        // CREATE LISTENER
-        this.pListener = new GMPListener(this.worldManager);
-        Bukkit.getPluginManager().registerEvents(this.pListener, this);
-
-        // PRINT INFO
-        ConsoleUtils.printInfo(NAME, "Version " + getDescription().getVersion() + " enabled!");
+        return true;
     }
 
-    /**
-     * INIT COMMANDLIST
-     */
-    private void initCommandList() {
+    @Override
+    protected boolean createManager() {
+        worldManager = new WorldManager(this.getDataFolder());
+
+        return true;
+    }
+
+    @Override
+    protected boolean createThreads() {
+        borderThread = new BorderThread();
+
+        return true;
+    }
+
+    @Override
+    protected boolean startThreads(BukkitScheduler scheduler) {
+
+        scheduler.scheduleSyncRepeatingTask(this, borderThread, 20L * 15L, 20L * 5L);
+
+        return true;
+    }
+
+    @Override
+    protected boolean createListener() {
+        pListener = new GMPListener();
+
+        return true;
+    }
+
+    @Override
+    protected boolean registerEvents(PluginManager pm) {
+        pm.registerEvents(this.pListener, this);
+
+        return true;
+    }
+
+    @Override
+    protected boolean createCommands() {
         int speed = getConfig().getInt("speed", 5);
         ConsoleUtils.printInfo(NAME, "Default speed of generation thread is " + speed);
 
@@ -113,23 +131,7 @@ public class Main extends JavaPlugin {
                 new SpawnCommand("/spawn", "[WorldName]", "", worldManager)
          );
         // @formatter: on;
-    }
-    
-    /**
-     * HANDLE COMMANDS
-     */
-    public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
-        if(this.cmdList != null)
-            this.cmdList.handleCommand(sender, label, args);
+        
         return true;
-    }
-
-    /**
-     * GET PLUGIN-INSTANCE
-     * 
-     * @return the Maininstance of GreenMile
-     */
-    public static Main getInstance() {
-        return instance;
     }
 }

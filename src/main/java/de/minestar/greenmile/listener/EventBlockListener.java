@@ -19,16 +19,11 @@ import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.inventory.ItemStack;
 
+import de.minestar.greenmile.core.GreenMileCore;
 import de.minestar.greenmile.worlds.GMWorld;
 import de.minestar.greenmile.worlds.GMWorldEventOptions;
-import de.minestar.greenmile.worlds.WorldManager;
 
 public class EventBlockListener implements Listener {
-    private final WorldManager worldManager;
-
-    public EventBlockListener(WorldManager worldManager) {
-        this.worldManager = worldManager;
-    }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
@@ -36,7 +31,7 @@ public class EventBlockListener implements Listener {
         if (event.isCancelled())
             return;
 
-        GMWorld world = this.worldManager.getGMWorld(event.getBlock());
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getBlock());
         if (world == null) {
             return;
         }
@@ -62,7 +57,7 @@ public class EventBlockListener implements Listener {
         if (event.isCancelled())
             return;
 
-        GMWorld world = this.worldManager.getGMWorld(event.getBlock());
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getBlock());
         if (world == null) {
             return;
         }
@@ -75,7 +70,7 @@ public class EventBlockListener implements Listener {
         if (event.isCancelled())
             return;
 
-        GMWorld world = this.worldManager.getGMWorld(event.getBlock());
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getBlock());
         if (world == null) {
             return;
         }
@@ -93,7 +88,7 @@ public class EventBlockListener implements Listener {
         if (event.isCancelled())
             return;
 
-        GMWorld world = this.worldManager.getGMWorld(event.getBlock());
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getBlock());
         if (world == null) {
             return;
         }
@@ -111,7 +106,7 @@ public class EventBlockListener implements Listener {
         if (event.isCancelled())
             return;
 
-        GMWorld world = this.worldManager.getGMWorld(event.getBlock());
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getBlock());
         if (world == null) {
             return;
         }
@@ -144,7 +139,7 @@ public class EventBlockListener implements Listener {
         if (event.isCancelled())
             return;
 
-        GMWorld world = this.worldManager.getGMWorld(event.getBlock());
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getBlock());
         if (world == null) {
             return;
         }
@@ -163,7 +158,7 @@ public class EventBlockListener implements Listener {
         if (event.isCancelled())
             return;
 
-        GMWorld world = this.worldManager.getGMWorld(event.getBlock());
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getBlock());
         if (world == null) {
             return;
         }
@@ -197,7 +192,7 @@ public class EventBlockListener implements Listener {
         if (event.isCancelled())
             return;
 
-        GMWorld world = this.worldManager.getGMWorld(event.getBlock());
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getBlock());
         if (world == null) {
             return;
         }
@@ -226,7 +221,7 @@ public class EventBlockListener implements Listener {
         if (event.isCancelled())
             return;
 
-        GMWorld world = this.worldManager.getGMWorld(event.getBlock());
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getBlock());
         if (world == null) {
             return;
         }
@@ -243,7 +238,7 @@ public class EventBlockListener implements Listener {
         if (event.isCancelled())
             return;
 
-        GMWorld world = this.worldManager.getGMWorld(event.getBlock());
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getBlock());
         if (world == null) {
             return;
         }
@@ -261,7 +256,7 @@ public class EventBlockListener implements Listener {
         if (event.isCancelled())
             return;
 
-        GMWorld world = this.worldManager.getGMWorld(event.getBlock());
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getBlock());
         if (world == null) {
             return;
         }
@@ -295,7 +290,7 @@ public class EventBlockListener implements Listener {
         if (event.isCancelled())
             return;
 
-        GMWorld world = this.worldManager.getGMWorld(event.getBlock());
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getBlock());
         if (world == null) {
             return;
         }

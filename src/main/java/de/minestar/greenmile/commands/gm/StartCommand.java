@@ -7,7 +7,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import de.minestar.greenmile.Main;
+import de.minestar.greenmile.core.GreenMileCore;
 import de.minestar.greenmile.threading.ChunkGenerationThread;
 import de.minestar.greenmile.worlds.WorldManager;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
@@ -20,7 +20,7 @@ public class StartCommand extends AbstractExtendedCommand {
     private final int speed;
 
     public StartCommand(String syntax, String arguments, String node, WorldManager worldManager, Plugin plugin, int speed) {
-        super(Main.NAME, syntax, arguments, node);
+        super(GreenMileCore.NAME, syntax, arguments, node);
         this.plugin = plugin;
         this.speed = speed;
         this.worldManager = worldManager;
@@ -44,12 +44,12 @@ public class StartCommand extends AbstractExtendedCommand {
             return;
         }
 
-        if (Main.chunkThread != null) {
+        if (GreenMileCore.chunkThread != null) {
             ChatUtils.writeError(sender, pluginName, "Es läuft bereits ein Erzeugungsthread!");
             return;
         }
 
-        Main.chunkThread = new ChunkGenerationThread(worldManager.getGMWorld(worldName).getWorldSettings().getMaxSize(), world.getName(), worldManager);
+        GreenMileCore.chunkThread = new ChunkGenerationThread(worldManager.getGMWorld(worldName).getWorldSettings().getMaxSize(), world.getName(), worldManager);
 
         int pSpeed = speed;
         if (args.length == 2) {
@@ -64,7 +64,7 @@ public class StartCommand extends AbstractExtendedCommand {
                 pSpeed = speed;
             }
         }
-        Main.chunkThread.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, Main.chunkThread, 0L, pSpeed));
+        GreenMileCore.chunkThread.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, GreenMileCore.chunkThread, 0L, pSpeed));
         ChatUtils.writeSuccess(sender, pluginName, "Die Welt '" + worldName + "' wird nun mit einer Geschwindigkeit von " + pSpeed + " erzeugt!");
         ChatUtils.writeInfo(sender, pluginName, "'/gm stop' hält den Thread an!");
     }

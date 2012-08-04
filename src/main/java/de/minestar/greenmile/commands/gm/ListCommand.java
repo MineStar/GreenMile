@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import de.minestar.greenmile.Main;
+import de.minestar.greenmile.core.GreenMileCore;
 import de.minestar.greenmile.worlds.GMWorld;
 import de.minestar.greenmile.worlds.WorldManager;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
@@ -16,7 +16,7 @@ public class ListCommand extends AbstractCommand {
     private WorldManager worldManager;
 
     public ListCommand(String syntax, String arguments, String node, WorldManager worldManager) {
-        super(Main.NAME, syntax, arguments, node);
+        super(GreenMileCore.NAME, syntax, arguments, node);
         this.worldManager = worldManager;
     }
 

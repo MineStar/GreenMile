@@ -6,7 +6,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import de.minestar.greenmile.Main;
+import de.minestar.greenmile.core.GreenMileCore;
 import de.minestar.greenmile.threading.ChunkGenerationThread;
 import de.minestar.greenmile.worlds.WorldManager;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
@@ -19,7 +19,7 @@ public class ChangeSizeCommand extends AbstractExtendedCommand {
     private final int speed;
 
     public ChangeSizeCommand(String syntax, String arguments, String node, WorldManager worldManager, Plugin plugin, int speed) {
-        super(Main.NAME, syntax, arguments, node);
+        super(GreenMileCore.NAME, syntax, arguments, node);
         this.worldManager = worldManager;
         this.plugin = plugin;
         this.speed = speed;
@@ -39,7 +39,7 @@ public class ChangeSizeCommand extends AbstractExtendedCommand {
 
         String worldName = args[0];
 
-        if (Main.chunkThread != null) {
+        if (GreenMileCore.chunkThread != null) {
             ChatUtils.writeError(sender, pluginName, "Generationthread laeuft gerade. Erst '/gm stop' eingeben!");
             return;
         }
@@ -67,7 +67,7 @@ public class ChangeSizeCommand extends AbstractExtendedCommand {
 
         ChatUtils.writeSuccess(sender, pluginName, "Groesse erfolgreich geaendert!");
         if ((args.length >= 3) && (args[2].equalsIgnoreCase("f"))) {
-            Main.chunkThread = new ChunkGenerationThread(worldManager.getGMWorld(worldName).getWorldSettings().getMaxSize(), worldName, worldManager);
+            GreenMileCore.chunkThread = new ChunkGenerationThread(worldManager.getGMWorld(worldName).getWorldSettings().getMaxSize(), worldName, worldManager);
 
             int pSpeed = speed;
             if (args.length == 4) {
@@ -83,7 +83,7 @@ public class ChangeSizeCommand extends AbstractExtendedCommand {
                 }
             }
 
-            Main.chunkThread.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, Main.chunkThread, 0L, pSpeed));
+            GreenMileCore.chunkThread.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, GreenMileCore.chunkThread, 0L, pSpeed));
             ChatUtils.writeSuccess(sender, pluginName, "Die Welt '" + worldName + "' wird nun mit einer Geschwindigkeit von " + pSpeed + " erzeugt!");
             ChatUtils.writeInfo(sender, pluginName, "'/gm stop' hält den Thread an!");
         }

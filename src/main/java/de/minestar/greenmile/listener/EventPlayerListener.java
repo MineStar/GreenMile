@@ -30,15 +30,10 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
+import de.minestar.greenmile.core.GreenMileCore;
 import de.minestar.greenmile.worlds.GMWorld;
-import de.minestar.greenmile.worlds.WorldManager;
 
 public class EventPlayerListener implements Listener {
-    private final WorldManager worldManager;
-
-    public EventPlayerListener(WorldManager worldManager) {
-        this.worldManager = worldManager;
-    }
 
     @EventHandler
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
@@ -48,7 +43,7 @@ public class EventPlayerListener implements Listener {
         if (event.isCancelled())
             return;
 
-        GMWorld world = this.worldManager.getGMWorld(event.getPlayer());
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getPlayer());
         if (world == null) {
             return;
         }
@@ -64,7 +59,7 @@ public class EventPlayerListener implements Listener {
         if (event.isCancelled())
             return;
 
-        GMWorld world = this.worldManager.getGMWorld(event.getPlayer());
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getPlayer());
         if (world == null) {
             return;
         }
@@ -86,7 +81,7 @@ public class EventPlayerListener implements Listener {
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
             return;
 
-        GMWorld world = this.worldManager.getGMWorld(event.getPlayer());
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getPlayer());
         if (world == null) {
             return;
         }
@@ -115,16 +110,16 @@ public class EventPlayerListener implements Listener {
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         String worldName = Bukkit.getWorlds().get(0).getName();
-        if (!worldManager.worldExists(worldName)) {
+        if (!GreenMileCore.worldManager.worldExists(worldName)) {
             worldName = event.getPlayer().getWorld().getName();
-            if (!worldManager.worldExists(worldName)) {
+            if (!GreenMileCore.worldManager.worldExists(worldName)) {
                 worldName = null;
                 return;
             }
         }
 
         // UPDATE THE SPAWN POSITION
-        event.setRespawnLocation(worldManager.getGMWorld(worldName).getWorldSettings().getWorldSpawn());
+        event.setRespawnLocation(GreenMileCore.worldManager.getGMWorld(worldName).getWorldSettings().getWorldSpawn());
     }
 
     @EventHandler
@@ -135,7 +130,7 @@ public class EventPlayerListener implements Listener {
         if (event.isCancelled())
             return;
 
-        GMWorld world = this.worldManager.getGMWorld(event.getPlayer());
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getPlayer());
         if (world == null) {
             return;
         }

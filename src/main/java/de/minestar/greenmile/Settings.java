@@ -23,15 +23,14 @@ import java.io.File;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import de.minestar.greenmile.core.GreenMileCore;
 import de.minestar.greenmile.listener.EventBlockListener;
 import de.minestar.greenmile.listener.EventEntityListener;
 import de.minestar.greenmile.listener.EventPlayerListener;
-import de.minestar.greenmile.worlds.WorldManager;
 public class Settings {
 
     private String CONFIG_FILE = "config.yml";
     private File DATAFOLDER;
-    private WorldManager worldManager;
 
     //@formatter:off
 
@@ -73,23 +72,22 @@ public class Settings {
      * @param configFile
      * @param dataFolder
      */
-    public Settings(String configFile, File dataFolder, WorldManager worldManager) {
+    public Settings(String configFile, File dataFolder) {
         this.CONFIG_FILE = configFile;
         this.DATAFOLDER = dataFolder;
-        this.worldManager = worldManager;
     }
 
     /**
      * Register all events
      */
     public void registerAllEvents() {
-        EventBlockListener bListener = new EventBlockListener(worldManager);
-        EventEntityListener eListener = new EventEntityListener(worldManager);
-        EventPlayerListener pListener = new EventPlayerListener(worldManager);
+        EventBlockListener bListener = new EventBlockListener();
+        EventEntityListener eListener = new EventEntityListener();
+        EventPlayerListener pListener = new EventPlayerListener();
 
-        Bukkit.getPluginManager().registerEvents(bListener, Main.getInstance());
-        Bukkit.getPluginManager().registerEvents(eListener, Main.getInstance());
-        Bukkit.getPluginManager().registerEvents(pListener, Main.getInstance());
+        Bukkit.getPluginManager().registerEvents(bListener, GreenMileCore.INSTANCE);
+        Bukkit.getPluginManager().registerEvents(eListener, GreenMileCore.INSTANCE);
+        Bukkit.getPluginManager().registerEvents(pListener, GreenMileCore.INSTANCE);
 //        
 //        //@formatter:off
 //        // BLOCKLISTENER

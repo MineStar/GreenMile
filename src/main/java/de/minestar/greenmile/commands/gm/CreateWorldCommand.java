@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import de.minestar.greenmile.Main;
+import de.minestar.greenmile.core.GreenMileCore;
 import de.minestar.greenmile.helper.EnumHelper;
 import de.minestar.greenmile.worlds.WorldManager;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
@@ -17,7 +17,7 @@ public class CreateWorldCommand extends AbstractExtendedCommand {
     private WorldManager worldManager;
 
     public CreateWorldCommand(String syntax, String arguments, String node, WorldManager worldManager) {
-        super(Main.NAME, syntax, arguments, node);
+        super(GreenMileCore.NAME, syntax, arguments, node);
         this.description = "Create a new world";
         this.worldManager = worldManager;
     }

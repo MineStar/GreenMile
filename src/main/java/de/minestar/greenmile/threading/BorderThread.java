@@ -7,18 +7,12 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import de.minestar.greenmile.Main;
-import de.minestar.greenmile.worlds.WorldManager;
+import de.minestar.greenmile.core.GreenMileCore;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
 
 public class BorderThread implements Runnable {
 
     private HashMap<String, Location> lastPosition = new HashMap<String, Location>();
-    private final WorldManager worldManager;
-
-    public BorderThread(WorldManager worldManager) {
-        this.worldManager = worldManager;
-    }
 
     public void run() {
         Location loc = null;
@@ -36,17 +30,17 @@ public class BorderThread implements Runnable {
             worldName = world.getName();
 
             // World is not existing -> ignore
-            if (!worldManager.worldExists(worldName))
+            if (!GreenMileCore.worldManager.worldExists(worldName))
                 continue;
 
             // World Spawn Location
-            loc = worldManager.getGMWorld(worldName).getWorldSettings().getWorldSpawn();
+            loc = GreenMileCore.worldManager.getGMWorld(worldName).getWorldSettings().getWorldSpawn();
 
             xW = loc.getBlockX();
             zW = loc.getBlockZ();
 
             // Allowed size of the world
-            maxSize = worldManager.getGMWorld(worldName).getWorldSettings().getMaxSize();
+            maxSize = GreenMileCore.worldManager.getGMWorld(worldName).getWorldSettings().getMaxSize();
 
             // look at every players location
             for (Player player : Bukkit.getWorld(worldName).getPlayers()) {
@@ -67,10 +61,10 @@ public class BorderThread implements Runnable {
                     // have reconnected or last position is the current position
                     // -> teleport to spawn
                     if ((loc == null) || (!isInside(loc.getBlockX(), loc.getBlockZ(), xW, zW, maxSize)))
-                        loc = worldManager.getGMWorld(worldName).getWorldSettings().getWorldSpawn();
+                        loc = GreenMileCore.worldManager.getGMWorld(worldName).getWorldSettings().getWorldSpawn();
 
                     player.teleport(loc);
-                    PlayerUtils.sendError(player, Main.NAME, "Du hast die maximale Grenze der Map erreicht!");
+                    PlayerUtils.sendError(player, GreenMileCore.NAME, "Du hast die maximale Grenze der Map erreicht!");
                 } else
                     // save last position
                     lastPosition.put(player.getName(), loc);

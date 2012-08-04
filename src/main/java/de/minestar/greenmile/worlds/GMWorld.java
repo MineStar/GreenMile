@@ -7,7 +7,7 @@ import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.WorldCreator;
 
-import de.minestar.greenmile.Main;
+import de.minestar.greenmile.core.GreenMileCore;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
 
 public class GMWorld {
@@ -91,7 +91,7 @@ public class GMWorld {
         // IS THERE A BUKKIT WORLD? IF NOT => RETURN
         World bukkitWorld = Bukkit.getServer().getWorld(this.worldName);
         if (bukkitWorld == null) {
-            ConsoleUtils.printError(Main.NAME, "Can't find bukkitworld '" + this.worldName + "'!");
+            ConsoleUtils.printError(GreenMileCore.NAME, "Can't find bukkitworld '" + this.worldName + "'!");
             return;
         }
 

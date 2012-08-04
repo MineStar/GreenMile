@@ -31,15 +31,10 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 
+import de.minestar.greenmile.core.GreenMileCore;
 import de.minestar.greenmile.worlds.GMWorld;
-import de.minestar.greenmile.worlds.WorldManager;
 
 public class EventEntityListener implements Listener {
-    private final WorldManager worldManager;
-
-    public EventEntityListener(WorldManager worldManager) {
-        this.worldManager = worldManager;
-    }
 
     @EventHandler
     public void onEntityBlockChange(EntityChangeBlockEvent event) {
@@ -55,7 +50,7 @@ public class EventEntityListener implements Listener {
     }
 
     public void onEndermanPickup(EntityChangeBlockEvent event) {
-        GMWorld world = this.worldManager.getGMWorld(event.getEntity());
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getEntity());
         if (world == null) {
             return;
         }
@@ -64,7 +59,7 @@ public class EventEntityListener implements Listener {
     }
 
     public void onEndermanPlace(EntityChangeBlockEvent event) {
-        GMWorld world = this.worldManager.getGMWorld(event.getEntity());
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getEntity());
         if (world == null) {
             return;
         }
@@ -80,7 +75,7 @@ public class EventEntityListener implements Listener {
         if (!(event.getEntity() instanceof Player))
             return;
 
-        GMWorld world = this.worldManager.getGMWorld(event.getEntity());
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getEntity());
         if (world == null) {
             return;
         }
@@ -101,7 +96,7 @@ public class EventEntityListener implements Listener {
         if (event.isCancelled())
             return;
 
-        GMWorld world = this.worldManager.getGMWorld(event.getEntity());
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getEntity());
         if (world == null) {
             return;
         }
@@ -125,7 +120,7 @@ public class EventEntityListener implements Listener {
         if (!(event.getEntity() instanceof Player))
             return;
 
-        GMWorld world = this.worldManager.getGMWorld(event.getEntity());
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getEntity());
         if (world == null) {
             return;
         }
@@ -141,7 +136,7 @@ public class EventEntityListener implements Listener {
         if (!(event.getEntity() instanceof Player))
             return;
 
-        GMWorld world = this.worldManager.getGMWorld(event.getEntity());
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getEntity());
         if (world == null) {
             return;
         }

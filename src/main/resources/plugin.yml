@@ -1,5 +1,5 @@
 name: GreenMile
-main: de.minestar.greenmile.Main
+main: de.minestar.greenmile.core.GreenMileCore
 version: ${pom.version}
 depend: [MineStarLibrary]
 commands:

@@ -15,7 +15,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import de.minestar.greenmile.Main;
+import de.minestar.greenmile.core.GreenMileCore;
 import de.minestar.minestarlibrary.utils.ConsoleUtils;
 
 public class WorldManager {
@@ -39,7 +39,7 @@ public class WorldManager {
      */
     private void addWorld(GMWorld world) {
         if (worldExists(world.getWorldName())) {
-            ConsoleUtils.printWarning(Main.NAME, "World '" + world.getWorldName() + "' already exists!");
+            ConsoleUtils.printWarning(GreenMileCore.NAME, "World '" + world.getWorldName() + "' already exists!");
             return;
         }
         this.worldList.add(world);
@@ -225,14 +225,14 @@ public class WorldManager {
                     }
 
                     if (!this.importWorld(worldData))
-                        ConsoleUtils.printError(Main.NAME, "Could not import world '" + world.getName() + "'!");
+                        ConsoleUtils.printError(GreenMileCore.NAME, "Could not import world '" + world.getName() + "'!");
                     else
-                        ConsoleUtils.printWarning(Main.NAME, "World '" + world.getName() + "' imported!");
+                        ConsoleUtils.printWarning(GreenMileCore.NAME, "World '" + world.getName() + "' imported!");
 
                 }
             }
         } catch (Exception e) {
-            ConsoleUtils.printException(e, Main.NAME, "Can't load worlds from " + this.dataFolder);
+            ConsoleUtils.printException(e, GreenMileCore.NAME, "Can't load worlds from " + this.dataFolder);
         }
     }
 

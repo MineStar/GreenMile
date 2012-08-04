@@ -5,14 +5,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import de.minestar.greenmile.Main;
+import de.minestar.greenmile.core.GreenMileCore;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
 import de.minestar.minestarlibrary.utils.ChatUtils;
 
 public class StopCommand extends AbstractCommand {
 
     public StopCommand(String syntax, String arguments, String node) {
-        super(Main.NAME, syntax, arguments, node);
+        super(GreenMileCore.NAME, syntax, arguments, node);
         this.description = "Stopt den Renderthread";
     }
 
@@ -26,12 +26,12 @@ public class StopCommand extends AbstractCommand {
     }
 
     private void stopThread(String[] args, CommandSender sender) {
-        if (Main.chunkThread == null)
+        if (GreenMileCore.chunkThread == null)
             ChatUtils.writeError(sender, pluginName, "Es existiert kein Thread!");
         else {
-            Bukkit.getServer().getScheduler().cancelTask(Main.chunkThread.getTaskID());
-            Main.chunkThread.saveConfig();
-            Main.chunkThread = null;
+            Bukkit.getServer().getScheduler().cancelTask(GreenMileCore.chunkThread.getTaskID());
+            GreenMileCore.chunkThread.saveConfig();
+            GreenMileCore.chunkThread = null;
             ChatUtils.writeError(sender, pluginName, "Thread angehalten!");
         }
     }

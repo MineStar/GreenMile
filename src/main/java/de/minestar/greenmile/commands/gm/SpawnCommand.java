@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 import com.bukkit.gemo.utils.UtilPermissions;
 
-import de.minestar.greenmile.Main;
+import de.minestar.greenmile.core.GreenMileCore;
 import de.minestar.greenmile.worlds.GMWorld;
 import de.minestar.greenmile.worlds.WorldManager;
 import de.minestar.minestarlibrary.commands.AbstractExtendedCommand;
@@ -16,7 +16,7 @@ public class SpawnCommand extends AbstractExtendedCommand {
     private WorldManager worldManager;
 
     public SpawnCommand(String syntax, String arguments, String node, WorldManager worldManager) {
-        super(Main.NAME, syntax, arguments, node);
+        super(GreenMileCore.NAME, syntax, arguments, node);
         this.description = "Teleport to the given spawn";
         this.worldManager = worldManager;
     }

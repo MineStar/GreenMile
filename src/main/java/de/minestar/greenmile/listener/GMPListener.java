@@ -6,6 +6,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
+import de.minestar.core.MinestarCore;
+import de.minestar.core.units.MinestarPlayer;
 import de.minestar.greenmile.core.GreenMileCore;
 import de.minestar.greenmile.threading.BorderThread;
 import de.minestar.minestarlibrary.utils.PlayerUtils;
@@ -17,6 +19,27 @@ public class GMPListener implements Listener {
      */
     @EventHandler
     public void onPlayerTeleport(PlayerTeleportEvent event) {
+
+        // workaround for players that are completetly new to the server
+        MinestarPlayer msPlayer = MinestarCore.getPlayer(event.getPlayer());
+        if (msPlayer.getBoolean("main.wasHere") == null) {
+            msPlayer.setBoolean("main.wasHere", true);
+
+            // get the world
+            String worldName = event.getTo().getWorld().getName();
+
+            // IF WORLD IS NOT COVERED BY GREENMILE => RETURN
+            if (!GreenMileCore.worldManager.worldExists(worldName)) {
+                return;
+            }
+
+            // GET CURRENT SPAWN AND MAXIMUM SIZE OF THE WORLD
+            Location worldSpawn = GreenMileCore.worldManager.getGMWorld(worldName).getWorldSettings().getWorldSpawn();
+            event.setTo(worldSpawn.clone());
+            return;
+        }
+        // END: workaround
+
         String worldName = event.getTo().getWorld().getName();
 
         // IF WORLD IS NOT COVERED BY GREENMILE => RETURN

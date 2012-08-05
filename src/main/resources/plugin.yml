@@ -1,7 +1,7 @@
 name: GreenMile
 main: de.minestar.greenmile.core.GreenMileCore
 version: ${pom.version}
-depend: [MineStarLibrary]
+depend: [MineStarLibrary, MinestarCore]
 commands:
   gm:
     description: Start/Stop a thread

@@ -27,7 +27,6 @@ public class EventBlockListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-
         if (event.isCancelled())
             return;
 

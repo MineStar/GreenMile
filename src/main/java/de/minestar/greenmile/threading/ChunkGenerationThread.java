@@ -132,9 +132,9 @@ public class ChunkGenerationThread implements Runnable {
         settings.saveSettings(this.world.getName(), this.worldManager.getDataFolder());
     }
 
-//    private void unloadChunks() {
-//        for (Chunk c : this.bufferChunks)
-//            c.unload();
-//        this.bufferChunks.clear();
-//    }
+    // private void unloadChunks() {
+    // for (Chunk c : this.bufferChunks)
+    // c.unload();
+    // this.bufferChunks.clear();
+    // }
 }

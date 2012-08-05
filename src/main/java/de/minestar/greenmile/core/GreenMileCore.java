@@ -89,16 +89,13 @@ public class GreenMileCore extends AbstractCore {
 
     @Override
     protected boolean startThreads(BukkitScheduler scheduler) {
-
         scheduler.scheduleSyncRepeatingTask(this, borderThread, 20L * 15L, 20L * 5L);
-
         return true;
     }
 
     @Override
     protected boolean createListener() {
         pListener = new GMPListener();
-
         return true;
     }
 

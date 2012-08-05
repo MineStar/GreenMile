@@ -88,7 +88,7 @@ public class Settings {
         Bukkit.getPluginManager().registerEvents(bListener, GreenMileCore.INSTANCE);
         Bukkit.getPluginManager().registerEvents(eListener, GreenMileCore.INSTANCE);
         Bukkit.getPluginManager().registerEvents(pListener, GreenMileCore.INSTANCE);
-//        
+        //
 //        //@formatter:off
 //        // BLOCKLISTENER
 //        
@@ -121,19 +121,19 @@ public class Settings {
 //        //@formatter:on
     }
 
-//    /**
-//     * Register a single event
-//     * 
-//     * @param registerListener
-//     * @param listener
-//     * @param eventType
-//     */
-//    private void registerEvent(boolean registerListener, Listener listener, Event.Type eventType) {
-//        if (!registerListener)
-//            return;
-//
-//        Bukkit.getPluginManager().registerEvent(eventType, listener, this.MONITOR_LEVEL, Main.getInstance());
-//    }
+    // /**
+    // * Register a single event
+    // *
+    // * @param registerListener
+    // * @param listener
+    // * @param eventType
+    // */
+    // private void registerEvent(boolean registerListener, Listener listener, Event.Type eventType) {
+    // if (!registerListener)
+    // return;
+    //
+    // Bukkit.getPluginManager().registerEvent(eventType, listener, this.MONITOR_LEVEL, Main.getInstance());
+    // }
 
     /**
      * SAVE SETTINGS
@@ -261,13 +261,13 @@ public class Settings {
         }
     }
 
-//    /**
-//     * @param mONITOR_LEVEL
-//     *            the mONITOR_LEVEL to set
-//     */
-//    private void setMONITOR_LEVEL(Event.Priority mONITOR_LEVEL) {
-//         MONITOR_LEVEL = mONITOR_LEVEL;
-//    }
+    // /**
+    // * @param mONITOR_LEVEL
+    // * the mONITOR_LEVEL to set
+    // */
+    // private void setMONITOR_LEVEL(Event.Priority mONITOR_LEVEL) {
+    // MONITOR_LEVEL = mONITOR_LEVEL;
+    // }
 
     /**
      * @param monitorBlockBreak

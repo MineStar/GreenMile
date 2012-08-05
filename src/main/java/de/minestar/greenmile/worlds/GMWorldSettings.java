@@ -202,8 +202,7 @@ public class GMWorldSettings {
     /**
      * isInitzialized()
      * 
-     * @return <b>true</b> if initialization was successful, otherwise
-     *         <b>false</b>
+     * @return <b>true</b> if initialization was successful, otherwise <b>false</b>
      */
     public boolean isInitialized() {
         return this.initialized;

@@ -192,7 +192,7 @@ public class EventBlockListener implements Listener {
         if (event.isCancelled())
             return;
 
-        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getBlock());
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getBlock().getWorld().getName());
         if (world == null) {
             return;
         }

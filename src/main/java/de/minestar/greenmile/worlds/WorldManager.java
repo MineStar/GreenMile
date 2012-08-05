@@ -29,6 +29,9 @@ public class WorldManager {
      */
     public WorldManager(File dataFolder) {
         this.dataFolder = dataFolder;
+    }
+
+    public void init() {
         loadWorlds();
     }
 

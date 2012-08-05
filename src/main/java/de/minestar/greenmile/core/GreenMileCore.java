@@ -76,7 +76,7 @@ public class GreenMileCore extends AbstractCore {
     @Override
     protected boolean createManager() {
         worldManager = new WorldManager(this.getDataFolder());
-
+        worldManager.init();
         return true;
     }
 

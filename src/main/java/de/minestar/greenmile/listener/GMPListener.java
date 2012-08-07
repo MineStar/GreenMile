@@ -22,7 +22,8 @@ public class GMPListener implements Listener {
 
         // workaround for players that are completetly new to the server
         MinestarPlayer msPlayer = MinestarCore.getPlayer(event.getPlayer());
-        if (msPlayer.getBoolean("main.wasHere") == null) {
+        Boolean bool = msPlayer.getBoolean("main.wasHere");
+        if (bool == null || !bool) {
             msPlayer.setBoolean("main.wasHere", true);
 
             // get the world

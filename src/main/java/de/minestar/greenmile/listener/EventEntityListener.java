@@ -31,6 +31,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.painting.PaintingBreakByEntityEvent;
 
 import de.minestar.greenmile.core.GreenMileCore;
 import de.minestar.greenmile.worlds.GMWorld;
@@ -127,6 +128,25 @@ public class EventEntityListener implements Listener {
             // WE HAVE TNT HERE
             event.setCancelled(world.getEventSettings().isBlockTNT());
         } else if (event.getDamager().getType() == EntityType.CREEPER) {
+            // WE HAVE A CREEPER HERE
+            event.setCancelled(world.getEventSettings().isBlockCreeperExplosions());
+        }
+    }
+
+    @EventHandler
+    public void onPaintingBreakByEntity(PaintingBreakByEntityEvent event) {
+        if (event.isCancelled())
+            return;
+
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getRemover());
+        if (world == null) {
+            return;
+        }
+
+        if (event.getRemover().getType() == EntityType.PRIMED_TNT) {
+            // WE HAVE TNT HERE
+            event.setCancelled(world.getEventSettings().isBlockTNT());
+        } else if (event.getRemover().getType() == EntityType.CREEPER) {
             // WE HAVE A CREEPER HERE
             event.setCancelled(world.getEventSettings().isBlockCreeperExplosions());
         }

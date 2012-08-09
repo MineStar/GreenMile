@@ -25,6 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -110,6 +111,25 @@ public class EventEntityListener implements Listener {
         }
         world = null;
         return;
+    }
+
+    @EventHandler
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        if (event.isCancelled())
+            return;
+
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getEntity());
+        if (world == null) {
+            return;
+        }
+
+        if (event.getDamager().getType() == EntityType.PRIMED_TNT) {
+            // WE HAVE TNT HERE
+            event.setCancelled(world.getEventSettings().isBlockTNT());
+        } else if (event.getDamager().getType() == EntityType.CREEPER) {
+            // WE HAVE A CREEPER HERE
+            event.setCancelled(world.getEventSettings().isBlockCreeperExplosions());
+        }
     }
 
     @EventHandler

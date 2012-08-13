@@ -145,7 +145,7 @@ public class EventBlockListener implements Listener {
 
         if (world.getEventSettings().isBlockFire()) {
             IgniteCause cause = event.getCause();
-            if (cause.equals(IgniteCause.LAVA) || cause.equals(IgniteCause.SPREAD) || cause.equals(IgniteCause.LIGHTNING)) {
+            if (cause.equals(IgniteCause.LAVA) || cause.equals(IgniteCause.SPREAD) || cause.equals(IgniteCause.LIGHTNING) || cause.equals(IgniteCause.FIREBALL)) {
                 event.setCancelled(true);
             }
             cause = null;

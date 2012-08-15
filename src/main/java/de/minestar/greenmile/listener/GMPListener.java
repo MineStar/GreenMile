@@ -1,5 +1,6 @@
 package de.minestar.greenmile.listener;
 
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -37,6 +38,7 @@ public class GMPListener implements Listener {
             // GET CURRENT SPAWN AND MAXIMUM SIZE OF THE WORLD
             Location worldSpawn = GreenMileCore.worldManager.getGMWorld(worldName).getWorldSettings().getWorldSpawn();
             event.setTo(worldSpawn.clone());
+            event.getPlayer().setGameMode(GameMode.SURVIVAL);
             return;
         }
         // END: workaround

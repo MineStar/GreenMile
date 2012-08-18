@@ -150,7 +150,7 @@ public class WorldManager {
      */
     public GMWorld getGMWorld(String worldName) {
         for (GMWorld world : this.worldList) {
-            if (world.getWorldName().equals(worldName)) {
+            if (world.getWorldName().equalsIgnoreCase(worldName)) {
                 return world;
             }
         }

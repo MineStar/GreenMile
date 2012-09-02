@@ -12,6 +12,7 @@ import de.minestar.greenmile.commands.gm.GMTeleportCommand;
 import de.minestar.greenmile.commands.gm.GreenMileCommand;
 import de.minestar.greenmile.commands.gm.ImportWorldCommand;
 import de.minestar.greenmile.commands.gm.ListCommand;
+import de.minestar.greenmile.commands.gm.PosResetCommand;
 import de.minestar.greenmile.commands.gm.SetSpawnCommand;
 import de.minestar.greenmile.commands.gm.SpawnCommand;
 import de.minestar.greenmile.commands.gm.StartCommand;
@@ -115,6 +116,7 @@ public class GreenMileCore extends AbstractCore {
         this.cmdList = new CommandList(
                 new GreenMileCommand    ("/gm", "", "gm.status",
                         new GMTeleportCommand   ("tp", "<WorldName>", "greenmile.teleport", worldManager),
+                        new PosResetCommand  ("posreset", "", "greenmile.posreset"),
                         new CreateWorldCommand  ("create", "<WorldName> [Environment [levelseed]]", "greenmile.createworld", worldManager),
                         new ImportWorldCommand  ("import", "<WorldName>", "greenmile.importworld", worldManager),
                         new SetSpawnCommand     ("setspawn", "", "greenmile.setspawn", worldManager),

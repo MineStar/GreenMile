@@ -20,10 +20,10 @@ package de.minestar.greenmile.listener;
 
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -31,12 +31,30 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.painting.PaintingBreakByEntityEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 
 import de.minestar.greenmile.core.GreenMileCore;
 import de.minestar.greenmile.worlds.GMWorld;
 
 public class EventEntityListener implements Listener {
+
+    @EventHandler
+    public void onCreatureSpawn(CreatureSpawnEvent event) {
+        if (event.isCancelled())
+            return;
+
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getEntity());
+        if (world == null) {
+            return;
+        }
+
+        if (event.getEntity().getType().equals(EntityType.WITHER)) {
+            // WE HAVE A WITHER
+            event.setCancelled(world.getEventSettings().isBlockWither());
+        }
+        world = null;
+        return;
+    }
 
     @EventHandler
     public void onEntityBlockChange(EntityChangeBlockEvent event) {
@@ -103,9 +121,12 @@ public class EventEntityListener implements Listener {
             return;
         }
 
-        if (event.getEntity() instanceof LivingEntity) {
-            // WE HAVE AN ENTITY HERE (normally: Creepers)
+        if (event.getEntity().getType().equals(EntityType.CREEPER)) {
+            // WE HAVE AN CREEPER HERE
             event.setCancelled(world.getEventSettings().isBlockCreeperExplosions());
+        } else if (event.getEntity().getType().equals(EntityType.WITHER)) {
+            // WE HAVE A WITHER HERE
+            event.setCancelled(world.getEventSettings().isBlockWither());
         } else {
             // WE HAVE SOMETHING ELSE HERE (normally: TNT)
             event.setCancelled(world.getEventSettings().isBlockTNT());
@@ -130,11 +151,14 @@ public class EventEntityListener implements Listener {
         } else if (event.getDamager().getType() == EntityType.CREEPER) {
             // WE HAVE A CREEPER HERE
             event.setCancelled(world.getEventSettings().isBlockCreeperExplosions());
+        } else if (event.getDamager().getType() == EntityType.WITHER) {
+            // WE HAVE A WITHER HERE
+            event.setCancelled(world.getEventSettings().isBlockWither());
         }
     }
 
     @EventHandler
-    public void onPaintingBreakByEntity(PaintingBreakByEntityEvent event) {
+    public void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
         if (event.isCancelled())
             return;
 
@@ -149,6 +173,9 @@ public class EventEntityListener implements Listener {
         } else if (event.getRemover().getType() == EntityType.CREEPER) {
             // WE HAVE A CREEPER HERE
             event.setCancelled(world.getEventSettings().isBlockCreeperExplosions());
+        } else if (event.getRemover().getType() == EntityType.WITHER) {
+            // WE HAVE A WITHER HERE
+            event.setCancelled(world.getEventSettings().isBlockWither());
         }
     }
 

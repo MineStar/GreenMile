@@ -15,6 +15,7 @@ public class GMWorldEventOptions {
     private boolean blockSnowForm = true;
     private boolean blockSnowMelt = true;
     private boolean blockTNT = false;
+    private boolean blockWither = false;
     private boolean blockStickyPistons = false;
     private boolean blockNormalPistons = false;
     private boolean allowPortalAnywhere = true;
@@ -100,6 +101,7 @@ public class GMWorldEventOptions {
 
             // ENTITYS
             this.blockTNT = config.getBoolean("events.entity.tnt.blockExplosion", this.blockTNT);
+            this.blockWither = config.getBoolean("events.entity.wither.blockExplosion", this.blockWither);
             this.blockCreeperExplosions = config.getBoolean("events.entity.creeper.blockExplosion", this.blockCreeperExplosions);
             this.blockEndermanPickUp = config.getBoolean("events.entity.enderman.blockPickUp", this.blockEndermanPickUp);
             this.blockEndermanPlace = config.getBoolean("events.entity.enderman.blockPlace", this.blockEndermanPlace);
@@ -158,6 +160,7 @@ public class GMWorldEventOptions {
 
             // ENTITYS
             config.set("events.entity.tnt.blockExplosion", this.blockTNT);
+            config.set("events.entity.wither.blockExplosion", this.blockWither);
             config.set("events.entity.creeper.blockExplosion", this.blockCreeperExplosions);
             config.set("events.entity.enderman.blockPickUp", this.blockEndermanPickUp);
             config.set("events.entity.enderman.blockPlace", this.blockEndermanPlace);
@@ -239,6 +242,13 @@ public class GMWorldEventOptions {
      */
     public boolean isBlockTNT() {
         return blockTNT;
+    }
+
+    /**
+     * @return the blockWither
+     */
+    public boolean isBlockWither() {
+        return blockWither;
     }
 
     /**

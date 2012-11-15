@@ -57,7 +57,7 @@ public class GMWorldSettings {
     public GMWorldSettings(WorldData worldData, File dataFolder) {
         this.levelSeed = worldData.getSeed();
         // i() == Normal or Nether or The End
-        this.environment = World.Environment.getEnvironment(worldData.i());
+        this.environment = World.Environment.getEnvironment(worldData.j());
         this.initialized = saveSettings(worldData.getName(), dataFolder);
     }
 

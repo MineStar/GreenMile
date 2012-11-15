@@ -52,7 +52,7 @@ public class ImportWorldCommand extends AbstractCommand {
         // CREATE THE WORLD
         WorldCreator generator = new WorldCreator(worldName);
         // i() == Normal or Nether or The End
-        generator.environment(World.Environment.getEnvironment(worldData.i()));
+        generator.environment(World.Environment.getEnvironment(worldData.j()));
         generator.seed(worldData.getSeed());
         generator.createWorld();
 

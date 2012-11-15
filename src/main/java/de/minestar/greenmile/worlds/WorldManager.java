@@ -89,7 +89,7 @@ public class WorldManager {
         // FINALLY IMPORT THE WORLD
         GMWorld newWorld = new GMWorld(worldData.getName(), this.dataFolder);
         // i() == Normal or Nether or The End
-        newWorld.createSettings(worldData.getSeed(), World.Environment.getEnvironment(worldData.i()), this.dataFolder);
+        newWorld.createSettings(worldData.getSeed(), World.Environment.getEnvironment(worldData.j()), this.dataFolder);
         newWorld.getWorldSettings().setWorldSpawn(Bukkit.getWorld(worldData.getName()).getSpawnLocation());
         newWorld.getWorldSettings().saveSettings(worldData.getName(), dataFolder);
         newWorld.updateBukkitWorld();

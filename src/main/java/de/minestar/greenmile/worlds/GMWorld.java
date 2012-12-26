@@ -100,8 +100,13 @@ public class GMWorld {
         bukkitWorld.setAutoSave(this.worldSettings.isAutoSave());
         bukkitWorld.setDifficulty(this.worldSettings.getDifficulty());
         bukkitWorld.setKeepSpawnInMemory(this.worldSettings.isKeepSpawnLoaded());
-        if (this.worldSettings.getWorldSpawn() != null)
+        bukkitWorld.setAnimalSpawnLimit(15);
+        bukkitWorld.setMonsterSpawnLimit(70);
+        bukkitWorld.setTicksPerAnimalSpawns(200);
+        bukkitWorld.setTicksPerMonsterSpawns(20);
+        if (this.worldSettings.getWorldSpawn() != null) {
             bukkitWorld.setSpawnLocation(this.worldSettings.getWorldSpawn().getBlockX(), this.worldSettings.getWorldSpawn().getBlockY(), this.worldSettings.getWorldSpawn().getBlockZ());
+        }
     }
 
     /**

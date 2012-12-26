@@ -33,6 +33,8 @@ public class GMWorldEventOptions {
 
     private int blockLeavesDecayRadius = 3;
     private int SpongeRadius = 3;
+    private int mobLimit = 750;
+    private int animalLimit = 750;
     private String worldName;
     private File dataFolder;
 
@@ -106,6 +108,10 @@ public class GMWorldEventOptions {
             this.blockEndermanPickUp = config.getBoolean("events.entity.enderman.blockPickUp", this.blockEndermanPickUp);
             this.blockEndermanPlace = config.getBoolean("events.entity.enderman.blockPlace", this.blockEndermanPlace);
 
+            // MOBS
+            this.mobLimit = config.getInt("events.limits.mobs", this.mobLimit);
+            this.animalLimit = config.getInt("events.limits.animals", this.animalLimit);
+
             this.saveSettings();
 
             return true;
@@ -164,6 +170,10 @@ public class GMWorldEventOptions {
             config.set("events.entity.creeper.blockExplosion", this.blockCreeperExplosions);
             config.set("events.entity.enderman.blockPickUp", this.blockEndermanPickUp);
             config.set("events.entity.enderman.blockPlace", this.blockEndermanPlace);
+
+            // MOB-LIMIT
+            config.set("events.limits.mobs", this.mobLimit);
+            config.set("events.limits.animals", this.animalLimit);
 
             // SAVE FILE
             config.save(file);
@@ -569,5 +579,13 @@ public class GMWorldEventOptions {
      */
     public void setSpongeRadius(int spongeRadius) {
         SpongeRadius = spongeRadius;
+    }
+
+    public int getMobLimit() {
+        return mobLimit;
+    }
+
+    public int getAnimalLimit() {
+        return animalLimit;
     }
 }

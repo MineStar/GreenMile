@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.minestar</groupId>
 	<artifactId>GreenMile</artifactId>
-	<version>1.4.2</version>
+	<version>1.4.6_1</version>
 	<name>GreenMile</name>
 	<distributionManagement>
 		<!-- use the following if you're not using a snapshot version. -->
@@ -23,17 +23,17 @@
 		<dependency>
 			<groupId>de.minestar</groupId>
 			<artifactId>FalseBookCore</artifactId>
-			<version>0.95alpha</version>
+			<version>0.96alpha</version>
 		</dependency>
 		<dependency>
 			<groupId>de.minestar</groupId>
-			<artifactId>minestarlibrary</artifactId>
-			<version>1.9.2</version>
+			<artifactId>MineStarLibrary</artifactId>
+			<version>1.4.6_1</version>
 		</dependency>
 		<dependency>
 			<groupId>de.minestar</groupId>
 			<artifactId>MinestarCore</artifactId>
-			<version>1.7</version>
+			<version>1.4.6_1</version>
 		</dependency>
 	</dependencies>
 	<build>

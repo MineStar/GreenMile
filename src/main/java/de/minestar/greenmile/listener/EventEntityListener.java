@@ -19,7 +19,9 @@
 package de.minestar.greenmile.listener;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Animals;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,6 +30,7 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
@@ -40,8 +43,9 @@ public class EventEntityListener implements Listener {
 
     @EventHandler
     public void onCreatureSpawn(CreatureSpawnEvent event) {
-        if (event.isCancelled())
+        if (event.isCancelled()) {
             return;
+        }
 
         GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getEntity());
         if (world == null) {
@@ -51,9 +55,42 @@ public class EventEntityListener implements Listener {
         if (event.getEntity().getType().equals(EntityType.WITHER)) {
             // WE HAVE A WITHER
             event.setCancelled(world.getEventSettings().isBlockWither());
+        } else {
+            if (event.getEntity() instanceof Monster) {
+                int count = event.getEntity().getWorld().getEntitiesByClass(Monster.class).size() + 1;
+                if (count > world.getEventSettings().getMobLimit()) {
+                    event.setCancelled(true);
+                }
+            } else {
+                int count = event.getEntity().getWorld().getEntitiesByClass(Animals.class).size() + 1;
+                if (count > world.getEventSettings().getAnimalLimit()) {
+                    event.setCancelled(true);
+                }
+            }
         }
         world = null;
         return;
+    }
+
+    @EventHandler
+    public void onEntityDeath(EntityDeathEvent event) {
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getEntity());
+        if (world == null) {
+            return;
+        }
+
+        if (event.getEntity() instanceof Monster) {
+            int count = event.getEntity().getWorld().getEntitiesByClass(Monster.class).size();
+            if (count < world.getEventSettings().getMobLimit()) {
+                event.getEntity().getWorld().setSpawnFlags(true, event.getEntity().getWorld().getAllowAnimals());
+            }
+        } else {
+            int count = event.getEntity().getWorld().getEntitiesByClass(Animals.class).size();
+            if (count < world.getEventSettings().getAnimalLimit()) {
+                event.getEntity().getWorld().setSpawnFlags(event.getEntity().getWorld().getAllowMonsters(), true);
+            }
+        }
+        world = null;
     }
 
     @EventHandler

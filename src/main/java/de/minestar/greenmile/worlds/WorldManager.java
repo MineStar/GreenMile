@@ -5,9 +5,9 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import net.minecraft.server.NBTCompressedStreamTools;
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.WorldData;
+import net.minecraft.server.v1_4_6.NBTCompressedStreamTools;
+import net.minecraft.server.v1_4_6.NBTTagCompound;
+import net.minecraft.server.v1_4_6.WorldData;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;

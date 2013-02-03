@@ -19,7 +19,10 @@
 package de.minestar.greenmile.listener;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.World.Environment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,7 +31,9 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import de.minestar.greenmile.core.GreenMileCore;
 import de.minestar.greenmile.worlds.GMWorld;
@@ -119,9 +124,66 @@ public class EventPlayerListener implements Listener {
         }
 
         // UPDATE THE SPAWN POSITION
-        event.setRespawnLocation(GreenMileCore.worldManager.getGMWorld(worldName).getWorldSettings().getWorldSpawn());
+        if (event.getPlayer().getBedSpawnLocation() == null) {
+            event.setRespawnLocation(GreenMileCore.worldManager.getGMWorld(worldName).getWorldSettings().getWorldSpawn());
+        } else {
+            event.setRespawnLocation(event.getPlayer().getBedSpawnLocation());
+        }
     }
 
+    @EventHandler
+    public void onPlayerPortal(PlayerPortalEvent event) {
+        if (event.isCancelled())
+            return;
+
+        GMWorld world = GreenMileCore.worldManager.getGMWorld(event.getPlayer());
+        if (world == null) {
+            return;
+        }
+
+        World oppositeWorld = null;
+        String worldName = event.getFrom().getWorld().getName();
+        final Environment fromEnvironment = event.getFrom().getWorld().getEnvironment();
+        final TeleportCause cause = event.getCause();
+        double blockRatio = 1;
+        switch (fromEnvironment) {
+            case NORMAL : {
+                if (cause.equals(TeleportCause.NETHER_PORTAL)) {
+                    oppositeWorld = Bukkit.getWorld(worldName + "_nether");
+                    blockRatio = 0.125;
+                    break;
+                } else if (cause.equals(TeleportCause.END_PORTAL)) {
+                    oppositeWorld = Bukkit.getWorld(worldName + "_the_end");
+                    break;
+                }
+                break;
+            }
+            case NETHER : {
+                if (cause.equals(TeleportCause.NETHER_PORTAL)) {
+                    oppositeWorld = Bukkit.getWorld(worldName.replace("_nether", ""));
+                    blockRatio = 8;
+                    break;
+                }
+                break;
+            }
+            case THE_END : {
+                if (cause.equals(TeleportCause.END_PORTAL)) {
+                    oppositeWorld = Bukkit.getWorld(worldName.replace("_the_end", ""));
+                    break;
+                }
+                break;
+            }
+        }
+
+        if (oppositeWorld != null) {
+            Player player = event.getPlayer();
+            // event.setCancelled(true);
+            Location toLocation = new Location(oppositeWorld, (player.getLocation().getX() * blockRatio), player.getLocation().getY(), (player.getLocation().getZ() * blockRatio), player.getLocation().getYaw(), player.getLocation().getPitch());
+            event.setTo(toLocation);
+            // player.teleport(toLocation, cause);
+            return;
+        }
+    }
     @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         if (event.getPlayer().isOp())

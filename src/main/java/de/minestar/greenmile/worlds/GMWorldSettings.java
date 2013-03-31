@@ -191,7 +191,7 @@ public class GMWorldSettings {
                 }
             }
 
-            ConsoleUtils.printInfo(GreenMileCore.NAME, "Specific settings for '" + worldName + "' loaded!\nSpawnMonster = " + this.spawnMonsters + "\nSpawnAnimals = " + this.spawnAnimals + "\nAutoSave = " + this.autoSave + "\nKeepSpawnLoaded = " + this.keepSpawnLoaded + "\nDifficulty = " + difficulty.toString() + "\nMaxSize = " + this.maxSize);
+            ConsoleUtils.printInfo(GreenMileCore.NAME, "Specific settings for '" + worldName + "' loaded!"); // \nSpawnMonster = " + this.spawnMonsters + "\nSpawnAnimals = " + this.spawnAnimals + "\nAutoSave = " + this.autoSave + "\nKeepSpawnLoaded = " + this.keepSpawnLoaded + "\nDifficulty = " + difficulty.toString() + "\nMaxSize = " + this.maxSize);
             return true;
         } catch (Exception e) {
             ConsoleUtils.printException(e, GreenMileCore.NAME, "Can't load worldspecific settings for world " + worldName + "!");

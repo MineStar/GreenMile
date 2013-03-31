@@ -145,7 +145,7 @@ public class GMWorldSettings {
             setLevelSeed(config.getLong("settings.levelSeed", this.levelSeed));
             setEnvironment(environment);
 
-            ConsoleUtils.printInfo(GreenMileCore.NAME, "Worldsettings for '" + worldName + "' loaded!\nlevelSeed = " + this.levelSeed + "\nEnvironment = " + environment.toString());
+            ConsoleUtils.printInfo(GreenMileCore.NAME, "Worldsettings for '" + worldName + "' loaded!"); // \nlevelSeed = " + this.levelSeed + "\nEnvironment = " + environment.toString());
             return true;
         } catch (Exception e) {
             ConsoleUtils.printException(e, GreenMileCore.NAME, "Can't load worldsettings for world " + worldName + "!");

@@ -40,7 +40,7 @@ public class EventBlockListener implements Listener {
         }
 
         // CANCEL ICE-BREAK
-        if (!event.isCancelled() && event.getBlock().getTypeId() == Material.ICE.getId()) {
+        if (!event.isCancelled() && event.getBlock().getType().equals(Material.ICE)) {
             if (world.getEventSettings().isBlockIceMelt()) {
                 event.setCancelled(true);
                 event.getBlock().setType(Material.AIR);
@@ -75,7 +75,7 @@ public class EventBlockListener implements Listener {
         }
 
         GMWorldEventOptions options = world.getEventSettings();
-        if ((options.isBlockIceMelt() && event.getBlock().getTypeId() == Material.ICE.getId()) || (options.isBlockSnowMelt() && (event.getBlock().getTypeId() == Material.SNOW_BLOCK.getId() || event.getBlock().getTypeId() == Material.SNOW.getId()))) {
+        if ((options.isBlockIceMelt() && event.getBlock().getType().equals(Material.ICE)) || (options.isBlockSnowMelt() && (event.getBlock().getType().equals(Material.SNOW_BLOCK) || event.getBlock().getType().equals(Material.SNOW)))) {
             event.setCancelled(true);
         }
         options = null;
@@ -93,7 +93,7 @@ public class EventBlockListener implements Listener {
         }
 
         GMWorldEventOptions options = world.getEventSettings();
-        if ((options.isBlockIceForm() && event.getNewState().getTypeId() == Material.ICE.getId()) || (options.isBlockSnowForm() && (event.getNewState().getTypeId() == Material.SNOW_BLOCK.getId() || event.getNewState().getTypeId() == Material.SNOW.getId()))) {
+        if ((options.isBlockIceForm() && event.getNewState().getType().equals(Material.ICE)) || (options.isBlockSnowForm() && (event.getNewState().getType().equals(Material.SNOW_BLOCK) || event.getNewState().getType().equals(Material.SNOW)))) {
             event.setCancelled(true);
         }
         options = null;
@@ -111,14 +111,14 @@ public class EventBlockListener implements Listener {
         }
 
         GMWorldEventOptions options = world.getEventSettings();
-        boolean isWater = (event.getBlock().getTypeId() == Material.WATER.getId()) || (event.getBlock().getTypeId() == Material.STATIONARY_WATER.getId());
+        boolean isWater = (event.getBlock().getType().equals(Material.WATER) || (event.getBlock().getType().equals(Material.STATIONARY_WATER)));
         if (options.isEnableSponge() && isWater) {
             Block block = event.getBlock();
             for (int x = -(options.getSpongeRadius() + 1); x <= (options.getSpongeRadius() + 1); x++) {
                 for (int z = -(options.getSpongeRadius() + 1); z <= (options.getSpongeRadius() + 1); z++) {
                     for (int y = -(options.getSpongeRadius() + 1); y <= (options.getSpongeRadius() + 1); y++) {
                         block = event.getBlock().getRelative(x, y, z);
-                        if (block.getTypeId() == Material.SPONGE.getId()) {
+                        if (block.getType().equals(Material.SPONGE)) {
                             event.setCancelled(true);
                             options = null;
                             world = null;
@@ -165,17 +165,30 @@ public class EventBlockListener implements Listener {
         GMWorldEventOptions options = world.getEventSettings();
         if (options.isBlockLeavesDecay()) {
             Block block = event.getBlock();
-            int type = 0;
             for (int x = -options.getBlockLeavesDecayRadius(); x <= options.getBlockLeavesDecayRadius(); x++) {
                 for (int y = -options.getBlockLeavesDecayRadius(); y <= options.getBlockLeavesDecayRadius(); y++) {
                     for (int z = -options.getBlockLeavesDecayRadius(); z <= options.getBlockLeavesDecayRadius(); z++) {
-                        type = block.getRelative(x, y, z).getTypeId();
-                        if (type == Material.WOOD.getId() || type == Material.LOG.getId() || type == Material.FENCE.getId() || type == Material.BOOKSHELF.getId() || type == Material.CHEST.getId() || type == Material.TRAP_DOOR.getId() || type == Material.JUKEBOX.getId() || type == Material.WORKBENCH.getId() || type == Material.NOTE_BLOCK.getId() || type == Material.SIGN_POST.getId() || type == Material.WALL_SIGN.getId() || type == Material.WOOD_STAIRS.getId() || type == Material.WOOD_DOOR.getId()) {
-                            event.setCancelled(true);
-                            block = null;
-                            options = null;
-                            world = null;
-                            return;
+
+                        Material mat = block.getRelative(x, x, z).getType();
+                        switch (mat) {
+                            case WOOD :
+                            case LOG :
+                            case FENCE :
+                            case BOOKSHELF :
+                            case CHEST :
+                            case TRAP_DOOR :
+                            case JUKEBOX :
+                            case WORKBENCH :
+                            case NOTE_BLOCK :
+                            case SIGN_POST :
+                            case WALL_SIGN :
+                            case WOOD_STAIRS :
+                            case WOOD_DOOR :
+                                event.setCancelled(true);
+                                block = null;
+                                options = null;
+                                world = null;
+                                return;
                         }
                     }
                 }
@@ -198,7 +211,7 @@ public class EventBlockListener implements Listener {
 
         GMWorldEventOptions options = world.getEventSettings();
         // CHECK ALLOW PORTAL ANYWHERE
-        if (options.isAllowPortalAnywhere() && event.getBlock().getTypeId() == Material.PORTAL.getId()) {
+        if (options.isAllowPortalAnywhere() && event.getBlock().getType().equals(Material.PORTAL)) {
             event.setCancelled(true);
             options = null;
             world = null;
@@ -206,7 +219,7 @@ public class EventBlockListener implements Listener {
         }
 
         // CHECK REDSTONE
-        if (!options.isRedstoneEnabled() && event.getBlock().getTypeId() == Material.REDSTONE_WIRE.getId()) {
+        if (!options.isRedstoneEnabled() && event.getBlock().getType().equals(Material.REDSTONE_WIRE)) {
             event.setCancelled(true);
             options = null;
             world = null;
@@ -264,7 +277,7 @@ public class EventBlockListener implements Listener {
         }
 
         // SPONGE
-        if (!event.isCancelled() && event.getBlockPlaced().getTypeId() == Material.SPONGE.getId()) {
+        if (!event.isCancelled() && event.getBlockPlaced().getType().equals(Material.SPONGE)) {
             if (world.getEventSettings().isEnableSponge()) {
                 Block block = event.getBlock();
                 GMWorldEventOptions options = world.getEventSettings();
@@ -272,8 +285,12 @@ public class EventBlockListener implements Listener {
                     for (int z = -(options.getSpongeRadius() + 1); z <= (options.getSpongeRadius() + 1); z++) {
                         for (int y = -(options.getSpongeRadius() + 1); y <= (options.getSpongeRadius() + 1); y++) {
                             block = event.getBlock().getRelative(x, y, z);
-                            if (block.getTypeId() == Material.WATER.getId() || block.getTypeId() == Material.STATIONARY_WATER.getId()) {
-                                block.setType(Material.AIR);
+
+                            switch (block.getType()) {
+                                case WATER :
+                                case STATIONARY_WATER :
+                                    block.setType(Material.AIR);
+                                    break;
                             }
                         }
                     }
@@ -295,7 +312,7 @@ public class EventBlockListener implements Listener {
         }
 
         GMWorldEventOptions options = world.getEventSettings();
-        if ((options.isBlockIceForm() && event.getNewState().getTypeId() == Material.ICE.getId()) || (options.isBlockSnowForm() && (event.getNewState().getTypeId() == Material.SNOW_BLOCK.getId() || event.getNewState().getTypeId() == Material.SNOW.getId())) || (options.isBlockFire() && event.getNewState().getTypeId() == Material.FIRE.getId())) {
+        if ((options.isBlockIceForm() && event.getNewState().getType().equals(Material.ICE)) || (options.isBlockSnowForm() && (event.getNewState().getType().equals(Material.SNOW_BLOCK) || event.getNewState().getType().equals(Material.SNOW))) || (options.isBlockFire() && event.getNewState().getType().equals(Material.FIRE))) {
             event.setCancelled(true);
         }
         options = null;

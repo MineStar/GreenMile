@@ -99,7 +99,7 @@ public class EventEntityListener implements Listener {
             return;
 
         if (event.getEntityType() == EntityType.ENDERMAN) {
-            if (event.getTo().getId() == Material.AIR.getId())
+            if (event.getTo().equals(Material.AIR))
                 this.onEndermanPickup(event);
             else
                 this.onEndermanPlace(event);

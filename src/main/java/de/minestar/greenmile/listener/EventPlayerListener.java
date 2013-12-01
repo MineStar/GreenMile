@@ -91,25 +91,29 @@ public class EventPlayerListener implements Listener {
             return;
         }
 
-        int ID = event.getClickedBlock().getTypeId();
-        if (ID == Material.CHEST.getId()) {
-            event.setCancelled(!world.getEventSettings().isAllowOpenChest());
-            world = null;
-            return;
-        } else if (ID == Material.WORKBENCH.getId()) {
-            event.setCancelled(!world.getEventSettings().isAllowOpenWorkbench());
-            world = null;
-            return;
-        } else if (ID == Material.FURNACE.getId() || ID == Material.BURNING_FURNACE.getId()) {
-            event.setCancelled(!world.getEventSettings().isAllowOpenFurnace());
-            world = null;
-            return;
-        } else if (ID == Material.DISPENSER.getId()) {
-            event.setCancelled(!world.getEventSettings().isAllowOpenDispenser());
-            world = null;
-            return;
+        Material mat = event.getClickedBlock().getType();
+        switch (mat) {
+            case CHEST :
+                event.setCancelled(!world.getEventSettings().isAllowOpenChest());
+                world = null;
+                break;
+            case WORKBENCH :
+                event.setCancelled(!world.getEventSettings().isAllowOpenWorkbench());
+                world = null;
+                break;
+            case FURNACE :
+            case BURNING_FURNACE :
+                event.setCancelled(!world.getEventSettings().isAllowOpenFurnace());
+                world = null;
+                break;
+            case DISPENSER :
+                event.setCancelled(!world.getEventSettings().isAllowOpenDispenser());
+                world = null;
+                break;
+            default :
+                world = null;
+                break;
         }
-        world = null;
     }
 
     @EventHandler

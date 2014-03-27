@@ -2,7 +2,7 @@ package de.minestar.greenmile.commands.gm;
 
 import java.io.File;
 
-import net.minecraft.server.v1_7_R1.WorldData;
+import net.minecraft.server.v1_7_R2.WorldData;
 
 import org.bukkit.World;
 import org.bukkit.WorldCreator;

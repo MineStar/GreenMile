@@ -18,10 +18,7 @@
 
 package de.minestar.greenmile.listener;
 
-import net.minecraft.server.v1_7_R2.EntityArrow;
-
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_7_R2.entity.CraftArrow;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Monster;
@@ -37,18 +34,12 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 
 import de.minestar.greenmile.core.GreenMileCore;
 import de.minestar.greenmile.worlds.GMWorld;
 
 public class EventEntityListener implements Listener {
-
-	@EventHandler
-	public void onProjectileHit(ProjectileHitEvent event) {
-		EntityArrow entityArrow = ((CraftArrow) event.getEntity()).getHandle();
-	}
 
 	@EventHandler
 	public void onCreatureSpawn(CreatureSpawnEvent event) {

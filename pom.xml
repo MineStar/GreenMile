@@ -11,23 +11,22 @@
 			<id>MinestarNexus</id>
 			<url>http://jenkins.outi-networks.de:8082/nexus/content/groups/public/</url>
 		</repository>
-	</repositories>
-
-
-	<distributionManagement>
-		<!-- use the following if you're not using a snapshot version. -->
-		<repository>
-			<id>minestarDeployment</id>
-			<name>Internal Releases</name>
-			<url>http://jenkins.outi-networks.de:8082/nexus/content/repositories/releases/</url>
-		</repository>
-		<!-- use the following if you ARE using a snapshot version. -->
-		<snapshotRepository>
-			<id>minestarDeployment</id>
-			<name>Internal Releases</name>
-			<url>http://jenkins.outi-networks.de:8082/nexus/content/repositories/snapshots/</url>
-		</snapshotRepository>
-	</distributionManagement>
+	</repositories>	
+	
+    <distributionManagement>
+        <!-- use the following if you're not using a snapshot version. -->
+        <repository>
+            <id>minestarDeployment</id>
+            <name>Internal Releases</name>
+            <url>http://jenkins.outi-networks.de:8082/nexus/content/repositories/releases/</url>
+        </repository>
+        <!-- use the following if you ARE using a snapshot version. -->
+        <snapshotRepository>
+            <id>minestarDeployment</id>
+            <name>Internal Releases</name>
+            <url>http://jenkins.outi-networks.de:8082/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>

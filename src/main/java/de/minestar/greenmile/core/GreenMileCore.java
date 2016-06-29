@@ -2,6 +2,7 @@ package de.minestar.greenmile.core;
 
 import java.io.File;
 
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -51,6 +52,10 @@ public class GreenMileCore extends AbstractCore {
 		INSTANCE = this;
 	}
 
+	public static Plugin getPlugin() {
+        return GreenMileCore.INSTANCE;
+    }
+	
 	@Override
 	protected boolean commonDisable() {
 		if (chunkThread != null)
@@ -66,12 +71,9 @@ public class GreenMileCore extends AbstractCore {
 		if (gmSettings.loadSettings(true))
 			gmSettings.registerAllEvents();
 		else {
-			ConsoleUtils
-					.printError(GreenMileCore.NAME,
-							"Could not load settings!\n\n GREENMILE WILL BE DISABLED !!! \n\n");
+			ConsoleUtils.printError(GreenMileCore.NAME, "Could not load settings!\n\n GREENMILE WILL BE DISABLED !!! \n\n");
 			this.setEnabled(false);
 		}
-
 		return true;
 	}
 
@@ -91,8 +93,7 @@ public class GreenMileCore extends AbstractCore {
 
 	@Override
 	protected boolean startThreads(BukkitScheduler scheduler) {
-		scheduler.scheduleSyncRepeatingTask(this, borderThread, 20L * 15L,
-				20L * 5L);
+		scheduler.scheduleSyncRepeatingTask(this, borderThread, 20L * 15L, 20L * 5L);
 		return true;
 	}
 
@@ -112,29 +113,23 @@ public class GreenMileCore extends AbstractCore {
 	@Override
 	protected boolean createCommands() {
 		int speed = getConfig().getInt("speed", 5);
-		ConsoleUtils.printInfo(NAME, "Default speed of generation thread is "
-				+ speed);
+		ConsoleUtils.printInfo(NAME, "Default speed of generation thread is " + speed);
 
 		// @formatter:off;
-		this.cmdList = new CommandList(new GreenMileCommand("/gm", "",
-				"gm.status", new GMTeleportCommand("tp", "<WorldName>",
-						"greenmile.teleport", worldManager),
-				new PosResetCommand("posreset", "", "greenmile.posreset"),
-				new CreateWorldCommand("create",
-						"<WorldName> [Environment [levelseed]]",
-						"greenmile.createworld", worldManager),
-				new SetSpawnCommand("setspawn", "", "greenmile.setspawn",
-						worldManager), new StartCommand("start",
-						"<WorldName> [Speed]", "greenmile.start", worldManager,
-						this, speed), new StopCommand("stop", "", "gm.stop"),
-				new StatusCommand("status", "", "greenmile.status"),
-				new ChangeSizeCommand("size", "<WorldName> <Size> [f [Speed]",
-						"greenmile.change", worldManager, this, speed),
-				new ListCommand("list", "", "greenmile.list", worldManager)),
-
-		new SpawnCommand("/spawn", "[WorldName]", "", worldManager));
+		this.cmdList = new CommandList(
+				new GreenMileCommand("/gm", "","gm.status",
+						new GMTeleportCommand("tp", "<WorldName>","greenmile.teleport", worldManager),
+						new PosResetCommand("posreset", "", "greenmile.posreset"),
+						new CreateWorldCommand("create", "<WorldName> [Environment [levelseed]]", "greenmile.createworld", worldManager),
+						new SetSpawnCommand("setspawn", "", "greenmile.setspawn", worldManager),
+						new StartCommand("start", "<WorldName> [Speed]", "greenmile.start", worldManager, this, speed),
+						new StopCommand("stop", "", "gm.stop"),
+						new StatusCommand("status", "", "greenmile.status"),
+						new ChangeSizeCommand("size", "<WorldName> <Size> [f [Speed]", "greenmile.change", worldManager, this, speed),
+						new ListCommand("list", "", "greenmile.list", worldManager)
+				),
+				new SpawnCommand("/spawn", "[WorldName]", "", worldManager));
 		// @formatter: on;
-
 		return true;
 	}
 }

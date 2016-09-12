@@ -79,7 +79,7 @@ public class BorderThread implements Runnable {
                         
                         // create a Thread
                         EntityTeleportThread thread = new EntityTeleportThread(player.getName(), entity);
-                        Bukkit.getScheduler().scheduleSyncDelayedTask(GreenMileCore.getPlugin(), thread, 10L);
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(GreenMileCore.getPlugin(), thread, 5L);
                 	}
                                         
                     player.teleport(loc);

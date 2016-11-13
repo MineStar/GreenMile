@@ -1,9 +1,13 @@
 package de.minestar.greenmile.commands.gm;
 
+import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.entity.Animals;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import de.minestar.greenmile.core.GreenMileCore;
+import de.minestar.greenmile.threading.EntityTeleportThread;
 import de.minestar.greenmile.worlds.GMWorld;
 import de.minestar.greenmile.worlds.WorldManager;
 import de.minestar.minestarlibrary.commands.AbstractCommand;
@@ -33,6 +37,36 @@ public class GMTeleportCommand extends AbstractCommand {
             return;
         }
 
+        if (player.isInsideVehicle()) {
+    		if (player.getVehicle() instanceof Animals) {
+    			// get the animal
+                Entity entity = player.getVehicle();
+
+                // leave it
+                player.leaveVehicle();
+    			
+                // load the chunk
+                gmWorld.getWorldSettings().getWorldSpawn().getChunk().load(true);
+
+                // teleport the animal
+                entity.teleport(gmWorld.getWorldSettings().getWorldSpawn());
+                
+                // create a Thread
+                EntityTeleportThread thread = new EntityTeleportThread(player.getName(), entity);
+                Bukkit.getScheduler().scheduleSyncDelayedTask(GreenMileCore.getPlugin(), thread, 10L);
+    		}
+    		else {
+    			// get the Vehicle (Cart/Boat)
+                Entity entity = player.getVehicle();
+    			
+                // leave it
+                player.leaveVehicle();
+                
+                // destroy the vehicle
+                entity.remove();
+    		}
+    	}
+        
         player.teleport(gmWorld.getWorldSettings().getWorldSpawn());
         PlayerUtils.sendInfo(player, pluginName, "Welcome to '" + worldName + "'!");
     }

@@ -3,8 +3,6 @@ package de.minestar.greenmile.worlds;
 import java.awt.Point;
 import java.io.File;
 
-import net.minecraft.server.v1_8_R3.WorldData;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.Location;

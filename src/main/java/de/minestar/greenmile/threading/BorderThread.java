@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import de.minestar.greenmile.core.GreenMileCore;
@@ -63,6 +64,24 @@ public class BorderThread implements Runnable {
                     if ((loc == null) || (!isInside(loc.getBlockX(), loc.getBlockZ(), xW, zW, maxSize)))
                         loc = GreenMileCore.worldManager.getGMWorld(worldName).getWorldSettings().getWorldSpawn();
 
+                    if (player.isInsideVehicle()) {
+            			// get the vehicle
+                        Entity entity = player.getVehicle();
+
+                        // leave it
+                        player.leaveVehicle();
+            			
+                        // load the chunk
+                        loc.getChunk().load(true);
+
+                        // teleport the animal
+                        entity.teleport(loc);
+                        
+                        // create a Thread
+                        EntityTeleportThread thread = new EntityTeleportThread(player.getName(), entity);
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(GreenMileCore.getPlugin(), thread, 5L);
+                	}
+                                        
                     player.teleport(loc);
                     PlayerUtils.sendError(player, GreenMileCore.NAME, "Du hast die maximale Grenze der Map erreicht!");
                 } else

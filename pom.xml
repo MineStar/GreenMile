@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.minestar</groupId>
 	<artifactId>GreenMile</artifactId>
-	<version>1.12.0-R0.1-SNAPSHOT</version>
+	<version>1.10.2-R0.1-SNAPSHOT</version>
 	<repositories>
 		<repository>
 			<id>MinestarNexus</id>
